@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import mlflow
@@ -28,6 +29,9 @@ from fair_ml_cyber.splits import (
 def setup_mlflow(work_dir: str | Path) -> None:
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
+    for env_name in ("MLFLOW_RUN_ID", "MLFLOW_EXPERIMENT_ID"):
+        os.environ.pop(env_name, None)
+    mlflow.end_run()
     mlflow.set_tracking_uri(f"sqlite:///{(work_dir / 'mlflow.db').resolve()}")
     client = MlflowClient()
     experiment_name = "fair-ml-cyber"
