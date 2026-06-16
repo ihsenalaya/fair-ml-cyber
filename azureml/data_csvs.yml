@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: fair_ml_cyber_csvs
+version: 1
+type: uri_folder
+description: Raw CSV files used for the FAIR-ML-CYBER experiments.
+path: /mnt/c/Users/IhsenAlaya/Documents/ihsen/fhir/CSVs/CSVs

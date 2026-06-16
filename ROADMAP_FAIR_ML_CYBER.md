@@ -1,0 +1,551 @@
+# ROADMAP - FAIR-ML-CYBER
+
+## Sujet final
+
+**FAIR-ML-CYBER: A Reproducible and Standardized Framework for Transferability Evaluation in Flow-Based Network Intrusion Detection**
+
+Idée centrale:
+
+> Adapter la logique de FAIR-ML-ICU à la cybersécurité: construire un framework reproductible, standardisé et tracké pour évaluer la portabilité des modèles ML de détection d'intrusion réseau entre jours, scénarios, services et attaques inconnues.
+
+Dataset disponible:
+
+`/mnt/c/Users/IhsenAlaya/Documents/ihsen/fhir/CSVs/CSVs`
+
+Contrainte:
+
+> un seul dataset disponible. On compense par des stress-tests intra-dataset rigoureux.
+
+---
+
+## Contribution scientifique visée
+
+Les modèles ML de détection d'intrusion réseau obtiennent souvent des scores très élevés sur des benchmarks comme CICIDS2017. Mais ces scores sont souvent produits avec des splits aléatoires, qui mélangent les mêmes jours, scénarios, services et endpoints entre train et test.
+
+FAIR-ML-CYBER propose un framework reproductible pour mesurer non seulement la performance, mais surtout la **portabilité**:
+
+- portabilité temporelle: train sur certains jours, test sur jours futurs;
+- portabilité par scénario: train sur certaines campagnes d'attaque, test sur scénario non vu;
+- portabilité par service: train sur certains ports/services, test sur autres;
+- portabilité open-set: une famille d'attaque absente du train doit être détectée comme inconnue ou incertaine;
+- portabilité des features: comparer features complètes vs features standardisées non fuitantes.
+
+Score proposé:
+
+**Cyber Transferability Score (CTS) = Metric_target / Metric_source**
+
+Exemples:
+
+- `CTS_F1 = macro_F1_target / macro_F1_source`
+- `CTS_MCC = MCC_target / MCC_source`
+- `CTS_PR_AUC = PR_AUC_target / PR_AUC_source`
+
+Un score proche de 1 indique une meilleure portabilité.
+
+---
+
+## Phase 0 - Cadrage et audit des données
+
+Durée estimée: 2-3 jours.
+
+### Objectifs
+
+- confirmer le schéma des CSV;
+- documenter les labels;
+- quantifier le déséquilibre;
+- identifier les colonnes à risque de fuite;
+- produire les premières tables pour l'article.
+
+### Tâches
+
+- [ ] Charger les 18 CSV.
+- [ ] Créer une table unifiée avec `source_file`.
+- [ ] Ajouter `binary_label`: `Benign` vs `Attack`.
+- [ ] Ajouter `attack_family`: DoS, DDoS, Web, Botnet, PortScan, BruteForce, Heartbleed, Benign.
+- [ ] Parser `timestamp`.
+- [ ] Calculer:
+  - nombre de flux par fichier;
+  - nombre de flux par label;
+  - distribution temporelle;
+  - taux de classes rares;
+  - features constantes ou quasi constantes;
+  - doublons exacts.
+- [ ] Identifier les colonnes potentiellement fuitantes:
+  - `flow_id`;
+  - `timestamp`;
+  - `src_ip`;
+  - `dst_ip`;
+  - ports si fortement corrélés aux scénarios.
+
+### Livrables
+
+- `data_audit_report.md`
+- `label_distribution.csv`
+- `feature_quality_report.csv`
+- Figure: distribution des labels.
+- Figure: timeline des scénarios.
+
+---
+
+## Phase 1 - Standardisation des features réseau
+
+Durée estimée: 3-5 jours.
+
+### Objectif
+
+Créer une représentation standardisée, comparable et moins dépendante des artefacts de capture.
+
+### Feature tiers
+
+| Tier | Nom | Description |
+|---|---|---|
+| Tier 0 | Full-leaky | Toutes les colonnes, y compris identité/contexte |
+| Tier 1 | No-identity | Sans `flow_id`, IPs, timestamp |
+| Tier 2 | Flow-basic | Durée, protocole, paquets, bytes |
+| Tier 3 | Flow-statistical | Stats payload, headers, IAT, flags TCP |
+| Tier 4 | Deployment-safe | Features non identitaires et plausibles en SOC |
+
+### Tâches
+
+- [ ] Définir les colonnes de chaque tier dans un fichier YAML.
+- [ ] Créer un hash de chaque configuration de features.
+- [ ] Implémenter extraction/filtrage par tier.
+- [ ] Vérifier les valeurs manquantes, infinies, constantes.
+- [ ] Normaliser les features pour les modèles qui le nécessitent.
+
+### Livrables
+
+- `config/features/full_leaky.yml`
+- `config/features/no_identity.yml`
+- `config/features/flow_basic.yml`
+- `config/features/flow_statistical.yml`
+- `config/features/deployment_safe.yml`
+- Table: nombre de features par tier.
+
+---
+
+## Phase 2 - Pipeline reproductible FAIR-ML-CYBER
+
+Durée estimée: 1 semaine.
+
+### Objectif
+
+Construire un pipeline exécutable de bout en bout:
+
+CSV -> audit -> features -> splits -> training -> evaluation -> MLflow -> figures.
+
+### Composants
+
+1. `prep_data`
+2. `extract_features`
+3. `make_splits`
+4. `train_model`
+5. `evaluate_model`
+6. `evaluate_transferability`
+7. `evaluate_calibration`
+8. `evaluate_explainability`
+9. `generate_figures`
+
+### Reproductibilité
+
+Chaque run doit logger:
+
+- git hash si disponible;
+- data hash;
+- feature hash;
+- split hash;
+- random seed;
+- modèle;
+- hyperparamètres;
+- métriques;
+- temps d'entraînement;
+- temps d'inférence;
+- MLflow run ID.
+
+### Livrables
+
+- `reproduce.sh`
+- `requirements.txt`
+- `README.md`
+- `mlruns/` local ou tracking MLflow configurable.
+- Script unique pour relancer toutes les expériences.
+
+---
+
+## Phase 3 - Protocoles de split et stress-tests
+
+Durée estimée: 1 semaine.
+
+### Objectif
+
+Remplacer le split aléatoire unique par une suite de tests de portabilité.
+
+### Splits
+
+#### S0 - Random stratified split
+
+Baseline classique.
+
+- Train: 70%
+- Validation: 15%
+- Test: 15%
+
+#### S1 - Temporal split
+
+Train sur le passé, test sur le futur.
+
+Exemple:
+
+- Train: 2017-07-03 à 2017-07-05
+- Validation: début 2017-07-06
+- Test: fin 2017-07-06 et 2017-07-07
+
+#### S2 - Day holdout
+
+Tester la portabilité entre jours.
+
+Exemples:
+
+- train lundi-mardi-mercredi, test jeudi;
+- train lundi-jeudi, test vendredi.
+
+#### S3 - Scenario holdout
+
+Tester une campagne absente du train.
+
+Exemples:
+
+- holdout Web attacks;
+- holdout Botnet_ARES;
+- holdout Port_Scan;
+- holdout DDoS_LOIT.
+
+#### S4 - Endpoint-pair holdout
+
+Séparer les paires réseau:
+
+`src_ip`, `dst_ip`, `dst_port`, `protocol`
+
+Les mêmes paires ne doivent pas apparaître dans train et test.
+
+#### S5 - Service/port holdout
+
+Tester la robustesse par service:
+
+- certains ports dans train;
+- ports non vus dans test.
+
+#### S6 - Open-set attack holdout
+
+Retirer une famille d'attaque du train.
+
+Le modèle doit classer:
+
+- benign;
+- known attack;
+- unknown/review.
+
+### Livrables
+
+- `splits/random.yml`
+- `splits/temporal.yml`
+- `splits/day_holdout.yml`
+- `splits/scenario_holdout.yml`
+- `splits/endpoint_holdout.yml`
+- `splits/open_set.yml`
+- Table: résumé des splits.
+
+---
+
+## Phase 4 - Modèles ML
+
+Durée estimée: 1 semaine.
+
+### Modèles supervisés
+
+- Logistic Regression;
+- Random Forest;
+- XGBoost ou LightGBM;
+- MLP simple.
+
+### Modèles open-set/anomaly
+
+- Isolation Forest;
+- One-Class SVM;
+- Autoencoder simple;
+- seuil d'incertitude sur probabilités;
+- conformal prediction si possible.
+
+### Tâches
+
+- [ ] Implémenter config YAML par modèle.
+- [ ] Fixer seed.
+- [ ] Entraîner chaque modèle sur chaque split principal.
+- [ ] Comparer classification binaire et multi-classe.
+- [ ] Mesurer temps d'entraînement et inférence.
+
+### Livrables
+
+- `config/models/logistic_regression.yml`
+- `config/models/random_forest.yml`
+- `config/models/xgboost.yml`
+- `config/models/mlp.yml`
+- `config/models/isolation_forest.yml`
+- Table: hyperparamètres.
+
+---
+
+## Phase 5 - Métriques et portabilité
+
+Durée estimée: 4-6 jours.
+
+### Métriques classiques
+
+- accuracy, secondaire seulement;
+- macro-F1;
+- weighted-F1;
+- balanced accuracy;
+- Matthews Correlation Coefficient;
+- AUROC;
+- PR-AUC;
+- confusion matrix.
+
+### Métriques classes rares
+
+- recall par classe;
+- precision par classe;
+- F1 par classe;
+- false negative rate par attaque;
+- PR-AUC par classe.
+
+### Métriques de portabilité
+
+Définir:
+
+`CTS(metric) = metric_stress_test / metric_random_split`
+
+ou:
+
+`CTS(metric) = metric_target / metric_source`
+
+Exemples:
+
+- CTS_macro_F1;
+- CTS_MCC;
+- CTS_PR_AUC.
+
+### Métriques open-set
+
+- known/unknown AUROC;
+- unknown detection recall;
+- false unknown rate;
+- coverage/risk si abstention.
+
+### Livrables
+
+- Table principale: modèles x splits x metrics.
+- Table portabilité: CTS par modèle et split.
+- Figure: chute de performance entre random split et stress-tests.
+
+---
+
+## Phase 6 - Calibration, abstention et explicabilité
+
+Durée estimée: 1 semaine.
+
+### Calibration
+
+Mesurer:
+
+- Brier score;
+- Expected Calibration Error;
+- reliability diagram.
+
+### Abstention
+
+Approches:
+
+- seuil sur probabilité max;
+- seuil sur entropie;
+- conformal prediction.
+
+Métriques:
+
+- coverage;
+- selective risk;
+- taux de cas envoyés à l'analyste;
+- recall attaque après abstention.
+
+### Explicabilité stable
+
+Méthodes:
+
+- permutation importance;
+- SHAP si coût acceptable.
+
+Mesurer:
+
+- top-k feature overlap;
+- corrélation de rang entre splits;
+- stabilité par famille d'attaque;
+- impact des features suspectes.
+
+### Livrables
+
+- Figure: reliability curves.
+- Figure: coverage-risk curve.
+- Figure: stabilité des top-k features.
+- Table: features dominantes par split.
+
+---
+
+## Phase 7 - Analyse scientifique
+
+Durée estimée: 1 semaine.
+
+### Questions à répondre
+
+1. Le split aléatoire surestime-t-il les performances?
+2. Les features standardisées réduisent-elles la dépendance aux artefacts?
+3. Quels modèles gardent le meilleur CTS?
+4. Quelles classes rares restent mal détectées?
+5. L'open-set detection est-elle possible avec ce dataset?
+6. Les explications restent-elles stables?
+7. Quel modèle est le meilleur compromis performance/coût?
+
+### Résultats attendus
+
+- performance élevée en random split;
+- baisse en temporal/scenario/endpoint holdout;
+- classes rares fragiles;
+- meilleur CTS pour certains modèles simples ou régularisés;
+- explications instables si features fuitantes incluses;
+- calibration utile pour prioriser les alertes SOC.
+
+---
+
+## Phase 8 - Rédaction de l'article
+
+Durée estimée: 2-3 semaines.
+
+### Structure recommandée
+
+1. Introduction
+2. Related Work
+3. Dataset and Audit
+4. FAIR-ML-CYBER Framework
+5. Experimental Protocol
+6. Results
+7. Discussion
+8. Threats to Validity
+9. Conclusion
+10. Reproducibility Statement
+
+### Figures
+
+| Figure | Contenu |
+|---|---|
+| Figure 1 | Architecture FAIR-ML-CYBER |
+| Figure 2 | Timeline des scénarios |
+| Figure 3 | Distribution des labels |
+| Figure 4 | Random split vs stress-tests |
+| Figure 5 | Cyber Transferability Score |
+| Figure 6 | Rare attack performance |
+| Figure 7 | Calibration / abstention |
+| Figure 8 | Explanation stability |
+
+### Tables
+
+| Table | Contenu |
+|---|---|
+| Table 1 | Dataset summary |
+| Table 2 | Feature tiers |
+| Table 3 | Split protocols |
+| Table 4 | Main results |
+| Table 5 | CTS results |
+| Table 6 | Rare-class results |
+| Table 7 | Runtime and inference cost |
+
+---
+
+## Phase 9 - Soumission
+
+Durée estimée: 1-2 semaines.
+
+### Cible principale
+
+**Computers & Security**
+
+Raison:
+
+- scope sécurité + ML;
+- accepte les contributions dataset/benchmark/evaluation;
+- plus réaliste que IEEE TIFS/TDSC avec un seul dataset.
+
+### Cible secondaire
+
+**Expert Systems with Applications**
+
+Raison:
+
+- bon fit ML appliqué;
+- possible si la partie XAI/calibration/abstention est forte.
+
+### Préprint
+
+- arXiv après stabilisation des résultats.
+
+---
+
+## Minimum viable article
+
+Si on veut avancer vite:
+
+1. Audit dataset.
+2. Feature tiers.
+3. Random split vs temporal split vs scenario holdout vs open-set.
+4. Random Forest + XGBoost + Logistic Regression.
+5. Macro-F1, MCC, PR-AUC, CTS.
+6. Calibration simple.
+7. Figures principales.
+
+---
+
+## Version forte Q1
+
+Pour maximiser les chances:
+
+1. Ajouter endpoint-pair holdout.
+2. Ajouter service/port holdout.
+3. Ajouter abstention/conformal prediction.
+4. Ajouter SHAP/permutation stability.
+5. Ajouter runtime/inference cost.
+6. Publier code + configs + seeds + splits.
+
+---
+
+## Checklist finale avant soumission
+
+- [ ] Tous les résultats viennent de runs réels.
+- [ ] Aucun score inventé.
+- [ ] Scripts reproductibles.
+- [ ] Seeds fixées.
+- [ ] Data hash loggé.
+- [ ] Feature hash loggé.
+- [ ] Split hash loggé.
+- [ ] MLflow run IDs sauvegardés.
+- [ ] Figures générées par script.
+- [ ] Limites du single-dataset clairement assumées.
+- [ ] Pas de claim "zero-day réel" sans nuance.
+
+---
+
+## Conclusion
+
+FAIR-ML-CYBER est la meilleure adaptation de FAIR-ML-ICU avec les données disponibles.
+
+Le sujet devient:
+
+> mesurer la portabilité et la fiabilité des modèles ML de détection d'intrusion à travers des stress-tests reproductibles construits à partir d'un seul dataset flow-based.
+
+Ce positionnement est plus solide qu'un simple article de classification et donne une trajectoire réaliste vers un journal Q1, surtout **Computers & Security**.

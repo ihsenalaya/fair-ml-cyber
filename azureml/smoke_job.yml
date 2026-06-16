@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: fair-ml-cyber-smoke
+experiment_name: fair-ml-cyber
+description: Smoke validation run for the FAIR-ML-CYBER pipeline on Azure ML.
+code: ..
+command: >-
+  python -m pip install -e . --no-deps &&
+  python -m fair_ml_cyber.cli run-smoke
+  --csv-dir ${{inputs.csv_dir}}
+  --work-dir ${{outputs.work_dir}}
+  --sample-per-file 2000
+  --seed 42
+inputs:
+  csv_dir:
+    type: uri_folder
+    path: azureml:fair_ml_cyber_csvs:1
+outputs:
+  work_dir:
+    type: uri_folder
+compute: azureml:cpu-cluster
+environment: azureml:fair-ml-cyber-env:1
+resources:
+  instance_count: 1

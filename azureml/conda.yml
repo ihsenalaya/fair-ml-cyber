@@ -1,0 +1,15 @@
+name: fair-ml-cyber
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - pandas==2.3.3
+      - numpy==2.2.6
+      - scikit-learn==1.7.2
+      - matplotlib==3.10.9
+      - pyyaml==6.0.3
+      - joblib==1.5.3
+      - pyarrow==24.0.0
+      - mlflow==3.13.0

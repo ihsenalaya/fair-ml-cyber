@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+data/
+mlruns/
+mlartifacts/
+outputs/
+logs/
+article/build/
+infra/terraform/azure/.terraform/
+infra/terraform/azure/*.tfstate
+infra/terraform/azure/*.tfstate.backup
+infra/terraform/azure/*.tfvars
+!infra/terraform/azure/*.tfvars.example

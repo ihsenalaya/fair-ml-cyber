@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: fair-ml-cyber-env
+version: 1
+description: Reproducible Python environment for FAIR-ML-CYBER experiments.
+image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+conda_file: conda.yml
