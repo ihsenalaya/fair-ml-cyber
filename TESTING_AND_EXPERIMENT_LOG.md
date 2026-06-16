@@ -67,6 +67,9 @@ To be filled from real command outputs.
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 3.72 s wall clock | Passed: 11 tests | CPU 141%; max RSS 186,692 KB; exit status 0; adds validation that all-missing numeric columns are excluded from feature tiers after the `protocol` warning observed in the smoke run |
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 19.36 s wall clock | Failed: 1 of 12 tests | CPU 80%; max RSS 310,440 KB; exit status 1; first version of Azure ML/MLflow regression test incorrectly expected `MLFLOW_EXPERIMENT_ID` to remain absent after `mlflow.set_experiment()`, but MLflow repopulates it for the local experiment |
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 13.80 s wall clock | Passed: 12 tests | CPU 91%; max RSS 310,552 KB; exit status 0; validates that `setup_mlflow()` clears Azure-injected `MLFLOW_RUN_ID` and does not retain the original Azure `MLFLOW_EXPERIMENT_ID` |
+| 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 35.55 s wall clock | Failed: 1 of 13 tests | CPU 169%; max RSS 346,532 KB; exit status 1; first test for the configurable experiment engine found a real bug: `_log_event()` received duplicate `events_path` arguments when logging the final experiment summary |
+| 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest tests/test_experiment.py::test_run_experiment_writes_results_and_events -q` | 14.48 s wall clock | Passed: 1 targeted test | CPU 100%; max RSS 338,220 KB; exit status 0; verifies that `run_experiment()` writes results, summary and JSONL events after the `_log_event()` fix |
+| 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 18.00 s wall clock | Passed: 13 tests | CPU 114%; max RSS 347,496 KB; exit status 0; validates the configurable experiment engine, CLI parsing support, MLflow environment isolation, feature tiers, metrics, hashing and split helpers |
 
 ## Dataset Audit Runs
 
@@ -120,6 +123,8 @@ Only these can be used as scientific results if completed and verified.
 
 Current status on 2026-06-16: no full experiment has completed yet. The completed local and Azure ML runs above validate ingestion, audit, feature tiers, splitting, model training, metrics, MLflow logging and artifact download, but they remain smoke/debug evidence.
 
+Prepared next Azure ML pilot definition: `azureml/pilot_job.yml` runs `run-experiment` with `sample_per_file=10000`, 3 models, 2 feature tiers and 5 split protocols. It has not been submitted yet and must not be reported as a completed experiment.
+
 | Timestamp | Command | Duration | Rows | Models | Splits | Feature tiers | Result file |
 |---|---|---:|---:|---|---|---|---|
 
@@ -148,6 +153,7 @@ This section records problems observed during implementation and experimentation
 | 2026-06-16 | Azure ML smoke job | `smoke-runtime-002` completed successfully but uses a small sample | The job intentionally used `sample_per_file=2000` for pipeline validation, giving 31,394 sample rows rather than the full 2,438,052 rows | Downloaded and summarized artifacts; kept run in the smoke section only | Closed as validation run | Can support reproducibility/pipeline validation, but not final Q1-level empirical claims |
 | 2026-06-16 | Azure ML artifact download | `az ml job download --all` emitted large-file/AzCopy-style warnings while still exiting successfully | Artifact bundle is large because it includes models, figures, MLflow database and logs | Verified downloaded files with `find`; read `smoke_summary.json` and `smoke_results.csv` locally | Closed | Artifact paths can be cited; warning is operational, not a failed experiment |
 | 2026-06-16 | Azure CLI operations | `az ml job show` query for `smoke-runtime-002` produced no output for more than two minutes and was interrupted | Cause not diagnosed; could be CLI extension latency or transient Azure API behavior | Did not use this command as evidence; relied on streamed logs and downloaded artifacts already verified locally | Open observation | Do not cite this interrupted command as a source for job status or metrics |
+| 2026-06-16 | Experiment engine | New configurable `run_experiment()` test failed at the final summary logging step | `_log_event(events_path, "experiment_completed", **summary)` collided with the `events_path` key inside `summary` | Renamed the internal `_log_event` path parameter to `log_path`; reran targeted and full test suites successfully | Resolved | Without this fix, Azure pilot/full jobs could complete training but fail while recording final summary metadata |
 
 ## Resource Notes
 

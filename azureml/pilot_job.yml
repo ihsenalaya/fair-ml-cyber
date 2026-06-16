@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: fair-ml-cyber-pilot-10k
+experiment_name: fair-ml-cyber
+description: Larger pilot run for FAIR-ML-CYBER. This is not final paper evidence.
+code: ..
+command: >-
+  python -m pip install --upgrade pip &&
+  python -m pip install -r requirements.txt &&
+  python -m pip install -e . --no-deps &&
+  python -m fair_ml_cyber.cli run-experiment
+  --csv-dir ${{inputs.csv_dir}}
+  --work-dir ${{outputs.work_dir}}
+  --sample-per-file 10000
+  --seed 42
+  --models logistic_regression,random_forest,hist_gradient_boosting
+  --feature-tiers no_identity,deployment_safe
+  --splits random_stratified,temporal,latest_day_holdout,scenario_holdout_Web,endpoint_pair_holdout
+  --result-prefix pilot10k
+inputs:
+  csv_dir:
+    type: uri_folder
+    path: azureml:fair_ml_cyber_csvs:1
+outputs:
+  work_dir:
+    type: uri_folder
+compute: azureml:cpu-cluster
+environment: azureml:fair-ml-cyber-runtime-env:1
+resources:
+  instance_count: 1
