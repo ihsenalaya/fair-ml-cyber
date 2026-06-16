@@ -27,6 +27,14 @@ Unifier les fichiers dans une table commune:
 - `binary_label`: `Benign` vs `Attack`;
 - `attack_family`: DoS, DDoS, Web, Botnet, PortScan, BruteForce, Heartbleed, Benign.
 
+Audit vérifié au 2026-06-16:
+
+- 18 fichiers CSV;
+- 2,438,052 lignes;
+- hash dataset `f51899df9bd60758`;
+- data asset Azure ML `fair_ml_cyber_csvs:1`;
+- classes rares confirmées, notamment `Heartbleed` avec 12 lignes et `Web_SQL_Injection` avec 24 lignes.
+
 ## Preprocessing
 
 ### Colonnes à exclure par défaut
@@ -70,6 +78,18 @@ Créer des variantes:
 | Tier 4 | Full avec risque de fuite | toutes les features, uniquement pour démonstration |
 
 Le papier doit présenter Tier 4 comme un contrôle, pas comme modèle recommandé.
+
+Implémentation actuelle:
+
+- `no_identity`: toutes les colonnes numériques utilisables sauf identité/contexte direct;
+- `deployment_safe`: idem, mais sans ports source/destination;
+- les colonnes numériques entièrement manquantes sont exclues pour éviter les artefacts de preprocessing;
+- chaque tier est hashé dans les résultats via `feature_hash`.
+
+Le pilote `pilot10k-001` a produit:
+
+- `no_identity`: 117 features;
+- `deployment_safe`: 115 features.
 
 ## Protocoles de split
 
@@ -123,6 +143,16 @@ Séparer les groupes entre train et test.
 
 Utilité: empêcher la mémorisation des communications.
 
+Implémentation actuelle testée:
+
+- `random_stratified`;
+- `temporal`;
+- `day_holdout_2017-07-07`;
+- `scenario_holdout_Web`;
+- `endpoint_pair_holdout`.
+
+Ces cinq splits ont été exécutés avec succès dans `smoke-runtime-002` et `pilot10k-001`.
+
 ### P5 - Open-set attack family holdout
 
 Train:
@@ -154,11 +184,12 @@ Sortie attendue:
 
 ### Baselines
 
-- Logistic Regression;
-- Decision Tree;
-- Random Forest;
-- XGBoost ou LightGBM;
-- MLP simple.
+- Logistic Regression: implémenté et testé;
+- Random Forest: implémenté et testé;
+- HistGradientBoosting: implémenté et testé;
+- Decision Tree: non prioritaire pour le papier final sauf baseline simple;
+- XGBoost ou LightGBM: à décider après le pilote;
+- MLP simple: implémenté dans le code mais pas encore utilisé dans les runs Azure vérifiés.
 
 ### Open-set/anomaly
 
@@ -233,6 +264,17 @@ Ne jamais conclure à une bonne performance rare-class depuis l'accuracy globale
 8. Impact des feature tiers.
 9. Runtime/latency table.
 
+Analyse pilote déjà disponible:
+
+- `pilot10k-001` montre une divergence nette entre `random_stratified` et les stress-tests.
+- Macro-F1 moyenne par split, moyenne sur les deux feature tiers:
+  - `random_stratified`: HistGradientBoosting 0.9974, LogisticRegression 0.9313, RandomForest 0.9970;
+  - `endpoint_pair_holdout`: 0.9959, 0.9320, 0.9948;
+  - `temporal`: 0.1325, 0.7860, 0.1308;
+  - `day_holdout_2017-07-07`: 0.2330, 0.7034, 0.2204;
+  - `scenario_holdout_Web`: 0.6007, 0.4735, 0.4163.
+- Ces valeurs sont pilotes, sur 125,517 lignes échantillonnées, seed 42 seulement. Elles guident le protocole final mais ne doivent pas être présentées comme résultats finaux.
+
 ## Figures publication-ready
 
 - Figure 1: overview du framework expérimental.
@@ -265,12 +307,13 @@ Mesures de mitigation:
 
 Pour un premier papier solide:
 
-1. audit dataset;
-2. P0/P1/P3/P5;
-3. Random Forest + XGBoost + Logistic Regression + Isolation Forest;
-4. macro-F1, MCC, PR-AUC par classe, calibration;
-5. SHAP stability;
-6. runtime.
+1. audit dataset: fait;
+2. P0/P1/P3/P4: pilote fait, final à lancer;
+3. Logistic Regression + Random Forest + HistGradientBoosting: pilote fait;
+4. XGBoost/LightGBM et Isolation Forest: à décider/implémenter dans le protocole final;
+5. macro-F1, MCC, AUROC, PR-AUC, Brier, ECE: disponibles dans le pilote;
+6. CTS, rare-class détaillé, calibration figures, abstention, SHAP/permutation stability: à faire;
+7. runtime: partiel, déjà loggé par modèle dans le pilote.
 
 Pour viser Q1 plus confortablement:
 

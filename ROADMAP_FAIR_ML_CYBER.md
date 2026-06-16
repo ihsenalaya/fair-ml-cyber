@@ -18,6 +18,39 @@ Contrainte:
 
 ---
 
+## Etat d'avancement vérifié au 2026-06-16
+
+Travail terminé et vérifié:
+
+- package Python `fair_ml_cyber` créé;
+- dépôt GitHub privé créé et poussé: `https://github.com/ihsenalaya/fair-ml-cyber`;
+- audit local complet des 18 CSV: 2,438,052 lignes, hash `f51899df9bd60758`;
+- infrastructure Azure créée: resource group, storage, Key Vault, Log Analytics, Application Insights, Azure ML workspace et compute `cpu-cluster`;
+- data asset Azure ML `fair_ml_cyber_csvs:1` créé après upload AzCopy;
+- smoke Azure ML `smoke-runtime-002` validé: 31,394 lignes, 30/30 runs complétés;
+- moteur configurable `run-experiment` ajouté;
+- pilote Azure ML `pilot10k-001` validé: 125,517 lignes, 30/30 runs complétés, 0 échec;
+- artefacts pilote téléchargés et analysés localement;
+- bugs/dysfonctionnements documentés dans `TESTING_AND_EXPERIMENT_LOG.md`.
+
+Signal scientifique observé dans le pilote:
+
+- `random_stratified` donne des macro-F1 très élevées pour Random Forest et HistGradientBoosting;
+- `temporal`, `day_holdout_2017-07-07` et `scenario_holdout_Web` révèlent des chutes importantes;
+- Logistic Regression est moins spectaculaire en random split mais plus stable sur certains stress-tests temporels/day-holdout;
+- le sujet "benchmark accuracy vs deployment reliability" est donc renforcé par des résultats réels, mais encore pilotes.
+
+Ce qui n'est pas encore terminé:
+
+- aucun full experiment final n'a encore été validé;
+- pas encore de répétitions multi-seed;
+- pas encore de CTS final;
+- pas encore d'analyse multi-classe/rare-class complète;
+- pas encore de calibration/abstention complète;
+- pas encore de LaTeX/PDF final.
+
+---
+
 ## Contribution scientifique visée
 
 Les modèles ML de détection d'intrusion réseau obtiennent souvent des scores très élevés sur des benchmarks comme CICIDS2017. Mais ces scores sont souvent produits avec des splits aléatoires, qui mélangent les mêmes jours, scénarios, services et endpoints entre train et test.
@@ -58,24 +91,25 @@ Durée estimée: 2-3 jours.
 
 ### Tâches
 
-- [ ] Charger les 18 CSV.
-- [ ] Créer une table unifiée avec `source_file`.
-- [ ] Ajouter `binary_label`: `Benign` vs `Attack`.
-- [ ] Ajouter `attack_family`: DoS, DDoS, Web, Botnet, PortScan, BruteForce, Heartbleed, Benign.
-- [ ] Parser `timestamp`.
-- [ ] Calculer:
+- [x] Charger les 18 CSV.
+- [x] Créer une table unifiée avec `source_file`.
+- [x] Ajouter `binary_label`: `Benign` vs `Attack`.
+- [x] Ajouter `attack_family`: DoS, DDoS, Web, Botnet, PortScan, BruteForce, Heartbleed, Benign.
+- [x] Parser `timestamp`.
+- [x] Calculer:
   - nombre de flux par fichier;
   - nombre de flux par label;
   - distribution temporelle;
   - taux de classes rares;
-  - features constantes ou quasi constantes;
-  - doublons exacts.
-- [ ] Identifier les colonnes potentiellement fuitantes:
+  - schéma et colonnes requises;
+  - hash dataset.
+- [x] Identifier les colonnes potentiellement fuitantes:
   - `flow_id`;
   - `timestamp`;
   - `src_ip`;
   - `dst_ip`;
   - ports si fortement corrélés aux scénarios.
+- [ ] Mesurer systématiquement doublons exacts et quasi-constantes pour le papier final.
 
 ### Livrables
 
@@ -107,11 +141,12 @@ Créer une représentation standardisée, comparable et moins dépendante des ar
 
 ### Tâches
 
-- [ ] Définir les colonnes de chaque tier dans un fichier YAML.
-- [ ] Créer un hash de chaque configuration de features.
-- [ ] Implémenter extraction/filtrage par tier.
-- [ ] Vérifier les valeurs manquantes, infinies, constantes.
-- [ ] Normaliser les features pour les modèles qui le nécessitent.
+- [~] Définir les colonnes de chaque tier dans le code Python.
+- [x] Créer un hash de chaque configuration de features.
+- [x] Implémenter extraction/filtrage par tier.
+- [x] Vérifier et exclure les colonnes numériques entièrement manquantes.
+- [x] Normaliser les features pour les modèles qui le nécessitent via pipelines scikit-learn.
+- [ ] Externaliser les tiers dans YAML si nécessaire pour l'article/reproductibilité.
 
 ### Livrables
 
@@ -136,15 +171,15 @@ CSV -> audit -> features -> splits -> training -> evaluation -> MLflow -> figure
 
 ### Composants
 
-1. `prep_data`
-2. `extract_features`
-3. `make_splits`
-4. `train_model`
-5. `evaluate_model`
-6. `evaluate_transferability`
-7. `evaluate_calibration`
-8. `evaluate_explainability`
-9. `generate_figures`
+1. `prep_data`: partiel via `load_csvs()` et `save_prepared()`.
+2. `extract_features`: partiel via `select_feature_tier()`.
+3. `make_splits`: partiel via `splits.py`.
+4. `train_model`: fait pour les baselines actuelles via `modeling.py`.
+5. `evaluate_model`: fait pour métriques binaires principales.
+6. `evaluate_transferability`: à faire.
+7. `evaluate_calibration`: partiel via Brier/ECE; figures à faire.
+8. `evaluate_explainability`: à faire.
+9. `generate_figures`: partiel via distribution labels et macro-F1 par split.
 
 ### Reproductibilité
 
@@ -279,10 +314,11 @@ Durée estimée: 1 semaine.
 ### Tâches
 
 - [ ] Implémenter config YAML par modèle.
-- [ ] Fixer seed.
-- [ ] Entraîner chaque modèle sur chaque split principal.
+- [x] Fixer seed dans les runs actuels.
+- [x] Entraîner les baselines binaires sur splits principaux dans smoke/pilote.
+- [ ] Entraîner full-data/repeated-seed final.
 - [ ] Comparer classification binaire et multi-classe.
-- [ ] Mesurer temps d'entraînement et inférence.
+- [x] Mesurer temps d'entraînement et inférence dans les runs actuels.
 
 ### Livrables
 
@@ -501,13 +537,14 @@ Raison:
 
 Si on veut avancer vite:
 
-1. Audit dataset.
-2. Feature tiers.
-3. Random split vs temporal split vs scenario holdout vs open-set.
-4. Random Forest + XGBoost + Logistic Regression.
-5. Macro-F1, MCC, PR-AUC, CTS.
-6. Calibration simple.
-7. Figures principales.
+1. Audit dataset: fait.
+2. Feature tiers: partiel mais fonctionnel.
+3. Random split vs temporal split vs scenario holdout: pilote fait; final à lancer.
+4. Endpoint-pair holdout: pilote fait; final à confirmer.
+5. Random Forest + Logistic Regression + HistGradientBoosting: pilote fait; XGBoost/LightGBM à décider.
+6. Macro-F1, MCC, PR-AUC: fait dans pilote; CTS à ajouter.
+7. Calibration simple: métriques Brier/ECE présentes; figures à ajouter.
+8. Figures principales: partiel.
 
 ---
 

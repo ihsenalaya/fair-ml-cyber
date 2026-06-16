@@ -57,8 +57,6 @@ Python package versions observed on 2026-06-16T21:36:46+02:00:
 
 ## Unit Test Runs
 
-To be filled from real command outputs.
-
 | Timestamp | Command | Duration | Result | Notes |
 |---|---|---:|---|---|
 | 2026-06-16T21:36:46+02:00 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 3.51 s wall clock | Passed: 9 tests | CPU 146%; max RSS 188,088 KB; exit status 0; validates hashing, feature tiers, metrics and split helpers |
@@ -72,8 +70,6 @@ To be filled from real command outputs.
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 18.00 s wall clock | Passed: 13 tests | CPU 114%; max RSS 347,496 KB; exit status 0; validates the configurable experiment engine, CLI parsing support, MLflow environment isolation, feature tiers, metrics, hashing and split helpers |
 
 ## Dataset Audit Runs
-
-To be filled from real command outputs.
 
 | Timestamp | Command | Duration | Rows | Files | Data hash | Output |
 |---|---|---:|---:|---:|---|---|
@@ -93,6 +89,17 @@ Smoke runs are for pipeline validation only.
 | 2026-06-16 | Azure ML job `smoke-runtime-001` streamed with `az ml job stream` | Runtime 4:58 from StartTime to EndTime | Failed before model runs | None completed | None completed | None completed | Job ran from 2026-06-16 21:07:32 UTC to 21:12:30 UTC. The runtime environment and pip install succeeded, but user code failed at `mlflow.start_run()` because Azure ML injected `MLFLOW_RUN_ID=smoke-runtime-001` and the local SQLite MLflow store did not contain that run id. |
 | 2026-06-16 | `/usr/bin/time -v az ml job create --resource-group rg-fmlcyber-westeurope --workspace-name mlw-fair-ml-cyber --file smoke_job.yml --name smoke-runtime-002 --output json` from `azureml/` | 2:57.01 wall clock | Pending | Pending | Pending | Pending | Azure ML job `smoke-runtime-002`, initial status `Starting`, environment `fair-ml-cyber-runtime-env:1`, `azureml.git.dirty=False`, git commit `a8bc4b75e61f7f21b51afd51e6fddd6ec55bc708`; command submission CPU 16%, max RSS 220,740 KB, exit status 0. |
 | 2026-06-16 | Azure ML job `smoke-runtime-002` streamed, completed, downloaded, and summarized locally | Runtime 6:34 from 2026-06-16 21:21:07 UTC to 21:27:41 UTC | 31,394 rows sampled from 2,438,052 audited rows | `logistic_regression`, `random_forest`, `hist_gradient_boosting` | `random_stratified`, `temporal`, `day_holdout_2017-07-07`, `scenario_holdout_Web`, `endpoint_pair_holdout` | `no_identity`, `deployment_safe` | `data/azure_jobs/smoke-runtime-002/named-outputs/work_dir/results/smoke_results.csv`; `smoke_summary.json`; 30 runs; artifact summary command found 1 result file and 1 summary file; macro-F1 mean 0.585696, min 0.106431, max 0.997306; balanced accuracy mean 0.730648; AUROC mean 0.928488. Status `Completed`. Smoke-only validation; not final scientific evidence. |
+
+## Pilot Experiment Runs
+
+Pilot runs are larger than smoke tests and can guide the article design, but they are not final paper evidence unless explicitly promoted after additional validation.
+
+| Timestamp | Command | Duration | Sample size | Models | Splits | Feature tiers | Result file |
+|---|---|---:|---:|---|---|---|---|
+| 2026-06-16 | `/usr/bin/time -v az ml job create --resource-group rg-fmlcyber-westeurope --workspace-name mlw-fair-ml-cyber --file pilot_job.yml --name pilot10k-001 --output json` from `azureml/` | 3:22.49 wall clock | Pending | Pending | Pending | Pending | Azure ML job `pilot10k-001`, initial status `Starting`, environment `fair-ml-cyber-runtime-env:1`, `azureml.git.dirty=False`, git commit `6c4c9949b2c4060d485ef546c5a956c55352d14c`; command submission CPU 15%, max RSS 222,828 KB, exit status 0. |
+| 2026-06-16 | `/usr/bin/time -v az ml job stream --resource-group rg-fmlcyber-westeurope --workspace-name mlw-fair-ml-cyber --name pilot10k-001` | 12:17.98 wall clock for stream command; experiment engine events from 2026-06-16 21:54:28 UTC to 22:00:10 UTC | 125,517 rows sampled from 2,438,052 audited rows | `logistic_regression`, `random_forest`, `hist_gradient_boosting` | `random_stratified`, `temporal`, `day_holdout_2017-07-07`, `scenario_holdout_Web`, `endpoint_pair_holdout` | `no_identity`, `deployment_safe` | Job stream exit status 0; 30 runs, 30 completed, 0 failed; full dataset hash `f51899df9bd60758`; sample data hash `7ca87e5ece4acd51`; CPU 3%; max RSS 210,624 KB. Pilot-only evidence. |
+| 2026-06-16 | `/usr/bin/time -v az ml job download --resource-group rg-fmlcyber-westeurope --workspace-name mlw-fair-ml-cyber --name pilot10k-001 --download-path data/azure_jobs/pilot10k-001 --all` | 5:20.79 wall clock | 125,517 rows | 3 models | 5 splits | 2 tiers | Download exit status 0 despite repeated large-file warnings; local artifact root `data/azure_jobs/pilot10k-001`; local size about 205 MB; result file `data/azure_jobs/pilot10k-001/named-outputs/work_dir/results/pilot10k_results.csv`; summary file `pilot10k_summary.json`; event log `pilot10k_events.jsonl` with 62 lines; CPU 10%; max RSS 287,096 KB. |
+| 2026-06-16 | Local artifact summary of `data/azure_jobs/pilot10k-001/named-outputs/work_dir/results/pilot10k_results.csv` | Not timed | 125,517 rows | 3 models | 5 splits | 2 tiers | 30 rows in result CSV, all `completed`; macro-F1 mean 0.636333, std 0.336720, min 0.130500, max 0.999058; balanced accuracy mean 0.743680; AUROC mean 0.948611; AUPRC mean 0.920074; mean train time 7.011019 s; mean inference time 0.153041 s. Results summarized in `PILOT10K_RESULTS.md`. |
 
 ## Azure Infrastructure Runs
 
@@ -121,9 +128,9 @@ Smoke runs are for pipeline validation only.
 
 Only these can be used as scientific results if completed and verified.
 
-Current status on 2026-06-16: no full experiment has completed yet. The completed local and Azure ML runs above validate ingestion, audit, feature tiers, splitting, model training, metrics, MLflow logging and artifact download, but they remain smoke/debug evidence.
+Current status on 2026-06-16: no full experiment has completed yet. The completed local/Azure ML smoke runs validate the pipeline, and `pilot10k-001` provides a larger design signal, but none of these runs is final paper evidence.
 
-Prepared next Azure ML pilot definition: `azureml/pilot_job.yml` runs `run-experiment` with `sample_per_file=10000`, 3 models, 2 feature tiers and 5 split protocols. It has not been submitted yet and must not be reported as a completed experiment.
+Azure ML pilot definition `azureml/pilot_job.yml` has been submitted and completed as `pilot10k-001`. It is summarized in the pilot section and in `PILOT10K_RESULTS.md`. It remains pilot-only evidence and must not be reported as a final full experiment.
 
 | Timestamp | Command | Duration | Rows | Models | Splits | Feature tiers | Result file |
 |---|---|---:|---:|---|---|---|---|
@@ -154,6 +161,9 @@ This section records problems observed during implementation and experimentation
 | 2026-06-16 | Azure ML artifact download | `az ml job download --all` emitted large-file/AzCopy-style warnings while still exiting successfully | Artifact bundle is large because it includes models, figures, MLflow database and logs | Verified downloaded files with `find`; read `smoke_summary.json` and `smoke_results.csv` locally | Closed | Artifact paths can be cited; warning is operational, not a failed experiment |
 | 2026-06-16 | Azure CLI operations | `az ml job show` query for `smoke-runtime-002` produced no output for more than two minutes and was interrupted | Cause not diagnosed; could be CLI extension latency or transient Azure API behavior | Did not use this command as evidence; relied on streamed logs and downloaded artifacts already verified locally | Open observation | Do not cite this interrupted command as a source for job status or metrics |
 | 2026-06-16 | Experiment engine | New configurable `run_experiment()` test failed at the final summary logging step | `_log_event(events_path, "experiment_completed", **summary)` collided with the `events_path` key inside `summary` | Renamed the internal `_log_event` path parameter to `log_path`; reran targeted and full test suites successfully | Resolved | Without this fix, Azure pilot/full jobs could complete training but fail while recording final summary metadata |
+| 2026-06-16 | Azure ML pilot job | Runtime pip install emitted root-user warnings | Dependencies are installed inside the Azure ML container as root because image-only runtime environment is used to avoid the ACR image-build issue | Recorded warning; no code change applied | Accepted operational warning | Startup overhead and container context must be documented |
+| 2026-06-16 | Azure CLI operations | `az ml job show` for `pilot10k-001` timed out after 120 seconds after completion | Cause not diagnosed; same pattern as earlier `smoke-runtime-002` show query latency | Did not use this command as evidence; relied on stream exit status 0 and downloaded artifacts | Open observation | Avoid citing `az ml job show` for pilot status unless a later query succeeds |
+| 2026-06-16 | Azure ML artifact download | `pilot10k-001` artifact download emitted repeated >100 MB warnings recommending AzCopy | Artifact bundle includes 30 models, figures, MLflow database, prepared sample parquet and logs | Download still exited 0; verified local files and sizes | Closed; AzCopy may be preferable for larger future downloads | Large final runs should either avoid saving models or use AzCopy/artifact selection |
 
 ## Resource Notes
 

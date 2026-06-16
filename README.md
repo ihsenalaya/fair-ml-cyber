@@ -38,6 +38,38 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `ROADMAP_FAIR_ML_CYBER.md`: roadmap complète depuis les CSV jusqu'au papier.
 - `RESEARCH_QUESTIONS_AND_PROTOCOL.md`: questions de recherche, hypothèses et protocole expérimental détaillé.
 - `AZURE_RESOURCES.md`: ressources Azure nécessaires pour exécuter le travail de l'article.
+- `TESTING_AND_EXPERIMENT_LOG.md`: journal vérifiable des tests, runs, durées, ressources, bugs et dysfonctionnements.
+- `PILOT10K_RESULTS.md`: synthèse vérifiée du pilote Azure ML `pilot10k-001`.
+
+## Etat actuel au 2026-06-16
+
+Le projet n'est plus seulement au stade proposition. Un pipeline reproductible existe dans le package Python `fair_ml_cyber`:
+
+- audit des 18 CSV;
+- chargement et préparation des données;
+- feature tiers `no_identity` et `deployment_safe`;
+- splits `random_stratified`, `temporal`, `day_holdout`, `scenario_holdout_Web`, `endpoint_pair_holdout`;
+- entraînement `logistic_regression`, `random_forest`, `hist_gradient_boosting`;
+- métriques macro-F1, balanced accuracy, MCC, AUROC, AUPRC, Brier score, ECE;
+- logging MLflow local SQLite;
+- sorties CSV/JSON/JSONL, figures et modèles;
+- exécution Azure ML via `azureml/smoke_job.yml` et `azureml/pilot_job.yml`.
+
+Ressources Azure créées et validées:
+
+- resource group `rg-fmlcyber-westeurope`;
+- workspace Azure ML `mlw-fair-ml-cyber`;
+- storage `stfmlcybercg9ypy`;
+- compute `cpu-cluster`, `Standard_DS3_v2`, min 0, max 2;
+- data asset Azure ML `fair_ml_cyber_csvs:1`.
+
+Runs vérifiés:
+
+- audit local complet: 2,438,052 lignes, 18 fichiers, hash `f51899df9bd60758`;
+- smoke Azure ML `smoke-runtime-002`: 31,394 lignes échantillonnées, 30/30 runs complétés;
+- pilote Azure ML `pilot10k-001`: 125,517 lignes échantillonnées, 30/30 runs complétés, artefacts téléchargés localement.
+
+Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, pas encore la preuve finale de l'article.
 
 ## Positionnement Q1
 
@@ -50,3 +82,13 @@ Cibles plus ambitieuses ou alternatives:
 - **Expert Systems with Applications**
 
 Important: un papier basé uniquement sur un modèle ML classique et CICIDS2017 sera probablement trop faible pour du Q1. La valeur doit venir de la rigueur expérimentale, de l'analyse des biais du benchmark et du protocole réutilisable.
+
+## Prochaine étape
+
+La prochaine étape scientifique est de transformer le pilote en protocole final:
+
+- décider quelles expériences doivent être full-data et lesquelles doivent être répétées par seed;
+- éviter de sauvegarder tous les modèles si les artefacts deviennent trop lourds;
+- ajouter les métriques de portabilité CTS;
+- ajouter les analyses rare-class, calibration, abstention et éventuellement explainability;
+- produire ensuite l'article LaTeX/PDF uniquement à partir des résultats vérifiés.

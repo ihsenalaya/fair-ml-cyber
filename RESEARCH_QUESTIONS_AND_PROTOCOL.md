@@ -621,6 +621,34 @@ Le papier est solide si on obtient:
 
 ---
 
+## Etat empirique actuel
+
+Au 2026-06-16, deux runs Azure ML sont validés:
+
+| Run | Type | Lignes | Combinaisons | Statut |
+|---|---|---:|---:|---|
+| `smoke-runtime-002` | Smoke validation | 31,394 | 30 | 30 completed, 0 failed |
+| `pilot10k-001` | Pilot experiment | 125,517 | 30 | 30 completed, 0 failed |
+
+Le run `pilot10k-001` donne un premier support empirique pour RQ1 et RQ2:
+
+- les scores random split sont très élevés;
+- les stress-tests `temporal`, `day_holdout_2017-07-07` et `scenario_holdout_Web` réduisent fortement la macro-F1 pour plusieurs modèles;
+- Logistic Regression semble moins performante que les ensembles en random split, mais plus stable sur certains stress-tests;
+- les différences entre `no_identity` et `deployment_safe` sont modestes dans ce pilote, mais doivent être vérifiées avec les runs finaux.
+
+Ces résultats restent pilotes:
+
+- sample `sample_per_file=10000`, soit 125,517 lignes;
+- seed unique 42;
+- classification binaire uniquement;
+- pas encore de CTS final;
+- pas encore de rare-class/open-set/calibration figures/explainability.
+
+Ils justifient de continuer vers un protocole final plus lourd, mais ne doivent pas être présentés comme résultats définitifs.
+
+---
+
 ## Menaces a la validite
 
 ### Validite interne

@@ -23,6 +23,10 @@ Un groupe de ressources dédié:
 
 `rg-fair-ml-cyber-dev`
 
+Ressource réellement créée au 2026-06-16:
+
+`rg-fmlcyber-westeurope`
+
 Rôle:
 
 - isoler toutes les ressources du projet;
@@ -62,6 +66,20 @@ Containers proposés:
 
 Pour ce projet, Blob Storage standard suffit. ADLS Gen2 peut être activé si on veut une structure plus data lake, mais ce n'est pas indispensable.
 
+Ressource réellement créée:
+
+`stfmlcybercg9ypy`
+
+Le dataset brut a été uploadé dans le datastore Azure ML `workspaceblobstore` avec AzCopy, puis enregistré comme data asset:
+
+`fair_ml_cyber_csvs:1`
+
+Volume vérifié:
+
+- 18 blobs;
+- 1,952,390,012 bytes;
+- 0 transfert échoué dans AzCopy.
+
 ---
 
 ### 3. Azure Machine Learning Workspace
@@ -78,6 +96,18 @@ Rôle:
 - conserver les logs et artefacts.
 
 Azure ML Workspace est la ressource principale du projet. Microsoft décrit le workspace comme le point central pour suivre assets, ressources, logs et artefacts des workflows ML.
+
+Workspace réellement créé:
+
+`mlw-fair-ml-cyber`
+
+Resource group:
+
+`rg-fmlcyber-westeurope`
+
+Région:
+
+`westeurope`
 
 ---
 
@@ -134,6 +164,28 @@ Utilisation:
 - SHAP/permutation importance;
 - génération des figures.
 
+Compute réellement créé:
+
+`cpu-cluster`
+
+Configuration:
+
+- VM size: `Standard_DS3_v2`;
+- min instances: 0;
+- max instances: 2;
+- idle scale-down: 120 s;
+- provisioning state vérifié: `Succeeded`.
+
+Cette taille a suffi pour:
+
+- smoke Azure ML `smoke-runtime-002`: 31,394 lignes, 30 runs;
+- pilote Azure ML `pilot10k-001`: 125,517 lignes, 30 runs.
+
+Pour les full experiments, il faudra décider entre:
+
+- garder `Standard_DS3_v2` et lancer des jobs plus longs;
+- monter temporairement en `D4ds_v5`, `D8ds_v5` ou équivalent si Random Forest/full-data devient trop lent ou trop mémoire.
+
 ---
 
 ### 6. Azure ML Compute Instance
@@ -162,6 +214,10 @@ Rôle:
 - éviter de mettre des credentials dans le code.
 
 Azure ML Workspace est généralement associé à Key Vault.
+
+Key Vault réellement créé:
+
+`kv-fmlcyber-cg9ypy`
 
 ---
 
@@ -194,6 +250,19 @@ Rôle:
 
 Si on utilise seulement des environnements Azure ML standards ou un conda environment simple, on peut différer ACR. Si l'article insiste sur reproductibilité, une image Docker versionnée est préférable.
 
+Observation réelle:
+
+- l'environnement Azure ML avec conda a déclenché un chemin de build image/ACR qui a échoué avec l'erreur `Disabling public network access is not supported for the SKU Basic`;
+- une tentative Terraform d'ajouter un ACR Premium lié au workspace aurait forcé le remplacement du workspace Azure ML existant;
+- cette modification destructive a été rejetée;
+- contournement validé: environnement image-only `fair-ml-cyber-runtime-env:1` + installation pip au runtime.
+
+Impact:
+
+- le contournement fonctionne;
+- il ajoute du temps de démarrage et des warnings pip root-user;
+- pour un papier final, une image Docker versionnée ou un ACR propre devra être reconsidéré après sauvegarde des assets, sans remplacement destructif du workspace.
+
 ---
 
 ### 10. Application Insights / Log Analytics
@@ -207,6 +276,11 @@ Rôle:
 - diagnostic.
 
 Pour un article scientifique, les logs Azure ML + MLflow suffisent souvent. Application Insights/Log Analytics devient utile si on veut une observation plus cloud/ops.
+
+Ressources réellement créées:
+
+- Log Analytics workspace `law-fmlcyber-cg9ypy`;
+- Application Insights `appi-fmlcyber-cg9ypy`.
 
 ---
 
@@ -240,18 +314,16 @@ Pour cet article, ne pas créer au départ:
 
 ## Pipeline Azure proposé
 
-1. Upload CSV vers Storage `raw/`.
-2. Job Azure ML `audit_data`.
-3. Job `prep_data`: nettoyage + conversion parquet.
-4. Job `extract_features`: tiers de features.
-5. Job `make_splits`: random, temporal, day, scenario, endpoint, open-set.
-6. Job `train_model`: modèles ML.
-7. Job `evaluate_model`: macro-F1, MCC, PR-AUC, AUROC.
-8. Job `evaluate_transferability`: Cyber Transferability Score.
-9. Job `evaluate_calibration`: Brier, ECE, reliability curves.
-10. Job `evaluate_explainability`: SHAP/permutation stability.
-11. Job `generate_figures`: figures article.
-12. MLflow log toutes les métriques et artefacts.
+1. Upload CSV vers Storage: fait avec AzCopy.
+2. Création data asset Azure ML `fair_ml_cyber_csvs:1`: fait.
+3. Job Azure ML smoke `smoke-runtime-002`: fait, 30/30 runs complétés.
+4. Job Azure ML pilote `pilot10k-001`: fait, 30/30 runs complétés.
+5. Full experiment final: à faire.
+6. `evaluate_transferability`: Cyber Transferability Score à ajouter.
+7. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
+8. `evaluate_explainability`: SHAP/permutation stability à ajouter.
+9. `generate_figures`: partiel; figures article à produire après résultats finaux.
+10. MLflow/logs: fonctionnel via SQLite local dans le work dir Azure, artefacts téléchargés.
 
 ---
 
@@ -274,21 +346,35 @@ Pour cet article, ne pas créer au départ:
 
 ## Recommandation finale
 
-Pour commencer sérieusement sans surcoût:
+Etat actuel:
 
-1. Resource Group.
-2. Storage Account.
-3. Azure ML Workspace.
-4. CPU Compute Cluster autoscale 0-2.
-5. Key Vault.
-6. Managed Identity.
-7. Budget alert.
+1. Resource Group: créé.
+2. Storage Account: créé.
+3. Azure ML Workspace: créé.
+4. CPU Compute Cluster autoscale 0-2: créé.
+5. Key Vault: créé.
+6. Log Analytics / App Insights: créés.
+7. Budget alert: à vérifier/configurer côté portail Azure si non existant.
 
 Ajouter plus tard:
 
-- Azure Container Registry pour Docker reproductible;
+- Azure Container Registry ou image Docker versionnée, mais sans remplacement destructif du workspace existant;
 - Compute Instance si le développement local devient pénible;
-- Log Analytics si besoin de monitoring avancé.
+- rôle Storage Blob Data Contributor/Reader pour éviter le workaround account-key lors des vérifications blob.
+
+## Runs Azure ML validés
+
+| Job | Type | Données | Runs | Résultat | Notes |
+|---|---|---:|---:|---|---|
+| `smoke-runtime-002` | Smoke validation | 31,394 lignes | 30 | Completed | Valide pipeline Azure complet |
+| `pilot10k-001` | Pilot experiment | 125,517 lignes | 30 | Completed | Signal scientifique fort mais non final |
+
+Artefacts locaux:
+
+- `data/azure_jobs/smoke-runtime-002`;
+- `data/azure_jobs/pilot10k-001`.
+
+Ces dossiers sont ignorés par Git car ils contiennent des artefacts volumineux. Les faits reproductibles sont consignés dans `TESTING_AND_EXPERIMENT_LOG.md` et `PILOT10K_RESULTS.md`.
 
 ---
 
