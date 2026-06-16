@@ -13,5 +13,7 @@ article/build/
 infra/terraform/azure/.terraform/
 infra/terraform/azure/*.tfstate
 infra/terraform/azure/*.tfstate.backup
+infra/terraform/azure/*.tfplan
+infra/terraform/azure/tfplan
 infra/terraform/azure/*.tfvars
 !infra/terraform/azure/*.tfvars.example

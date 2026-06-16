@@ -5,6 +5,8 @@ experiment_name: fair-ml-cyber
 description: Smoke validation run for the FAIR-ML-CYBER pipeline on Azure ML.
 code: ..
 command: >-
+  python -m pip install --upgrade pip &&
+  python -m pip install -r requirements.txt &&
   python -m pip install -e . --no-deps &&
   python -m fair_ml_cyber.cli run-smoke
   --csv-dir ${{inputs.csv_dir}}
@@ -19,6 +21,6 @@ outputs:
   work_dir:
     type: uri_folder
 compute: azureml:cpu-cluster
-environment: azureml:fair-ml-cyber-env:1
+environment: azureml:fair-ml-cyber-runtime-env:1
 resources:
   instance_count: 1

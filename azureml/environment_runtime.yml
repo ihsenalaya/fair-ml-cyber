@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: fair-ml-cyber-runtime-env
+version: 1
+description: Image-only runtime environment; Python dependencies are installed by the job command to avoid Azure ML image build failures on Basic ACR.
+image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
