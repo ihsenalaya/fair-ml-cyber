@@ -1,0 +1,45 @@
+{
+  "audit": {
+    "num_files": 18,
+    "total_rows": 2438052,
+    "data_hash": "f51899df9bd60758"
+  },
+  "sample_rows": 2438052,
+  "seed": 7,
+  "models": [
+    "logistic_regression",
+    "hist_gradient_boosting"
+  ],
+  "feature_tiers": [
+    "deployment_safe"
+  ],
+  "split_protocols": [
+    "random_stratified",
+    "temporal",
+    "latest_day_holdout",
+    "scenario_holdout_Web",
+    "endpoint_pair_holdout"
+  ],
+  "unknown_families": [
+    "Web",
+    "Botnet",
+    "PortScan",
+    "DDoS"
+  ],
+  "skipped_splits": [],
+  "outputs": {
+    "binary_results": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_binary_results.csv",
+    "calibration_bins": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_calibration_bins.csv",
+    "abstention_curves": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_abstention_curves.csv",
+    "multiclass_results": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_multiclass_results.csv",
+    "per_class_results": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_per_class_results.csv",
+    "rare_class_results": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_rare_class_results.csv",
+    "open_set_results": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_open_set_results.csv",
+    "feature_importance": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_feature_importance.csv",
+    "explanation_stability": "/mnt/azureml/cr/j/76a733330c2e4895be3f95a5416ff65f/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s7_explanation_stability.csv"
+  },
+  "binary_runs": 10,
+  "multiclass_runs": 10,
+  "open_set_runs": 8,
+  "created_at_utc": "2026-06-17T12:59:36Z"
+}

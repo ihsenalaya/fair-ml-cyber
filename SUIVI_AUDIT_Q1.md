@@ -1,10 +1,10 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #9)
+**Dernier check** : 2026-06-17 (check #12)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
-**Statut global** : 🟠 Proche soumission — 12/15 résolus. C2/C3 bloqués Azure ML. A5 partiel: GitHub Release faite, DOI Zenodo absent.
+**Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
 
 ---
 
@@ -39,18 +39,19 @@
 
 ---
 
-### C2 — Analyses avancées sur seed 42 uniquement
-- **Priorité** : 🔴 CRITIQUE
-- **Statut** : ⏳ Partiel — s42 ✅ + s99 ✅ résultats confirmés, **s7 Running Azure ML**
-- **Vérification check #6** : `evidence/advanced-core-s99-001/` apparu.
-- **Vérification check #7** : `ADVANCED_CORE_MULTI_SEED_STATUS.md` confirme résultats s99 :
-  - Multiclass HGB s99 : random 0.7196 → temporal 0.0414 (cohérent avec s42 : 0.7479 → 0.0415)
-  - XAI Jaccard HGB temporal s99 : 0.1111 (s42 : 0.0714) — instabilité confirmée cross-seed
-  - Job `advanced-core-s7-001` : **Running** sur Azure ML
-  - Jobs en queue : `open-set-if-s7`, `calibration-s42/s7/s99`, `fullcore-lr2000-nohour-s42/s7/s99`
-- **Problème restant** : s7 manquant — artefacts attendus dès fin du job Azure.
-- **Action restante** : Attendre complétion `advanced-core-s7-001`. Télécharger. Mettre à jour tables.
-- **Effort estimé** : Job en cours — ~30 min post-traitement à réception
+### C2 — Analyses avancées trois seeds
+- **Priorité** : 🔴 → ✅ RÉSOLU
+- **Statut** : ✅ s42 + s7 + s99 tous présents avec artefacts complets
+- **Vérification check #10** : `evidence/advanced-core-s7-001/` apparu avec 12 fichiers :
+  - binary_results, multiclass_results, per_class_results, rare_class_results
+  - open_set_results, calibration_bins, abstention_curves
+  - feature_importance, explanation_stability, events.jsonl, summary.json, audit_summary.json
+  - Seed : 7 | Hash données : `f51899df9bd60758` (cohérent) | 10 binary + 10 multiclass + 8 open-set runs
+- **Résultats s7 confirmés cohérents cross-seed** :
+  - HGB binary : random 0.9960 → temporal 0.2300 (s42: 0.2296, s99: 0.2297) ✅
+  - LR binary : random 0.9345 → temporal 0.5395 (s42: 0.5395, s99: 0.5395) ✅
+  - XAI Jaccard HGB temporal s7 : **0.20** (s42: 0.07, s99: 0.11) — instabilité HGB confirmée 3 seeds ✅
+  - XAI Jaccard LR temporal s7 : **0.5789** (s42: 0.5789, s99: 0.7647) — stabilité LR confirmée 3 seeds ✅
 
 ---
 
@@ -153,13 +154,14 @@
 
 ---
 
-### A5 — Artifacts publics + DOI GitHub
+### A5 — Artifacts publics + DOI Zenodo
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⏳ Partiel — tag git `v1.0.0` + GitHub Release créés, DOI Zenodo absent
+- **Statut** : ⏳ Partiel — tag git `v1.0.0` + GitHub Release créés, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
-- **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis l'ajouter dans `paper/main.tex` (Data Availability).
+- **Vérification check #12** : `paper/main.tex` cite la GitHub Release `v1.0.0` et indique que le DOI Zenodo n'est pas encore émis.
+- **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
 
@@ -193,7 +195,7 @@
 | Point | Priorité | Statut | Résolu check #1 |
 |---|---|---|---|
 | C1 — Second dataset | 🔴 | ✅ Résolu minimal Q1 | **OUI** (check #7) |
-| C2 — Advanced seeds 7&99 | 🔴 | ⏳ s42+s99 présents, s7 running | Non |
+| C2 — Advanced seeds 7&99 | 🔴 | ✅ Résolu | **OUI** (check #10) |
 | C3 — LR convergence s7/s99 | 🔴 | ⏳ Jobs en queue | Non |
 | C4 — Discussion/Conclusion | 🔴 | ✅ Résolu | **OUI** |
 | I1 — Calibration post-hoc | 🟠 | ✅ Résolu | **OUI** |
@@ -205,19 +207,19 @@
 | A2 — Heatmap | 🟡 | ✅ Résolu | **OUI** |
 | A3 — Tableau SOC | 🟡 | ✅ Résolu | **OUI** |
 | A4 — Choix modèles | 🟡 | ✅ Résolu | **OUI** |
-| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, DOI manquant | Non |
+| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, DOI pending mentionné, DOI final manquant | Non |
 | A6 — Effect sizes | 🟡 | ⏳ Délibéré | **OUI** |
 
-**Résolus** : C1, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **12 points fermés**
-**Bloquants restants** : C2, C3 (2 critiques — dépendent Azure ML)
-**Partiels mineurs** : A5 (release GitHub faite, DOI Zenodo absent)
+**Résolus** : C1, C2, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **13 points fermés**
+**Bloquant restant** : C3 (1 critique — dépend Azure ML)
+**Partiels mineurs** : A5 (release GitHub faite, DOI Zenodo absent, mention pending dans le manuscrit)
 
 ---
 
 ## ROADMAP MISE À JOUR
 
 ### Urgences immédiates (dès que jobs Azure terminés)
-- [ ] **C2** : Télécharger artefacts advanced-core-s7 → compléter tables avancées 3 seeds
+- [x] **C2** : Télécharger artefacts advanced-core-s7 → compléter tables avancées 3 seeds
 - [ ] **C3** : Télécharger artefacts fullcore-lr2000-nohour-s7 & s99 → mettre à jour tables LR multi-seed
 
 ### Court terme (1–2 semaines)
@@ -231,18 +233,18 @@
 - [x] **A2** : Créer heatmap F1 per-class × split protocol
 - [x] **A3** : Ajouter tableau Practical Guidance (SOC)
 - [x] **A4** : 1–2 phrases justifiant absence DNN
-- [~] **A5** : Release GitHub faite (`v1.0.0`), DOI Zenodo à générer
+- [~] **A5** : Release GitHub faite (`v1.0.0`), DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
 - [ ] Révision interne complète + soumission
 
 ---
 
 ## ÉVALUATION DE VIABILITÉ Q1
 
-| Journal | Probabilité actuelle | Après C2+C3 résolus |
+| Journal | Probabilité actuelle | Après C3 résolu |
 |---|---|---|
-| Computers & Security (Q1, Elsevier) | ~55–60% | ~70% |
-| Expert Systems with Applications (Q1) | ~35% | ~50% |
-| IEEE TIFS (Q1) | ~20% | ~40% |
+| Computers & Security (Q1, Elsevier) | ~60–65% | ~70% |
+| Expert Systems with Applications (Q1) | ~40% | ~50% |
+| IEEE TIFS (Q1) | ~25% | ~40% |
 | IEEE TDSC (Q1) | ~10–15% | ~20% (sauf ajout algo) |
 
 ---
@@ -273,6 +275,9 @@
 | Check #7 | 2026-06-17 | +1 (C1 ✅ via CSE-CIC full-sample 10 CSV/363K rows + UNSW access documenté) — 11 total | 4 |
 | Check #8 | 2026-06-17 | +1 (I4 ✅ — limitation XAI documentée dans main.tex lignes 353/410) — 12 total | 3 |
 | Check #9 | 2026-06-17 | A5 avance : tag v1.0.0 créé. C2/C3 toujours en attente Azure ML. 12/15 résolus | 3 |
+| Check #10 | 2026-06-17 | **C2 ✅** — advanced-core-s7-001 arrivé, 3 seeds confirmés cohérents. 13/15 résolus | 2 |
+| Check #11 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure, A5 DOI toujours absent. 13/15 résolus | 2 |
+| Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié dans `paper/main.tex` avec release `v1.0.0` et DOI Zenodo pending. C3 toujours en queue. 13/15 résolus | 2 |
 
 ---
 

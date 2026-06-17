@@ -60,6 +60,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
 - `evidence/q1-stats-fullcore-multiseed-001/`: snapshot statistique bootstrap 95%, tests appariés random-vs-stress et variance inter-seed.
 - `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
+- `evidence/advanced-core-s7-001/`: snapshot textuel suivi par Git du run avancé seed 7.
 - `evidence/advanced-core-s99-001/`: snapshot textuel suivi par Git du run avancé seed 99.
 - `evidence/cse-cic-ids2018-partial-s42-001/`: snapshot textuel suivi par Git de la validation externe partielle CSE-CIC-IDS2018.
 - `evidence/cse-cic-ids2018-full-sample-s42-001/`: snapshot textuel suivi par Git de la validation externe CSE-CIC-IDS2018 sur les 10 CSV publics audités.
@@ -100,6 +101,7 @@ Runs vérifiés:
 - répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 - rerun LR convergence `fullcore-lr2000-s42-001`: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence.
 - run avancé `advanced-core-s42-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
+- run avancé `advanced-core-s7-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
 - run avancé `advanced-core-s99-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
 - baselines open-set Isolation Forest full-data: seeds 42 et 99 téléchargés; seed 7 encore en queue Azure.
 - validation externe CSE-CIC-IDS2018: 10 CSV publics téléchargés depuis la source UNB/AWS, 16,232,943 lignes auditées, hash `96cd4ce8a085248a`, échantillon stratifié réel de 363,648 lignes, 12/12 runs binaires full-sample; calibration et open-set externes disponibles sur le sous-échantillon 200,928/50k.
@@ -116,7 +118,7 @@ Signal full-data vérifié:
 - macro-F1 scenario Web moyen: HistGradientBoosting 0.5653, LogisticRegression 0.4836;
 - macro-F1 endpoint-pair holdout moyen: HistGradientBoosting 0.9955, LogisticRegression 0.8859.
 
-Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Les runs avancés seeds 42 et 99 ajoutent le signal rare-class/multi-class/open-set/calibration/abstention/stabilité: la performance binaire random est élevée, mais la macro-F1 multi-class tombe autour de 0.041 en temporal, les rare classes Web ont F1 0.0 en Web holdout, et la calibration se dégrade fortement sur temporal/day-holdout.
+Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Les runs avancés seeds 42, 7 et 99 ajoutent le signal rare-class/multi-class/open-set/calibration/abstention/stabilité: la performance binaire random est élevée, mais la macro-F1 multi-class HGB tombe en moyenne à 0.0441 en temporal, les rare classes Web ont F1 0.0 en Web holdout, et la calibration se dégrade fortement sur temporal/day-holdout.
 
 ## Positionnement Q1
 

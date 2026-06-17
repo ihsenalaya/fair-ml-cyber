@@ -30,7 +30,7 @@ Ihsen Alaya\\
 \maketitle
 
 \begin{abstract}
-Machine-learning-based network intrusion detection systems often report near-perfect performance on benchmark datasets such as CICIDS2017. Such results are frequently obtained under random train/test splits and insufficient controls for temporal, scenario, endpoint, rare-class, open-set and calibration effects. This paper presents FAIR-ML-CYBER, a reproducible stress-test framework for flow-based network intrusion detection. Using 2,438,052 CICIDS2017-like flows from 18 CSV files, we compare random stratified evaluation with temporal, latest-day, scenario and endpoint-pair holdouts. We further evaluate multiclass labels, rare attacks, unknown-family holdouts, calibration, abstention and explanation stability. Full-data binary experiments over three seeds show that random stratified evaluation is substantially more optimistic than deployment-oriented stress tests. HistGradientBoosting reaches a mean macro-F1 of 0.9977 under random stratification but drops to 0.2315 under temporal holdout, while LogisticRegression drops from 0.9357 to 0.5401. Advanced seed-42 and seed-99 analyses show severe multiclass degradation, rare-class failure under Web holdout, unstable open-set behavior and large calibration errors under temporal and latest-day shifts. External validation on real CSE-CIC-IDS2018 CICFlowMeter CSVs shows the same random-vs-stress concern: on a 363,648-row stratified sample from all 10 processed CSV files, HistGradientBoosting drops from 0.9362 random macro-F1 to 0.1037 under temporal holdout, and RandomForest drops from 0.9195 to 0.1050. The results support a benchmark-validity contribution: high random-split scores do not imply deployment reliability. The study provides a tracked protocol, evidence artifacts and operational lessons for more rigorous NIDS evaluation.
+Machine-learning-based network intrusion detection systems often report near-perfect performance on benchmark datasets such as CICIDS2017. Such results are frequently obtained under random train/test splits and insufficient controls for temporal, scenario, endpoint, rare-class, open-set and calibration effects. This paper presents FAIR-ML-CYBER, a reproducible stress-test framework for flow-based network intrusion detection. Using 2,438,052 CICIDS2017-like flows from 18 CSV files, we compare random stratified evaluation with temporal, latest-day, scenario and endpoint-pair holdouts. We further evaluate multiclass labels, rare attacks, unknown-family holdouts, calibration, abstention and explanation stability. Full-data binary experiments over three seeds show that random stratified evaluation is substantially more optimistic than deployment-oriented stress tests. HistGradientBoosting reaches a mean macro-F1 of 0.9977 under random stratification but drops to 0.2315 under temporal holdout, while LogisticRegression drops from 0.9357 to 0.5401. Three-seed advanced analyses show severe multiclass degradation, rare-class failure under Web holdout, unstable open-set behavior and large calibration errors under temporal and latest-day shifts. External validation on real CSE-CIC-IDS2018 CICFlowMeter CSVs shows the same random-vs-stress concern: on a 363,648-row stratified sample from all 10 processed CSV files, HistGradientBoosting drops from 0.9362 random macro-F1 to 0.1037 under temporal holdout, and RandomForest drops from 0.9195 to 0.1050. The results support a benchmark-validity contribution: high random-split scores do not imply deployment reliability. The study provides a tracked protocol, evidence artifacts and operational lessons for more rigorous NIDS evaluation.
 \end{abstract}
 
 \textbf{Keywords:} network intrusion detection; CICIDS2017; dataset bias; temporal validation; open-set recognition; calibration; explainability; reproducibility.
@@ -48,7 +48,7 @@ The manuscript makes four practical contributions:
 \begin{enumerate}[leftmargin=*]
   \item A reproducible evaluation framework for full-data flow-based NIDS experiments with dataset hashes, feature hashes, split hashes, Azure ML job provenance and tracked evidence artifacts.
   \item A multi-seed binary stress-test analysis showing that random stratified performance can severely overstate deployment reliability.
-  \item Seed-42 and seed-99 advanced analyses covering multiclass labels, rare classes, unknown attack families, calibration, abstention and explanation stability.
+  \item Three-seed advanced analyses covering multiclass labels, rare classes, unknown attack families, calibration, abstention and explanation stability.
   \item An external validation on CSE-CIC-IDS2018, including binary stress tests, post-hoc calibration and anomaly-based open-set baselines.
   \item A critical discussion of why these results should be interpreted as benchmark-validity evidence, not as a claim of universal intrusion-detection superiority.
 \end{enumerate}
@@ -216,6 +216,8 @@ LR & Endpoint-pair & -0.0537 [-0.0632, -0.0443] & 0.9426 [0.9325, 0.9527] & 0.03
 \subsection{Binary calibration under stress}
 
 The seed-42 advanced run provides binary calibration metrics for the \texttt{deployment\_safe} tier. Table~\ref{tab:binary-calibration} shows macro-F1 and ECE. The hardest shifts are not only lower-performing; they are poorly calibrated.
+
+The advanced protocol has also been repeated on seeds 7 and 99. Across seeds 42, 7 and 99, HGB multiclass macro-F1 remains high under random stratification (mean 0.7236) but collapses under temporal holdout (mean 0.0441), latest-day holdout (mean 0.0521) and Web holdout (mean 0.0744). LR shows the same qualitative multiclass failure pattern, with random mean macro-F1 0.4499 and temporal mean macro-F1 0.0453.
 
 \begin{table}[ht]
 \centering
@@ -401,7 +403,7 @@ The main evidence still comes from one CICIDS2017-like dataset. The CSE-CIC-IDS2
 The study uses macro-F1, CTS, calibration error, selective prediction and explanation overlap as deployment-reliability proxies. These metrics capture important failure modes but do not fully encode SOC cost, alert fatigue, incident criticality or analyst workflow. The practical guidance should therefore be interpreted as evaluation guidance, not as a deployment certification.
 
 \paragraph{Conclusion validity.}
-The binary core is validated on seeds 42, 7 and 99, and the paired random-vs-stress statistics use the six available seed-by-feature-tier units. The advanced analyses are currently available for seeds 42 and 99, with seed 7 still running at the time of this draft. Final claims about rare-class, open-set, calibration and explanation stability should be repeated on all three seeds if compute budget allows. LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}; corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft.
+The binary core is validated on seeds 42, 7 and 99, and the paired random-vs-stress statistics use the six available seed-by-feature-tier units. The advanced analyses are also available for seeds 42, 7 and 99, but HGB explanation stability still uses lightweight permutation importance and should not be over-claimed as a high-precision XAI estimate. LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}; corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft.
 
 \paragraph{Open-set baseline strength.}
 The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, and separate full-data Isolation Forest jobs are completed for seeds 42 and 99. These are still baseline anomaly detectors, and seed 7 remains queued. A final version should compare additional open-set or anomaly approaches if scope permits.
@@ -425,12 +427,17 @@ The repository records Azure ML job names, Git commits, dataset hashes, feature 
   \item \texttt{evidence/fullcore-lr2000-s42-001/}
   \item \texttt{evidence/q1-stats-fullcore-multiseed-001/}
   \item \texttt{evidence/advanced-core-s42-001/}
+  \item \texttt{evidence/advanced-core-s7-001/}
   \item \texttt{evidence/advanced-core-s99-001/}
   \item \texttt{evidence/cse-cic-ids2018-partial-s42-001/}
   \item \texttt{evidence/cse-cic-ids2018-full-sample-s42-001/}
   \item \texttt{evidence/open-set-if-s42-001/}
   \item \texttt{evidence/open-set-if-s99-001/}
 \end{itemize}
+
+The code-and-evidence release for this draft is tagged as \texttt{v1.0.0} on GitHub:
+\url{https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0}.
+The Zenodo DOI has not yet been minted in this draft; the final DOI must be inserted here once Zenodo archiving is completed.
 
 \bibliographystyle{plain}
 \bibliography{../references}
