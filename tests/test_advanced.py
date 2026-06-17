@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from fair_ml_cyber.advanced import run_advanced_analysis
+from fair_ml_cyber.calibration import run_calibration_baselines
 from fair_ml_cyber.open_set import run_open_set_baselines
 
 
@@ -100,3 +101,42 @@ def test_run_open_set_baselines_writes_results(tmp_path):
     results = pd.read_csv(summary["results_path"])
     assert results.loc[0, "score_name"] == "anomaly_score"
     assert "unknown_auroc_score" in results.columns
+
+
+def test_run_calibration_baselines_writes_calibrated_rows(tmp_path):
+    csv_dir = tmp_path / "csvs"
+    csv_dir.mkdir()
+    rows = []
+    for i in range(120):
+        label = "Benign" if i % 2 == 0 else "DoS_Hulk"
+        rows.append(
+            {
+                "flow_id": f"f{i}",
+                "timestamp": f"2017-07-{1 + (i // 40):02d} 00:00:{i % 60:02d}",
+                "src_ip": f"10.0.0.{i % 5}",
+                "src_port": 1000 + i,
+                "dst_ip": f"10.0.1.{i % 3}",
+                "dst_port": 80 + (i % 2),
+                "protocol": 6,
+                "duration": float(i + 1),
+                "packets_count": i + 2,
+                "payload_bytes_mean": float(i % 7),
+                "label": label,
+            }
+        )
+    pd.DataFrame(rows[:60]).to_csv(csv_dir / "part1.csv", index=False)
+    pd.DataFrame(rows[60:]).to_csv(csv_dir / "part2.csv", index=False)
+
+    summary = run_calibration_baselines(
+        csv_dir,
+        tmp_path / "work",
+        seed=5,
+        models=["logistic_regression"],
+        feature_tiers=["deployment_safe"],
+        split_protocols=["random_stratified"],
+        result_prefix="unit_calibration",
+    )
+
+    results = pd.read_csv(summary["results_path"])
+    assert set(results["calibration_method"]) == {"raw", "platt_sigmoid", "isotonic"}
+    assert results["ece"].notna().all()

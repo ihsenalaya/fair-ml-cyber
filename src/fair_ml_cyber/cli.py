@@ -8,6 +8,7 @@ from pathlib import Path
 
 from fair_ml_cyber.audit import audit_csv_dir
 from fair_ml_cyber.advanced import run_advanced_analysis
+from fair_ml_cyber.calibration import run_calibration_baselines
 from fair_ml_cyber.experiment import run_experiment, run_smoke
 from fair_ml_cyber.open_set import run_open_set_baselines
 
@@ -111,6 +112,34 @@ def main() -> None:
     )
     open_set.add_argument("--result-prefix", default="open_set_baselines")
 
+    calibration = sub.add_parser(
+        "run-calibration-baselines",
+        help="Run post-hoc binary calibration baselines",
+    )
+    calibration.add_argument("--csv-dir", required=True, type=Path)
+    calibration.add_argument("--work-dir", required=True, type=Path)
+    calibration.add_argument("--sample-per-file", type=int, default=None)
+    calibration.add_argument("--seed", type=int, default=42)
+    calibration.add_argument(
+        "--models",
+        type=_csv_list,
+        default=_csv_list("logistic_regression,hist_gradient_boosting"),
+    )
+    calibration.add_argument(
+        "--feature-tiers",
+        type=_csv_list,
+        default=_csv_list("deployment_safe"),
+    )
+    calibration.add_argument(
+        "--splits",
+        type=_csv_list,
+        default=_csv_list(
+            "random_stratified,temporal,latest_day_holdout,"
+            "scenario_holdout_Web,endpoint_pair_holdout"
+        ),
+    )
+    calibration.add_argument("--result-prefix", default="calibration_baselines")
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -153,6 +182,17 @@ def main() -> None:
             models=args.models,
             feature_tiers=args.feature_tiers,
             unknown_families=args.unknown_families,
+            result_prefix=args.result_prefix,
+        )
+    elif args.command == "run-calibration-baselines":
+        result = run_calibration_baselines(
+            args.csv_dir,
+            args.work_dir,
+            sample_per_file=args.sample_per_file,
+            seed=args.seed,
+            models=args.models,
+            feature_tiers=args.feature_tiers,
+            split_protocols=args.splits,
             result_prefix=args.result_prefix,
         )
     else:
