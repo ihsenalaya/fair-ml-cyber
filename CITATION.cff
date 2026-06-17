@@ -5,11 +5,11 @@ type: software
 authors:
   - family-names: Alaya
     given-names: Ihsen
-version: 1.0.2
+version: 1.0.3
 date-released: 2026-06-17
 license: MIT
 repository-code: "https://github.com/ihsenalaya/fair-ml-cyber"
-url: "https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.2"
+url: "https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.3"
 abstract: "FAIR-ML-CYBER provides a reproducible evaluation framework and evidence snapshot for deployment-oriented stress testing of flow-based network intrusion detection models."
 keywords:
   - network intrusion detection
