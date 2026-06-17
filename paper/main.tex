@@ -116,6 +116,10 @@ The verified full-data core experiments use LogisticRegression (LR) and HistGrad
 
 Binary metrics include macro-F1, balanced accuracy, MCC, AUROC, AUPRC, Brier score and Expected Calibration Error (ECE). Multiclass metrics include macro-F1 and weighted-F1. Rare-class analysis reports per-label precision, recall and F1. Open-set analysis reports unknown-family uncertainty AUROC/AUPRC, attack recall as attack and unknown recall at the 90th percentile uncertainty review threshold. Abstention reports coverage, review rate, selective error, selective macro-F1 and accepted attack recall. Explanation stability is measured as top-15 feature-overlap Jaccard against the random-stratified baseline.
 
+\subsection{Statistical analysis}
+
+For the full-data binary core, we compute paired random-versus-stress comparisons over the six available experimental units per model: three seeds crossed with two feature tiers. We report the mean macro-F1 delta, the stress/random ratio, bootstrap 95\% confidence intervals over those experimental units and exact paired sign-flip p-values. These intervals quantify variation across seeds and feature tiers; they are not per-flow confidence intervals.
+
 \subsection{Reproducibility}
 
 Every reported full-data run records dataset hash, feature hash, split hash, seed, model, feature tier, split, runtime and artifact paths. Azure ML job metadata records Git commits and dirty flags. Evidence snapshots are tracked under the repository \texttt{evidence/} directory.
@@ -144,6 +148,13 @@ Scenario holdout Web & 0.5207 & 0.4831 \\
 \end{table}
 
 HGB is nearly perfect under random stratification but collapses under temporal holdout. LR is weaker under random stratification but more stable under temporal and latest-day shifts. Endpoint-pair holdout remains high for both models and should not be over-interpreted as proof of deployment robustness.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/core_random_vs_stress_macro_f1.png}
+\caption{Full-data macro-F1 by split and model across seeds 42, 7 and 99. Bars show means over seeds and feature tiers; error bars show standard deviation over the same experimental units.}
+\label{fig:core-split-gap}
+\end{figure}
 
 \subsection{Cyber Transferability Score}
 
@@ -174,6 +185,31 @@ Scenario holdout Web & LR & 0.5163 & 0.0004 \\
 \end{table}
 
 These values quantify the main message: high random-split macro-F1 does not imply high transferability under time or scenario shifts.
+
+\subsection{Paired robustness statistics}
+
+Table~\ref{tab:paired-stats} reports paired stress-minus-random deltas and stress/random ratios. All stress splits are worse than the paired random baseline for both models. The exact sign-flip p-value is 0.0313 in every row because all six paired differences have the same sign; with six pairs this is the smallest possible two-sided value. Standardized effect sizes are not shown in the table because very low inter-seed variance can make them numerically unstable.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Paired random-vs-stress macro-F1 statistics across seeds and feature tiers. CI values are bootstrap 95\% intervals over six paired experimental units.}
+\label{tab:paired-stats}
+\begin{tabular}{llccc}
+\toprule
+Model & Stress split & Delta [95\% CI] & Ratio [95\% CI] & p \\
+\midrule
+HGB & Temporal & -0.7662 [-0.7674, -0.7650] & 0.2320 [0.2307, 0.2337] & 0.0313 \\
+HGB & Latest-day & -0.5887 [-0.6281, -0.5486] & 0.4099 [0.3697, 0.4505] & 0.0313 \\
+HGB & Web holdout & -0.4770 [-0.4996, -0.4353] & 0.5219 [0.4993, 0.5634] & 0.0313 \\
+HGB & Endpoint-pair & -0.0054 [-0.0089, -0.0020] & 0.9946 [0.9906, 0.9980] & 0.0313 \\
+LR & Temporal & -0.3956 [-0.3964, -0.3947] & 0.5772 [0.5767, 0.5777] & 0.0313 \\
+LR & Latest-day & -0.2963 [-0.2980, -0.2947] & 0.6834 [0.6817, 0.6851] & 0.0313 \\
+LR & Web holdout & -0.4526 [-0.4534, -0.4516] & 0.5163 [0.5157, 0.5170] & 0.0313 \\
+LR & Endpoint-pair & -0.0537 [-0.0632, -0.0443] & 0.9426 [0.9325, 0.9527] & 0.0313 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Binary calibration under stress}
 
@@ -329,7 +365,7 @@ Prior studies report CICIDS2017 flow-construction and labelling issues. These is
 The binary core is validated on seeds 42, 7 and 99. The advanced analyses are currently seed 42 only. Final claims about rare-class, open-set, calibration and explanation stability should be repeated on additional seeds if compute budget allows.
 
 \paragraph{LogisticRegression convergence.}
-LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}. Older seed 7 and seed 99 LR rows still contain warnings from \texttt{max\_iter=500}. Final LR multi-seed tables should use convergence-clean reruns or explicitly report this limitation.
+LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}. Older seed 7 and seed 99 LR rows still contain warnings from \texttt{max\_iter=500}. Corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft. Final LR multi-seed tables should use those convergence-clean reruns or explicitly report this limitation.
 
 \paragraph{Open-set baseline strength.}
 The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, but these are still baseline anomaly detectors. A final version should compare additional open-set or anomaly approaches if scope permits.
@@ -351,6 +387,7 @@ The repository records Azure ML job names, Git commits, dataset hashes, feature 
   \item \texttt{evidence/fullcore-mem-s7-001/}
   \item \texttt{evidence/fullcore-mem-s99-001/}
   \item \texttt{evidence/fullcore-lr2000-s42-001/}
+  \item \texttt{evidence/q1-stats-fullcore-multiseed-001/}
   \item \texttt{evidence/advanced-core-s42-001/}
   \item \texttt{evidence/cse-cic-ids2018-partial-s42-001/}
 \end{itemize}

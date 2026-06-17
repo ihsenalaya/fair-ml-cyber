@@ -1,0 +1,20 @@
+{
+  "metric": "macro_f1",
+  "confidence": 0.95,
+  "bootstrap_iterations": 5000,
+  "seed": 42,
+  "input_result_paths": [
+    "evidence/fullcore-mem-s42-001/fullcore_mem_s42_results.csv",
+    "evidence/fullcore-mem-s7-001/fullcore_mem_s7_results.csv",
+    "evidence/fullcore-mem-s99-001/fullcore_mem_s99_results.csv"
+  ],
+  "input_rows": 60,
+  "completed_rows": 60,
+  "outputs": {
+    "metric_summary": "evidence/q1-stats-fullcore-multiseed-001/q1_metric_summary.csv",
+    "paired_split_comparisons": "evidence/q1-stats-fullcore-multiseed-001/q1_paired_split_comparisons.csv",
+    "inter_seed_variance": "evidence/q1-stats-fullcore-multiseed-001/q1_inter_seed_variance.csv",
+    "report": "evidence/q1-stats-fullcore-multiseed-001/q1_statistics_report.md",
+    "summary": "evidence/q1-stats-fullcore-multiseed-001/q1_statistics_summary.json"
+  }
+}

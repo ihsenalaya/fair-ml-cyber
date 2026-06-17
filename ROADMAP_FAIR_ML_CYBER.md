@@ -61,6 +61,7 @@ Ce qui n'est pas encore terminé:
 - Random Forest n'a pas encore été exécuté en full-data à cause du risque mémoire/artefacts;
 - convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; reruns LR2000 corrigés sans feature `hour` soumis pour seeds 42, 7 et 99, artefacts à attendre avant tables finales;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
+- statistiques robustes initiales produites pour le core full-data multi-seed: bootstrap 95%, tests appariés random-vs-stress, tailles d'effet et variance inter-seed dans `evidence/q1-stats-fullcore-multiseed-001/`;
 - analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; jobs avancés/calibration/open-set additionnels soumis ou en file, artefacts à intégrer quand Azure termine;
 - remarques reviewer Q1 validées dans `REVIEWER_REMARKS_VALIDATION.md`;
 - deuxième dataset publique recommandée dans `SECOND_DATASET_SELECTION.md`: priorité à CIC-UNSW-NB15 Augmented Dataset; aucune donnée générée/RAG ne doit être présentée comme trafic réel;

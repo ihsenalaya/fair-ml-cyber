@@ -11,7 +11,9 @@ from fair_ml_cyber.advanced import run_advanced_analysis
 from fair_ml_cyber.calibration import run_calibration_baselines
 from fair_ml_cyber.experiment import run_experiment, run_smoke
 from fair_ml_cyber.open_set import run_open_set_baselines
+from fair_ml_cyber.plots import plot_split_gap
 from fair_ml_cyber.sampling import build_stratified_sample
+from fair_ml_cyber.stats import generate_q1_statistics
 
 
 def _csv_list(value: str) -> list[str]:
@@ -152,6 +154,25 @@ def main() -> None:
     sample.add_argument("--seed", type=int, default=42)
     sample.add_argument("--result-name", default="stratified_sample.csv")
 
+    q1_stats = sub.add_parser(
+        "generate-q1-stats",
+        help="Generate bootstrap CIs, paired split tests and inter-seed variance tables",
+    )
+    q1_stats.add_argument("--results-csv", required=True, type=Path, nargs="+")
+    q1_stats.add_argument("--output-dir", required=True, type=Path)
+    q1_stats.add_argument("--metric", default="macro_f1")
+    q1_stats.add_argument("--bootstrap-iterations", type=int, default=2000)
+    q1_stats.add_argument("--confidence", type=float, default=0.95)
+    q1_stats.add_argument("--seed", type=int, default=42)
+
+    split_plot = sub.add_parser(
+        "plot-split-gap",
+        help="Plot metric means by split and model from one or more result CSVs",
+    )
+    split_plot.add_argument("--results-csv", required=True, type=Path, nargs="+")
+    split_plot.add_argument("--output-path", required=True, type=Path)
+    split_plot.add_argument("--metric", default="macro_f1")
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -215,6 +236,21 @@ def main() -> None:
             attack_cap=args.attack_cap,
             seed=args.seed,
             result_name=args.result_name,
+        )
+    elif args.command == "generate-q1-stats":
+        result = generate_q1_statistics(
+            args.results_csv,
+            args.output_dir,
+            metric=args.metric,
+            n_boot=args.bootstrap_iterations,
+            confidence=args.confidence,
+            seed=args.seed,
+        )
+    elif args.command == "plot-split-gap":
+        result = plot_split_gap(
+            args.results_csv,
+            args.output_path,
+            metric=args.metric,
         )
     else:
         raise ValueError(args.command)

@@ -54,6 +54,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
+- `evidence/q1-stats-fullcore-multiseed-001/`: snapshot statistique bootstrap 95%, tests appariés random-vs-stress et variance inter-seed.
 - `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
 - `evidence/cse-cic-ids2018-partial-s42-001/`: snapshot textuel suivi par Git de la validation externe partielle CSE-CIC-IDS2018.
 

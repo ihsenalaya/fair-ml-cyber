@@ -103,6 +103,23 @@ Values are macro-F1 standard deviations across seeds, after averaging the two fe
 | `day_holdout_2017-07-07` | LogisticRegression | 0.6834 | 0.0018 |
 | `scenario_holdout_Web` | LogisticRegression | 0.5163 | 0.0004 |
 
+## Robust Random-vs-Stress Statistics
+
+The snapshot `evidence/q1-stats-fullcore-multiseed-001/` adds bootstrap 95% confidence intervals and exact paired sign-flip tests over the six paired experimental units available per model: 3 seeds x 2 feature tiers. These intervals are over experimental units, not over individual flows.
+
+| Model | Stress split | Mean delta vs random | 95% CI delta | Mean ratio | 95% CI ratio | p-value |
+|---|---|---:|---:|---:|---:|---:|
+| HistGradientBoosting | `temporal` | -0.7662 | [-0.7674, -0.7650] | 0.2320 | [0.2307, 0.2337] | 0.03125 |
+| HistGradientBoosting | `day_holdout_2017-07-07` | -0.5887 | [-0.6281, -0.5486] | 0.4099 | [0.3697, 0.4505] | 0.03125 |
+| HistGradientBoosting | `scenario_holdout_Web` | -0.4770 | [-0.4996, -0.4353] | 0.5219 | [0.4993, 0.5634] | 0.03125 |
+| HistGradientBoosting | `endpoint_pair_holdout` | -0.0054 | [-0.0089, -0.0020] | 0.9946 | [0.9906, 0.9980] | 0.03125 |
+| LogisticRegression | `temporal` | -0.3956 | [-0.3964, -0.3947] | 0.5772 | [0.5767, 0.5777] | 0.03125 |
+| LogisticRegression | `day_holdout_2017-07-07` | -0.2963 | [-0.2980, -0.2947] | 0.6834 | [0.6817, 0.6851] | 0.03125 |
+| LogisticRegression | `scenario_holdout_Web` | -0.4526 | [-0.4534, -0.4516] | 0.5163 | [0.5157, 0.5170] | 0.03125 |
+| LogisticRegression | `endpoint_pair_holdout` | -0.0537 | [-0.0632, -0.0443] | 0.9426 | [0.9325, 0.9527] | 0.03125 |
+
+All stress splits are worse than the paired random baseline for both models. The exact p-value is 0.03125 in every row because all six paired differences have the same sign; with only six pairs this is the smallest possible two-sided sign-flip p-value. Standardized effect sizes are available in the CSV, but they should be interpreted carefully because several groups have very low inter-seed variance.
+
 ## Interpretation
 
 The main conclusion is stable across three seeds: random stratified evaluation is much more optimistic than temporal and day/scenario stress tests. HistGradientBoosting remains nearly perfect in random and endpoint-pair holdout, but collapses in temporal and day-holdout settings. LogisticRegression is weaker in random split, but more stable under temporal and day-holdout shifts.
