@@ -246,6 +246,7 @@ These runs use real public external data. They include the first partial CSE-CIC
 | 2026-06-17T14:26:00+02:00 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` from `paper/` | 0:10.60 wall clock | Success, exit status 0 | `paper/main.pdf`, 276.54 KiB | Rebuilt after replacing the old CSE-CIC partial table with the 363,648-row full-sample external validation; Tectonic retained the known non-fatal rerun-consistency warning. |
 | 2026-06-17T14:27:00+02:00 | `/home/ihsen/bin/tectonic --keep-logs --keep-intermediates main.tex` from `paper/`, followed by log inspection | 0:10.63 wall clock | Success, exit status 0 | `paper/main.pdf`, `main.log`, `main.bbl` inspected locally | No undefined citation/reference warnings found. The only `undefined` matches were Hyperref macro guards in `main.aux`; auxiliary files were removed after inspection. |
 | 2026-06-17T15:16:00+02:00 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` and `/home/ihsen/bin/tectonic --keep-logs main.tex` from `paper/` | 0:14.40 wall clock for timed build | Success, exit status 0 | `paper/main.pdf`, 277.36 KiB | Rebuilt after integrating advanced seed 7 and adding explicit GitHub release/Zenodo DOI-pending text. Log inspection found no undefined citation/reference warnings; only `inputenc package ignored with utf8 based engines` plus known non-fatal Tectonic rerun-consistency warnings. Auxiliary log files were removed after inspection. |
+| 2026-06-17T15:19:00+02:00 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` from `paper/` | 0:10.75 wall clock | Success, exit status 0 | `paper/main.pdf`, 277.36 KiB | Rebuilt after updating the reproducibility release reference from `v1.0.0` to current release `v1.0.1`; known non-fatal Tectonic rerun-consistency warning persisted. |
 
 ## Release and Archival Runs
 
@@ -255,7 +256,7 @@ These runs use real public external data. They include the first partial CSE-CIC
 | 2026-06-17T14:57:00+02:00 | `git tag -a v1.0.0 -m "Q1 submission version"` followed by `git push origin v1.0.0` | Success | Tag `v1.0.0` pushed; resolves to commit `5ccb965925089bca44e3073cd7b5168121106cb4` | Pre-push hooks ran `terraform fmt` and `tflint` successfully. |
 | 2026-06-17T14:58:00+02:00 | `gh release create v1.0.0 paper/main.pdf#FAIR-ML-CYBER-main.pdf --title "Q1 submission version" ...` | Success | https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 | Release is published, not draft, not prerelease; asset `FAIR-ML-CYBER-main.pdf` uploaded. |
 | 2026-06-17T14:58:00+02:00 | Zenodo availability check | Blocked | No local `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN`; Zenodo search returned no matching FAIR-ML-CYBER record | DOI not generated automatically. Manual Zenodo GitHub integration or a Zenodo token is required before adding a DOI to the manuscript. |
-| 2026-06-17T15:16:00+02:00 | Manuscript DOI status update | Partial | `paper/main.tex` now cites the GitHub `v1.0.0` release and states that the Zenodo DOI is not yet minted | No DOI was fabricated; final DOI must be inserted after Zenodo archiving succeeds. |
+| 2026-06-17T15:16:00+02:00 | Manuscript DOI status update | Partial | `paper/main.tex` now cites the current GitHub `v1.0.1` release and states that the Zenodo DOI is not yet minted | No DOI was fabricated; final DOI must be inserted after Zenodo archiving succeeds. |
 
 ## Bugs, Failures, and Operational Issues
 

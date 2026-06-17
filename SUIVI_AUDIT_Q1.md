@@ -156,11 +156,11 @@
 
 ### A5 — Artifacts publics + DOI Zenodo
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⏳ Partiel — tag git `v1.0.0` + GitHub Release créés, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
+- **Statut** : ⏳ Partiel — GitHub Release créée; release courante `v1.0.1` prévue pour inclure seed 7, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
-- **Vérification check #12** : `paper/main.tex` cite la GitHub Release `v1.0.0` et indique que le DOI Zenodo n'est pas encore émis.
+- **Vérification check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
 - **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
@@ -207,7 +207,7 @@
 | A2 — Heatmap | 🟡 | ✅ Résolu | **OUI** |
 | A3 — Tableau SOC | 🟡 | ✅ Résolu | **OUI** |
 | A4 — Choix modèles | 🟡 | ✅ Résolu | **OUI** |
-| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, DOI pending mentionné, DOI final manquant | Non |
+| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, release courante v1.0.1, DOI pending mentionné, DOI final manquant | Non |
 | A6 — Effect sizes | 🟡 | ⏳ Délibéré | **OUI** |
 
 **Résolus** : C1, C2, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **13 points fermés**
@@ -233,7 +233,7 @@
 - [x] **A2** : Créer heatmap F1 per-class × split protocol
 - [x] **A3** : Ajouter tableau Practical Guidance (SOC)
 - [x] **A4** : 1–2 phrases justifiant absence DNN
-- [~] **A5** : Release GitHub faite (`v1.0.0`), DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
+- [~] **A5** : Release GitHub faite (`v1.0.1` pour l'état courant), DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
 - [ ] Révision interne complète + soumission
 
 ---
@@ -277,7 +277,7 @@
 | Check #9 | 2026-06-17 | A5 avance : tag v1.0.0 créé. C2/C3 toujours en attente Azure ML. 12/15 résolus | 3 |
 | Check #10 | 2026-06-17 | **C2 ✅** — advanced-core-s7-001 arrivé, 3 seeds confirmés cohérents. 13/15 résolus | 2 |
 | Check #11 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure, A5 DOI toujours absent. 13/15 résolus | 2 |
-| Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié dans `paper/main.tex` avec release `v1.0.0` et DOI Zenodo pending. C3 toujours en queue. 13/15 résolus | 2 |
+| Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié dans `paper/main.tex` avec release courante `v1.0.1` et DOI Zenodo pending. C3 toujours en queue. 13/15 résolus | 2 |
 
 ---
 
