@@ -1,0 +1,395 @@
+Recommandations pour la Révision
+Modifications Obligatoires
+#	Action
+1	Justifier l'unicité du dataset ou ajouter un 2e dataset (même partiel).
+2	Étendre les analyses avancées à 3 graines (seed 42, 7, 99).
+3	Corriger les warnings de convergence pour LR (rerun seeds 7/99 avec max_iter=2000).
+4	Ajouter une baseline open-set (ex. Isolation Forest, One-Class SVM).
+5	Renforcer la stabilité des explications (plus de répétitions, intervalles de confiance).
+6	Ajouter une figure visualisant les écarts entre splits.
+7	Remplacer les formulations vagues dans l'abstract par des chiffres précis.
+8	Ajouter une section de recommandations pratiques pour la communauté.
+9	Supprimer ou déplacer en annexe la section CTS.
+10	Ajouter une comparaison avec la littérature récente sur la validation de benchmarks.
+Modifications Recommandées (Bonus)
+#	Action
+11	Intégrer une analyse d'impact sur les SOC (coût des faux positifs/négatifs).
+12	Ajouter une analyse de la sensibilité au seuil de décision pour le rejet (abstention).
+13	Discuter des implications pour les audits de conformité et les exigences réglementaires.
+Problème majeur 1 — La nouveauté scientifique est insuffisante
+
+Le cœur du papier est :
+
+random split is optimistic; temporal/scenario splits are harder.
+
+C’est vrai, mais ce n’est pas nouveau dans le domaine NIDS. La littérature dit déjà que les random splits peuvent être trompeurs, que les datasets NIDS ont des biais, que CICIDS2017 a des problèmes, et que la généralisation est fragile.
+
+Ton papier apporte des chiffres intéressants, mais pour Q1, un reviewer va demander :
+
+What is the new scientific contribution beyond confirming a known problem on one CICIDS2017-like dataset?
+
+Aujourd’hui, les contributions sont surtout pratiques :
+
+- framework reproductible ;
+- stress tests ;
+- analyses calibration / abstention / open-set / explanation ;
+- discussion critique.
+
+C’est utile, mais pas encore assez fort pour un journal Q1 si l’étude reste sur un seul dataset.
+
+Problème majeur 2 — Single-dataset limitation trop forte
+
+Tu utilises 2,438,052 flows depuis 18 CSV files, avec un dataset “CICIDS2017-like”.
+
+Le problème : pour un journal Q1, “CICIDS2017-like” est trop vague.
+
+Questions reviewer :
+
+- Est-ce exactement CICIDS2017 officiel ?
+- Est-ce une variante nettoyée ?
+- Quelles colonnes ont été modifiées ?
+- Les labels correspondent-ils aux labels originaux ?
+- Les 18 CSV couvrent-ils tous les jours/scénarios ?
+- Est-ce que des fichiers ont été exclus ?
+- Est-ce que le preprocessing reproduit la littérature ?
+
+Tu fournis un hash, c’est bien, mais ce n’est pas suffisant. Il faut une dataset card complète.
+
+Et surtout : un seul dataset ne permet pas de conclure fortement sur la fiabilité de déploiement NIDS.
+
+Tu peux faire une contribution Q1 avec un seul dataset, mais seulement si la contribution est clairement :
+
+“a deep forensic audit of CICIDS2017 evaluation protocols”
+
+Pas :
+
+“deployment reliability of ML-based NIDS” au sens général.
+
+Problème majeur 3 — Pas de cross-dataset validation
+
+Tu cites une étude de cross-dataset generalization, mais ton papier n’en fait pas. Tu dis que tu compenses par des intra-dataset stress tests. C’est honnête, mais insuffisant.
+
+Pour Q1, il faut au moins ajouter un dataset externe :
+
+- CSE-CIC-IDS2018
+- UNSW-NB15
+- ToN-IoT
+- BoT-IoT
+- NF-UQ-NIDS / NetFlow-standardized variants
+
+Même si tu ne fais pas tout, il faut au minimum une external validation partielle.
+
+Sinon, le reviewer dira :
+
+The paper studies the fragility of one dataset, not deployment reliability.
+
+Problème majeur 4 — Les advanced analyses sont seed 42 seulement
+
+Tu as un core binary sur seeds 42, 7, 99, ce qui est correct pour un début.
+
+Mais les analyses les plus intéressantes sont seulement sur seed 42 :
+
+- multiclass
+- rare-class behavior
+- open-set
+- calibration
+- abstention
+- explanation stability
+
+Or ce sont précisément ces analyses qui donnent la valeur scientifique du papier.
+
+Le papier le reconnaît dans les menaces à la validité. Mais pour Q1, ce n’est pas suffisant.
+
+Il faut répéter au moins :
+
+seeds = 42, 7, 99
+
+pour :
+
+- calibration
+- multiclass
+- rare class
+- open-set
+- abstention
+
+Pour explanation stability, tu peux garder un sous-échantillon, mais il faut au moins confidence intervals ou bootstrap.
+
+Problème majeur 5 — Les modèles sont trop limités
+
+Tu testes principalement :
+
+- LogisticRegression
+- HistGradientBoosting
+
+RandomForest est seulement en pilot, pas dans le full-data core à cause de contraintes mémoire/artifacts.
+
+Pour Q1, deux modèles sont trop faibles, surtout si l’un est linéaire et l’autre tree boosting.
+
+Il faut ajouter au minimum :
+
+- RandomForest ou ExtraTrees
+- XGBoost / LightGBM / CatBoost si possible
+- MLP simple
+- One-class / anomaly baseline pour open-set
+- calibrated classifier baseline
+
+Sinon, un reviewer va dire :
+
+The conclusions may be model-specific.
+
+Aujourd’hui, tu montres surtout que HGB s’effondre sous temporal shift et que LR est plus stable dans certains cas. C’est intéressant, mais insuffisant pour généraliser aux ML-based NIDS.
+
+Problème majeur 6 — Open-set trop faible
+
+L’open-set analysis utilise l’incertitude du classifieur comme diagnostic baseline. Tu le dis clairement, c’est bien.
+
+Mais pour un journal Q1, ce n’est pas suffisant. Il faut comparer avec des baselines open-set/anomaly, par exemple :
+
+- Isolation Forest
+- One-Class SVM
+- Local Outlier Factor
+- Mahalanobis distance
+- entropy / max softmax probability
+- energy score si modèles neuronaux
+- OpenMax si deep model
+
+Sinon, les résultats open-set sont intéressants mais faibles.
+
+Par exemple, tu montres que HGB obtient de bons AUROC d’incertitude pour plusieurs unknown families, tandis que LR échoue fortement pour DDoS avec AUROC 0.2019.
+Mais sans baseline open-set, on ne sait pas si c’est bon, mauvais, trivial ou artefactuel.
+
+Problème majeur 7 — Calibration pas assez approfondie
+
+Tu montres des ECE très élevés sous temporal shift :
+
+HGB temporal ECE = 0.7013
+LR temporal ECE = 0.3955
+
+C’est fort.
+
+Mais il manque :
+
+- reliability diagrams ;
+- Brier score complet dans les tables ;
+- calibration before/after Platt scaling / isotonic ;
+- calibration sur validation temporelle ;
+- impact de calibration sur abstention ;
+- confidence intervals.
+
+Actuellement, la calibration est un résultat intéressant, mais pas encore une étude complète.
+
+Problème majeur 8 — Explanation stability fragile
+
+Tu utilises un top-15 feature-overlap Jaccard. HGB temporal Jaccard est 0.0714, LR temporal est 0.5789.
+
+C’est intéressant, mais méthodologiquement faible :
+
+- permutation importance sample size 2000 ;
+- one repeat only ;
+- pas de variance ;
+- pas de SHAP ;
+- pas de confidence intervals ;
+- pas d’analyse par famille d’attaque ;
+- pas de stabilité inter-seed.
+
+Pour Q1, ça doit être soit renforcé, soit rétrogradé en analyse exploratoire.
+
+Problème majeur 9 — CTS est trop simple
+
+Tu définis :
+
+CTS(m,s) = macroF1(m,s) / macroF1(m,random)
+
+L’idée est utile, mais trop simple pour être une contribution forte.
+
+Problèmes :
+
+- ratio instable si macro-F1 random faible ;
+- ignore calibration ;
+- ignore rare-class failure ;
+- ignore abstention ;
+- ignore cost SOC ;
+- ne capture pas les classes critiques ;
+- ne donne pas d’incertitude statistique forte.
+
+CTS peut rester comme métrique secondaire, mais pas comme contribution centrale.
+
+Il faudrait une métrique plus complète, par exemple :
+
+Deployment Reliability Profile =
+performance degradation + calibration degradation + rare-class retention + selective prediction utility
+
+Ou bien présenter CTS simplement comme diagnostic ratio, pas comme score scientifique majeur.
+
+Problème majeur 10 — Pas assez de statistiques
+
+Tu donnes des moyennes et std pour CTS, mais il manque :
+
+- confidence intervals ;
+- tests statistiques ;
+- effect sizes ;
+- bootstrap ;
+- per-seed full tables ;
+- variance across files/days/scenarios ;
+- significance of model/split interaction.
+
+Pour Q1, il faut au minimum :
+
+- bootstrap 95% CI pour macro-F1, AUROC, ECE ;
+- paired comparison entre random et stress splits ;
+- analysis of variance ou mixed-effects model si tu veux être ambitieux.
+
+Sans ça, les chiffres sont convaincants mais pas assez robustes.
+
+Problème majeur 11 — Risque de leakage / artefacts non complètement traité
+
+Tu proposes no_identity et deployment_safe, c’est bien.
+
+Mais il faut beaucoup plus de détails :
+
+- Quelles colonnes exactement sont exclues ?
+- Est-ce que ports restent inclus ?
+- Est-ce que timestamp est totalement retiré ?
+- Est-ce que Flow Duration / packet timing encode le scénario ?
+- Est-ce que destination port rend Web holdout trivial ou impossible ?
+- Est-ce que endpoint-pair holdout utilise IPs après anonymisation ?
+- Est-ce que les fichiers CSV induisent un day/scenario leakage ?
+
+Dans CICIDS2017, les artefacts de génération, timing, ports et services peuvent fortement influencer les résultats. Le papier doit fournir une feature audit table.
+
+Problème majeur 12 — Endpoint-pair holdout reste trop haut, mais pas assez expliqué
+
+Endpoint-pair holdout donne des scores très élevés :
+
+HGB 0.9924
+LR 0.8820
+
+Tu dis qu’il ne faut pas le surinterpréter. Bien.
+
+Mais il faut analyser pourquoi :
+
+- endpoint-pair split insuffisant ?
+- les features non-identifiantes contiennent encore des signatures ?
+- classes/scénarios restent faciles ?
+- leakage par ports/services ?
+- endpoint grouping mal défini ?
+
+Sinon, ce holdout peut être vu comme artificiel ou mal conçu.
+
+Problème majeur 13 — Les résultats multiclass sont forts mais sous-exploités
+
+Table 4 est probablement l’un des meilleurs résultats du papier. Tu montres que weighted-F1 peut rester très haut alors que macro-F1 s’effondre.
+
+Exemple :
+
+HGB Scenario holdout Web:
+macro-F1 = 0.0762
+weighted-F1 = 0.9791
+
+C’est énorme.
+
+Ce résultat mérite une analyse beaucoup plus poussée :
+
+- confusion matrices ;
+- support par classe ;
+- classes absentes dans test/train ;
+- pourquoi weighted-F1 reste haut ;
+- quelles classes dominent ;
+- effet du BENIGN ;
+- métriques macro vs weighted vs per-class.
+
+Là, tu as un vrai message Q1 possible :
+
+Aggregate weighted metrics can be dangerously misleading under scenario holdout.
+
+Mais il faut le développer.
+
+Problème majeur 14 — Rare-class analysis trop limitée
+
+Table 5 montre que les trois Web rare classes ont F1 = 0.0 pour LR et HGB sous Web holdout :
+
+Web Brute Force: 2734 support, F1 0
+Web SQL Injection: 24 support, F1 0
+Web XSS: 1358 support, F1 0
+
+C’est important.
+
+Mais c’est seulement Web scenario holdout. Il faut ajouter :
+
+- rare-class behavior sous random ;
+- rare-class behavior sous temporal ;
+- rare-class behavior sous latest-day ;
+- confusion avec BENIGN ou autre attack ;
+- precision/recall pas seulement F1 ;
+- supports train/test.
+
+Sinon, c’est une observation forte mais trop étroite.
+
+Problème majeur 15 — Le papier est encore trop court pour Q1
+
+9 pages, beaucoup de résultats, mais peu de profondeur méthodologique. Pour un journal Q1, il faut plus de détails :
+
+- dataset audit complet ;
+- preprocessing ;
+- split construction ;
+- feature tier definitions ;
+- hyperparameters ;
+- runtime/compute ;
+- statistical procedure ;
+- ablation ;
+- limitations détaillées ;
+- reproducibility package.
+
+La version actuelle ressemble plus à un short paper / internal review manuscript qu’à un journal article.
+
+Points mineurs
+- Le titre est trop long et pas assez accrocheur.
+- “CICIDS2017-like” doit être clarifié.
+- FAIR-ML-CYBER est introduit mais pas suffisamment formalisé.
+- Le résumé contient beaucoup de résultats, mais pas assez le gap scientifique.
+- Les tables sont utiles, mais il manque des figures : degradation plot, calibration plot, per-class failure plot.
+- Les références sont bonnes, mais pas assez nombreuses pour un journal.
+- Certaines références 2025 doivent être vérifiées précisément.
+Recommandation finale
+Pour Q1 maintenant : Reject
+
+Mais potentiel réel si tu renforces.
+
+La meilleure version du papier serait :
+
+Benchmark Illusions in Flow-Based NIDS: A Stress-Test Study of CICIDS2017 Evaluation Protocols
+
+Ce serait plus fort que “deployment reliability”, parce que tu restes honnête sur le single dataset.
+
+Ce que je ferais pour le rendre Q1-compatible
+
+Priorité 1 :
+
+1. Ajouter au moins un dataset externe.
+2. Répéter advanced analyses sur 3 seeds.
+3. Ajouter RandomForest / XGBoost ou LightGBM.
+4. Ajouter open-set baselines.
+5. Ajouter calibration baselines.
+6. Ajouter confidence intervals.
+7. Ajouter feature audit table.
+8. Ajouter confusion matrices / per-class analysis.
+
+Priorité 2 :
+
+9. Renforcer rare-class analysis.
+10. Ajouter reliability diagrams.
+11. Ajouter explanation stability avec plusieurs repeats.
+12. Ajouter ablation no_identity vs deployment_safe.
+13. Ajouter une table complète train/test support par split.
+14. Rendre CTS secondaire ou mieux justifié.
+
+Priorité 3 :
+
+15. Transformer FAIR-ML-CYBER en framework formel :
+   - inputs
+   - split protocols
+   - stress dimensions
+   - metrics
+   - evidence artifacts
+   - output reports
+   

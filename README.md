@@ -48,6 +48,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `REVIEWER_REMARKS_VALIDATION.md`: validation une par une des remarques reviewer et actions nécessaires.
 - `SECOND_DATASET_SELECTION.md`: sélection argumentée d'une deuxième dataset publique, sans données générées cachées.
 - `paper/main.tex` / `paper/main.pdf`: manuscrit LaTeX et PDF de review de l'article.
+- `paper/recommandations.txt`: recommandations reviewer détaillées pour transformer le draft en article Q1-compatible.
 - `evidence/fullcore-mem-s42-001/`: snapshot textuel suivi par Git des résultats full-data vérifiés.
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
