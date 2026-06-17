@@ -180,6 +180,14 @@ The advanced seed 42 run `advanced-core-s42-001` using `azureml/advanced_core_se
 | 2026-06-17 | `/usr/bin/time -v az ml job download --resource-group rg-fmlcyber-westeurope --workspace-name mlw-fair-ml-cyber --name advanced-core-s42-001 --download-path data/azure_jobs/advanced-core-s42-001 --all` | 3:22.52 wall clock | 2,438,052 rows | 2 models | Advanced analyses | 1 tier | Download exit status 0; local artifact root `data/azure_jobs/advanced-core-s42-001`; outputs include binary, multiclass, per-class, rare-class, open-set, calibration, abstention, feature-importance, explanation-stability, summary and event artifacts; CPU 12%; max RSS 213,112 KB. |
 | 2026-06-17 | Local artifact summary of `data/azure_jobs/advanced-core-s42-001/named-outputs/work_dir/advanced_results/` | Not timed | 2,438,052 rows | 2 models | Advanced analyses | `deployment_safe` | Verified 10 binary rows, 10 multiclass rows, 8 open-set rows, 36 rare-class rows, 60 abstention rows, 100 calibration-bin rows, 1,150 feature-importance rows and 8 explanation-stability rows. Results summarized in `ADVANCED_CORE_S42_RESULTS.md`; tracked text snapshot copied to `evidence/advanced-core-s42-001/`. |
 
+## Manuscript Build Runs
+
+| Timestamp | Command | Duration | Result | Output | Notes |
+|---|---|---:|---|---|---|
+| 2026-06-17 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` from `paper/` | 0:22.49 wall clock | Success, exit status 0 | `paper/main.pdf`, 65.52 KiB | First LaTeX/BibTeX build of the review manuscript; Tectonic downloaded missing LaTeX packages and wrote the PDF. |
+| 2026-06-17 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` from `paper/` | 0:09.98 wall clock | Success, exit status 0 | `paper/main.pdf`, 65.52 KiB | Second build to stabilize references; Tectonic still reported a non-fatal internal rerun warning but produced the PDF. |
+| 2026-06-17 | `/home/ihsen/bin/tectonic --keep-logs --keep-intermediates main.tex` from `paper/`, followed by log inspection | Not timed | Success, exit status 0 | `paper/main.pdf`, `main.log`, `main.bbl` inspected locally | No undefined citation/reference warnings found; only `inputenc package ignored with utf8 based engines` and Tectonic rerun-consistency warnings. Auxiliary files were removed after inspection. |
+
 ## Bugs, Failures, and Operational Issues
 
 This section records problems observed during implementation and experimentation. These issues must not be hidden in the article workflow. If a run is used in the paper, any relevant limitation below must be reflected in the method, threat-to-validity, reproducibility or appendix sections.

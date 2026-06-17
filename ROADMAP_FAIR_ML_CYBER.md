@@ -62,7 +62,7 @@ Ce qui n'est pas encore terminé:
 - convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; seeds 7 et 99 à rerun si on veut des statistiques LR multi-seed sans warnings;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
 - analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; seeds 7 et 99 à répéter si le budget Azure le permet;
-- pas encore de LaTeX/PDF final.
+- draft LaTeX/PDF de review généré dans `paper/main.tex` et `paper/main.pdf`; il reste à renforcer avant une soumission finale.
 
 ---
 
