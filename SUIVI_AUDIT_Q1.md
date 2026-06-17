@@ -163,14 +163,14 @@
 
 ### A5 — Artifacts publics
 - **Priorité** : 🟡 → ✅ RÉSOLU
-- **Statut** : ✅ GitHub Release courante `v1.0.3` préparée sans workflow d'archive externe; elle remplace `v1.0.2` pour le brouillon actif.
+- **Statut** : ✅ GitHub Release courante `v1.0.3` publiée sans workflow d'archive externe; elle remplace `v1.0.2` pour le brouillon actif.
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
 - **Vérification check #12** : tag annoté `v1.0.1` poussé et GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 avec le PDF reconstruit après intégration seed 7.
 - **Vérification check #16** : `CITATION.cff` préparé pour la citation du dépôt.
 - **Vérification check #23** : tag annoté `v1.0.2` poussé; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.2 avec `FAIR-ML-CYBER-main.pdf` (284,130 bytes).
 - **Vérification check #24** : l'option d'archivage externe retirée du périmètre à la demande utilisateur; le fichier de métadonnées d'archive externe est supprimé et le manuscrit conserve uniquement la release GitHub publique.
-- **Vérification check #25** : le brouillon actif pointe vers `v1.0.3`, version propre sans workflow d'archive externe.
+- **Vérification check #25** : tag annoté `v1.0.3` poussé; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.3 avec `FAIR-ML-CYBER-main.pdf` (284,005 bytes). Le brouillon actif pointe vers cette version propre sans workflow d'archive externe.
 - **Action restante** : Aucune dans le périmètre actuel.
 
 ---
@@ -300,7 +300,7 @@
 | Check #22 | 2026-06-17 | Baseline open-set renforcée — `open-set-if-s7-001` téléchargé et copié dans `evidence/`; Isolation Forest full-data maintenant disponible sur seeds 42/7/99. 14/15 résolus | 1 |
 | Check #23 | 2026-06-17 | A5 progresse — tag/release GitHub `v1.0.2` publié avec PDF 284,130 bytes; `CITATION.cff` inclus. 14/15 résolus | 1 |
 | Check #24 | 2026-06-17 | **A5 ✅** — option d'archivage externe retirée du périmètre utilisateur; release GitHub `v1.0.2` et `CITATION.cff` suffisent pour les artefacts publics actuels. 15/15 résolus | 0 |
-| Check #25 | 2026-06-17 | Release propre préparée — le manuscrit et `CITATION.cff` pointent vers `v1.0.3`, sans workflow d'archive externe. 15/15 résolus | 0 |
+| Check #25 | 2026-06-17 | Release propre publiée — le manuscrit et `CITATION.cff` pointent vers `v1.0.3`, sans workflow d'archive externe; PDF 284,005 bytes. 15/15 résolus | 0 |
 
 ---
 
