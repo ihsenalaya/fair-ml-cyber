@@ -59,9 +59,9 @@ Ce qui n'est pas encore terminé:
 
 - le full-data core binaire est validé sur seeds 42, 7 et 99;
 - Random Forest n'a pas encore été exécuté en full-data à cause du risque mémoire/artefacts;
-- convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; seeds 7 et 99 à rerun si on veut des statistiques LR multi-seed sans warnings;
+- convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; reruns LR2000 corrigés sans feature `hour` soumis pour seeds 42, 7 et 99, artefacts à attendre avant tables finales;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
-- analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; seeds 7 et 99 à répéter si le budget Azure le permet;
+- analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; jobs avancés/calibration/open-set additionnels soumis ou en file, artefacts à intégrer quand Azure termine;
 - remarques reviewer Q1 validées dans `REVIEWER_REMARKS_VALIDATION.md`;
 - deuxième dataset publique recommandée dans `SECOND_DATASET_SELECTION.md`: priorité à CIC-UNSW-NB15 Augmented Dataset; aucune donnée générée/RAG ne doit être présentée comme trafic réel;
 - validation externe partielle CSE-CIC-IDS2018 exécutée sur 5 CSV publics UNB/AWS: 4,525,400 lignes auditées, échantillon réel stratifié de 200,928 lignes, baseline binaire LR/HGB/RF, calibration raw/Platt/isotonic et open-set IsolationForest/LOF; résultats dans `CSE_CIC_IDS2018_PARTIAL_RESULTS.md` et `evidence/cse-cic-ids2018-partial-s42-001/`;
