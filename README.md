@@ -44,6 +44,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
 - `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
 - `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
+- `Q1_REVIEW_CRITIQUE.md` / `Q1_REVIEW_CRITIQUE.pdf`: revue critique simulée pour une soumission journal Q1.
 - `evidence/fullcore-mem-s42-001/`: snapshot textuel suivi par Git des résultats full-data vérifiés.
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
