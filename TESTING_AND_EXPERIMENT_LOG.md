@@ -241,6 +241,15 @@ These runs use real public external data. They include the first partial CSE-CIC
 | 2026-06-17T14:26:00+02:00 | `/usr/bin/time -v /home/ihsen/bin/tectonic main.tex` from `paper/` | 0:10.60 wall clock | Success, exit status 0 | `paper/main.pdf`, 276.54 KiB | Rebuilt after replacing the old CSE-CIC partial table with the 363,648-row full-sample external validation; Tectonic retained the known non-fatal rerun-consistency warning. |
 | 2026-06-17T14:27:00+02:00 | `/home/ihsen/bin/tectonic --keep-logs --keep-intermediates main.tex` from `paper/`, followed by log inspection | 0:10.63 wall clock | Success, exit status 0 | `paper/main.pdf`, `main.log`, `main.bbl` inspected locally | No undefined citation/reference warnings found. The only `undefined` matches were Hyperref macro guards in `main.aux`; auxiliary files were removed after inspection. |
 
+## Release and Archival Runs
+
+| Timestamp | Command | Result | Output | Notes |
+|---|---|---|---|---|
+| 2026-06-17T14:57:00+02:00 | `git commit -m "Prepare Q1 evidence release"` followed by `git push origin main` | Success | Commit `5ccb965925089bca44e3073cd7b5168121106cb4` pushed to `main` | Includes CSE-CIC full-sample evidence, advanced seed 99 evidence, Isolation Forest open-set snapshots, per-class heatmap, manuscript updates and tests. |
+| 2026-06-17T14:57:00+02:00 | `git tag -a v1.0.0 -m "Q1 submission version"` followed by `git push origin v1.0.0` | Success | Tag `v1.0.0` pushed; resolves to commit `5ccb965925089bca44e3073cd7b5168121106cb4` | Pre-push hooks ran `terraform fmt` and `tflint` successfully. |
+| 2026-06-17T14:58:00+02:00 | `gh release create v1.0.0 paper/main.pdf#FAIR-ML-CYBER-main.pdf --title "Q1 submission version" ...` | Success | https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 | Release is published, not draft, not prerelease; asset `FAIR-ML-CYBER-main.pdf` uploaded. |
+| 2026-06-17T14:58:00+02:00 | Zenodo availability check | Blocked | No local `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN`; Zenodo search returned no matching FAIR-ML-CYBER record | DOI not generated automatically. Manual Zenodo GitHub integration or a Zenodo token is required before adding a DOI to the manuscript. |
+
 ## Bugs, Failures, and Operational Issues
 
 This section records problems observed during implementation and experimentation. These issues must not be hidden in the article workflow. If a run is used in the paper, any relevant limitation below must be reflected in the method, threat-to-validity, reproducibility or appendix sections.

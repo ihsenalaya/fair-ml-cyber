@@ -1,10 +1,10 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #8)
+**Dernier check** : 2026-06-17 (check #9)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
-**Statut global** : 🟠 Proche soumission — 12/15 résolus. C2/C3 bloqués Azure ML. I4 reconnu dans le manuscrit.
+**Statut global** : 🟠 Proche soumission — 12/15 résolus. C2/C3 bloqués Azure ML. A5 partiel: GitHub Release faite, DOI Zenodo absent.
 
 ---
 
@@ -155,9 +155,11 @@
 
 ### A5 — Artifacts publics + DOI GitHub
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⬜ Absent
-- **Vérification check #1** : `.git/refs/tags/` vide. Aucune référence Zenodo dans le dépôt.
-- **Action** : Créer release GitHub + DOI Zenodo. Documenter l'accès aux données.
+- **Statut** : ⏳ Partiel — tag git `v1.0.0` + GitHub Release créés, DOI Zenodo absent
+- **Vérification check #1** : `.git/refs/tags/` vide.
+- **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
+- **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
+- **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis l'ajouter dans `paper/main.tex` (Data Availability).
 
 ---
 
@@ -203,12 +205,12 @@
 | A2 — Heatmap | 🟡 | ✅ Résolu | **OUI** |
 | A3 — Tableau SOC | 🟡 | ✅ Résolu | **OUI** |
 | A4 — Choix modèles | 🟡 | ✅ Résolu | **OUI** |
-| A5 — DOI Zenodo | 🟡 | ⬜ Absent | Non |
+| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, DOI manquant | Non |
 | A6 — Effect sizes | 🟡 | ⏳ Délibéré | **OUI** |
 
 **Résolus** : C1, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **12 points fermés**
 **Bloquants restants** : C2, C3 (2 critiques — dépendent Azure ML)
-**Absents** : A5 (1 mineur)
+**Partiels mineurs** : A5 (release GitHub faite, DOI Zenodo absent)
 
 ---
 
@@ -229,7 +231,7 @@
 - [x] **A2** : Créer heatmap F1 per-class × split protocol
 - [x] **A3** : Ajouter tableau Practical Guidance (SOC)
 - [x] **A4** : 1–2 phrases justifiant absence DNN
-- [ ] **A5** : Release GitHub + DOI Zenodo
+- [~] **A5** : Release GitHub faite (`v1.0.0`), DOI Zenodo à générer
 - [ ] Révision interne complète + soumission
 
 ---
@@ -269,6 +271,8 @@
 | Check #5 | 2026-06-17 | 0 nouveau — C1/C2/C3 toujours bloquants Azure/données, I4/A5 inchangés | 5 |
 | Check #6 | 2026-06-17 | C2 avance : advanced-core-s99-001 arrivé. s7 toujours manquant. 10/15 résolus | 5 |
 | Check #7 | 2026-06-17 | +1 (C1 ✅ via CSE-CIC full-sample 10 CSV/363K rows + UNSW access documenté) — 11 total | 4 |
+| Check #8 | 2026-06-17 | +1 (I4 ✅ — limitation XAI documentée dans main.tex lignes 353/410) — 12 total | 3 |
+| Check #9 | 2026-06-17 | A5 avance : tag v1.0.0 créé. C2/C3 toujours en attente Azure ML. 12/15 résolus | 3 |
 
 ---
 
