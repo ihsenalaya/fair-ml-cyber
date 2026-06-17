@@ -44,6 +44,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
 - `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
 - `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
+- `CSE_CIC_IDS2018_PARTIAL_RESULTS.md`: validation externe partielle vérifiée sur un sous-ensemble réel CSE-CIC-IDS2018.
 - `Q1_REVIEW_CRITIQUE.md` / `Q1_REVIEW_CRITIQUE.pdf`: revue critique simulée pour une soumission journal Q1.
 - `REVIEWER_REMARKS_VALIDATION.md`: validation une par une des remarques reviewer et actions nécessaires.
 - `SECOND_DATASET_SELECTION.md`: sélection argumentée d'une deuxième dataset publique, sans données générées cachées.
@@ -54,6 +55,7 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
 - `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
+- `evidence/cse-cic-ids2018-partial-s42-001/`: snapshot textuel suivi par Git de la validation externe partielle CSE-CIC-IDS2018.
 
 ## Etat actuel au 2026-06-17
 
@@ -89,6 +91,7 @@ Runs vérifiés:
 - répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 - rerun LR convergence `fullcore-lr2000-s42-001`: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence.
 - run avancé `advanced-core-s42-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
+- validation externe partielle CSE-CIC-IDS2018: 5 CSV publics téléchargés depuis la source UNB/AWS, 4,525,400 lignes auditées, hash `414f7195ee1e137a`, échantillon stratifié réel de 200,928 lignes, 12/12 runs binaires, 24 lignes de calibration et 8/8 runs open-set IsolationForest/LOF.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, utile pour le design expérimental.
 

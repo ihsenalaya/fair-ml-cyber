@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from fair_ml_cyber.data import canonicalize_column_name
 from fair_ml_cyber.hashing import hash_directory
 
 
@@ -38,15 +39,17 @@ def audit_csv_dir(csv_dir: str | Path, output_dir: str | Path | None = None) -> 
         ts_max = None
         with path.open("r", newline="", encoding="utf-8", errors="replace") as f:
             reader = csv.reader(f)
-            header = next(reader)
+            header = [canonicalize_column_name(c) for c in next(reader)]
             schema_hashes[tuple(header)] += 1
             label_idx = header.index("label")
             ts_idx = header.index("timestamp") if "timestamp" in header else None
             for row in reader:
                 if not row:
                     continue
-                rows += 1
                 label = row[label_idx].strip()
+                if label.lower() == "label":
+                    continue
+                rows += 1
                 labels[label] += 1
                 total_labels[label] += 1
                 if ts_idx is not None and len(row) > ts_idx:
@@ -96,4 +99,3 @@ def audit_csv_dir(csv_dir: str | Path, output_dir: str | Path | None = None) -> 
 
             json.dump(result, f, indent=2, default=str)
     return result
-

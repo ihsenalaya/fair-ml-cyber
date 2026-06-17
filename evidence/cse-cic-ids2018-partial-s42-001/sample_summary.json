@@ -1,0 +1,28 @@
+{
+  "csv_dir": "data/external/cse-cic-ids2018/raw",
+  "output_path": "data/external/cse-cic-ids2018/validation_sample/cse_cic_ids2018_q1_partial_sample.csv",
+  "rows": 200928,
+  "seen_label_counts": {
+    "Benign": 3764269,
+    "Bot": 286191,
+    "Brute Force -Web": 611,
+    "Brute Force -XSS": 230,
+    "FTP-BruteForce": 193360,
+    "Infilteration": 93063,
+    "SQL Injection": 87,
+    "SSH-Bruteforce": 187589
+  },
+  "sampled_label_counts": {
+    "Benign": 80000,
+    "Bot": 30000,
+    "Brute Force -Web": 611,
+    "Brute Force -XSS": 230,
+    "FTP-BruteForce": 30000,
+    "Infilteration": 30000,
+    "SQL Injection": 87,
+    "SSH-Bruteforce": 30000
+  },
+  "benign_cap": 80000,
+  "attack_cap": 30000,
+  "seed": 42
+}

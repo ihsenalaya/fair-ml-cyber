@@ -18,11 +18,11 @@ from fair_ml_cyber.experiment import _log_event
 from fair_ml_cyber.features import make_xy, select_feature_tier
 from fair_ml_cyber.hashing import hash_dataframe, hash_object
 from fair_ml_cyber.metrics import save_json
-from fair_ml_cyber.modeling import fit_predict
+from fair_ml_cyber.modeling import fit_predict, is_open_set_model
 from fair_ml_cyber.splits import open_set_holdout_split
 
 
-DEFAULT_OPEN_SET_MODELS = ["isolation_forest"]
+DEFAULT_OPEN_SET_MODELS = ["isolation_forest", "local_outlier_factor"]
 DEFAULT_OPEN_SET_FEATURE_TIERS = ["deployment_safe"]
 DEFAULT_UNKNOWN_FAMILIES = ["Web", "Botnet", "PortScan", "DDoS"]
 
@@ -39,7 +39,7 @@ def _unknown_score(
     y_prob: np.ndarray,
     y_pred: np.ndarray,
 ) -> tuple[np.ndarray, str]:
-    if model_name == "isolation_forest":
+    if is_open_set_model(model_name):
         return np.asarray(y_prob, dtype=float), "anomaly_score"
     score = 1.0 - np.maximum(y_prob, 1.0 - y_prob)
     return np.asarray(score, dtype=float), "classifier_uncertainty"
@@ -137,7 +137,7 @@ def run_open_set_baselines(
                     review = score >= threshold
                     unknown_mask = y_unknown.to_numpy().astype(bool)
 
-                    if model_name == "isolation_forest":
+                    if is_open_set_model(model_name):
                         attack_pred = fit.y_pred.astype(int)
                     else:
                         attack_pred = (np.asarray(y_prob, dtype=float) >= 0.5).astype(int)

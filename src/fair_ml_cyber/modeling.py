@@ -8,15 +8,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import joblib
 import numpy as np
 import pandas as pd
+import joblib
 from sklearn.ensemble import HistGradientBoostingClassifier, IsolationForest, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import LocalOutlierFactor
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
+from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import StandardScaler
 
 
@@ -112,7 +114,35 @@ def build_model(model_name: str, seed: int = 42) -> Any:
                 ),
             ]
         )
+    if model_name == "local_outlier_factor":
+        return Pipeline(
+            [
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", StandardScaler()),
+                (
+                    "model",
+                    LocalOutlierFactor(
+                        n_neighbors=35,
+                        novelty=True,
+                        contamination="auto",
+                        n_jobs=-1,
+                    ),
+                ),
+            ]
+        )
+    if model_name == "one_class_svm":
+        return Pipeline(
+            [
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", StandardScaler()),
+                ("model", OneClassSVM(gamma="scale", nu=0.05)),
+            ]
+        )
     raise ValueError(f"Unknown model: {model_name}")
+
+
+def is_open_set_model(model_name: str) -> bool:
+    return model_name in {"isolation_forest", "local_outlier_factor", "one_class_svm"}
 
 
 def fit_predict(
@@ -126,7 +156,7 @@ def fit_predict(
     train_start = time.perf_counter()
     with warnings.catch_warnings(record=True) as caught_warnings:
         warnings.simplefilter("always")
-        if model_name == "isolation_forest":
+        if is_open_set_model(model_name):
             benign_mask = y_train.astype(int) == 0
             model.fit(X_train.loc[benign_mask])
         else:
@@ -138,7 +168,7 @@ def fit_predict(
     )
 
     infer_start = time.perf_counter()
-    if model_name == "isolation_forest":
+    if is_open_set_model(model_name):
         raw_pred = model.predict(X_test)
         y_pred = (raw_pred == -1).astype(int)
         scores = -model.decision_function(X_test)

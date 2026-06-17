@@ -1,0 +1,31 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: fair-ml-cyber-full-core-lr2000-nohour-seed7
+experiment_name: fair-ml-cyber
+description: Full-data LogisticRegression rerun with max_iter=2000 after excluding timestamp-derived hour, seed 7.
+code: ..
+command: >-
+  python -m pip install --upgrade pip &&
+  python -m pip install -r requirements.txt &&
+  python -m pip install -e . --no-deps &&
+  python -m fair_ml_cyber.cli run-experiment
+  --csv-dir ${{inputs.csv_dir}}
+  --work-dir ${{outputs.work_dir}}
+  --seed 7
+  --models logistic_regression
+  --feature-tiers no_identity,deployment_safe
+  --splits random_stratified,temporal,latest_day_holdout,scenario_holdout_Web,endpoint_pair_holdout
+  --result-prefix fullcore_lr2000_nohour_s7
+  --no-save-models
+  --no-save-prepared
+inputs:
+  csv_dir:
+    type: uri_folder
+    path: azureml:fair_ml_cyber_csvs:1
+outputs:
+  work_dir:
+    type: uri_folder
+compute: azureml:cpu-memory-cluster
+environment: azureml:fair-ml-cyber-runtime-env:1
+resources:
+  instance_count: 1

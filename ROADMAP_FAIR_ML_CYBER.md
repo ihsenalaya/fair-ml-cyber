@@ -64,6 +64,7 @@ Ce qui n'est pas encore terminé:
 - analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; seeds 7 et 99 à répéter si le budget Azure le permet;
 - remarques reviewer Q1 validées dans `REVIEWER_REMARKS_VALIDATION.md`;
 - deuxième dataset publique recommandée dans `SECOND_DATASET_SELECTION.md`: priorité à CIC-UNSW-NB15 Augmented Dataset; aucune donnée générée/RAG ne doit être présentée comme trafic réel;
+- validation externe partielle CSE-CIC-IDS2018 exécutée sur 5 CSV publics UNB/AWS: 4,525,400 lignes auditées, échantillon réel stratifié de 200,928 lignes, baseline binaire LR/HGB/RF, calibration raw/Platt/isotonic et open-set IsolationForest/LOF; résultats dans `CSE_CIC_IDS2018_PARTIAL_RESULTS.md` et `evidence/cse-cic-ids2018-partial-s42-001/`;
 - draft LaTeX/PDF de review généré dans `paper/main.tex` et `paper/main.pdf`; il reste à renforcer avant une soumission finale.
 
 ---

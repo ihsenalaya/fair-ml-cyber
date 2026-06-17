@@ -11,6 +11,7 @@ from fair_ml_cyber.advanced import run_advanced_analysis
 from fair_ml_cyber.calibration import run_calibration_baselines
 from fair_ml_cyber.experiment import run_experiment, run_smoke
 from fair_ml_cyber.open_set import run_open_set_baselines
+from fair_ml_cyber.sampling import build_stratified_sample
 
 
 def _csv_list(value: str) -> list[str]:
@@ -98,7 +99,7 @@ def main() -> None:
     open_set.add_argument(
         "--models",
         type=_csv_list,
-        default=_csv_list("isolation_forest"),
+        default=_csv_list("isolation_forest,local_outlier_factor"),
     )
     open_set.add_argument(
         "--feature-tiers",
@@ -139,6 +140,17 @@ def main() -> None:
         ),
     )
     calibration.add_argument("--result-prefix", default="calibration_baselines")
+
+    sample = sub.add_parser(
+        "build-stratified-sample",
+        help="Build a label-stratified real-data sample from large CSV files",
+    )
+    sample.add_argument("--csv-dir", required=True, type=Path)
+    sample.add_argument("--output-dir", required=True, type=Path)
+    sample.add_argument("--benign-cap", type=int, default=80_000)
+    sample.add_argument("--attack-cap", type=int, default=30_000)
+    sample.add_argument("--seed", type=int, default=42)
+    sample.add_argument("--result-name", default="stratified_sample.csv")
 
     args = parser.parse_args()
 
@@ -194,6 +206,15 @@ def main() -> None:
             feature_tiers=args.feature_tiers,
             split_protocols=args.splits,
             result_prefix=args.result_prefix,
+        )
+    elif args.command == "build-stratified-sample":
+        result = build_stratified_sample(
+            args.csv_dir,
+            args.output_dir,
+            benign_cap=args.benign_cap,
+            attack_cap=args.attack_cap,
+            seed=args.seed,
+            result_name=args.result_name,
         )
     else:
         raise ValueError(args.command)

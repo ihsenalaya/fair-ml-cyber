@@ -15,6 +15,7 @@ IDENTITY_COLUMNS = {
     "dst_ip",
     "source_file",
     "day",
+    "hour",
 }
 TARGET_COLUMNS = {"label", "binary_label", "attack_family"}
 PORT_COLUMNS = {"src_port", "dst_port"}

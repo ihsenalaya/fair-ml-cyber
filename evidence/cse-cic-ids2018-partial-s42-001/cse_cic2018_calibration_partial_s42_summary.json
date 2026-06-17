@@ -1,0 +1,28 @@
+{
+  "audit": {
+    "num_files": 1,
+    "total_rows": 200928,
+    "data_hash": "d90aca82728746b3"
+  },
+  "sample_rows": 200928,
+  "seed": 42,
+  "models": [
+    "logistic_regression",
+    "hist_gradient_boosting"
+  ],
+  "feature_tiers": [
+    "deployment_safe"
+  ],
+  "split_protocols": [
+    "random_stratified",
+    "temporal",
+    "latest_day_holdout",
+    "scenario_holdout_Web"
+  ],
+  "skipped_splits": [],
+  "results_path": "data/external/cse-cic-ids2018/runs/calibration_partial_s42/calibration_results/cse_cic2018_calibration_partial_s42_results.csv",
+  "events_path": "data/external/cse-cic-ids2018/runs/calibration_partial_s42/calibration_results/cse_cic2018_calibration_partial_s42_events.jsonl",
+  "rows": 24,
+  "failed_rows": 0,
+  "created_at_utc": "2026-06-17T10:29:31Z"
+}

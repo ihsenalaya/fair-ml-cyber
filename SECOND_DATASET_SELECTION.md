@@ -14,6 +14,22 @@ https://www.unb.ca/cic/datasets/cic-unsw-nb15.html
 
 This is the best immediate candidate because it is an external underlying dataset derived from UNSW-NB15, while still using CICFlowMeter-style flow extraction. This gives a realistic chance of integrating it into the current FAIR-ML-CYBER pipeline without fabricating data or rewriting the entire feature layer.
 
+## Execution Update - 2026-06-17
+
+The CIC-UNSW-NB15 official download currently opens a CIC registration form. Because the form requires personal information, no automated download was performed with invented identity data.
+
+To keep the Q1 repair moving with a fully public source, a partial external validation was executed with **CSE-CIC-IDS2018** from the official UNB/AWS public dataset:
+
+- source page: https://www.unb.ca/cic/datasets/ids-2018.html
+- public prefix: `s3://cse-cic-ids2018/Processed Traffic Data for ML Algorithms/`
+- downloaded files: 5 CICFlowMeter CSV files
+- audited raw rows: 4,525,400
+- raw data hash: `414f7195ee1e137a`
+- validation sample rows: 200,928
+- tracked evidence: `evidence/cse-cic-ids2018-partial-s42-001/`
+
+This does not replace the stronger future option of adding CIC-UNSW-NB15 after legitimate form-based download, but it provides a real, free, citable external validation result now.
+
 ## Non-Negotiable Rule
 
 No generated/RAG-created records will be used as if they were real traffic. If synthetic data is ever used, it must be explicitly labelled as synthetic and excluded from empirical claims about real datasets.
@@ -115,4 +131,3 @@ Use in FAIR-ML-CYBER:
 ## Manuscript Rule
 
 The manuscript must cite the second dataset source and describe preprocessing honestly. It should never say or imply that generated data is real observed network traffic.
-

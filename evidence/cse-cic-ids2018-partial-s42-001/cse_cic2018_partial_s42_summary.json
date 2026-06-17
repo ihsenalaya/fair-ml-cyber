@@ -1,0 +1,20 @@
+{
+  "audit": {
+    "num_files": 1,
+    "total_rows": 200928,
+    "data_hash": "d90aca82728746b3"
+  },
+  "sample_rows": 200928,
+  "prepared_path": null,
+  "results_path": "data/external/cse-cic-ids2018/runs/partial_s42/results/cse_cic2018_partial_s42_results.csv",
+  "events_path": "data/external/cse-cic-ids2018/runs/partial_s42/results/cse_cic2018_partial_s42_events.jsonl",
+  "runs": 12,
+  "completed_runs": 12,
+  "failed_runs": 0,
+  "skipped_splits": [
+    {
+      "split_protocol": "endpoint_pair_holdout",
+      "reason": "Endpoint holdout requires ['src_ip', 'dst_ip', 'dst_port', 'protocol']"
+    }
+  ]
+}
