@@ -115,6 +115,7 @@ def run_experiment(
     split_protocols: Sequence[str] | None = None,
     result_prefix: str = "experiment",
     save_models: bool = True,
+    save_prepared_data: bool = True,
 ) -> dict:
     work_dir = Path(work_dir)
     work_dir.mkdir(parents=True, exist_ok=True)
@@ -137,15 +138,19 @@ def run_experiment(
         models=models,
         feature_tiers=feature_tiers,
         split_protocols=split_protocols,
+        save_models=save_models,
+        save_prepared_data=save_prepared_data,
     )
 
     audit = audit_csv_dir(csv_dir, work_dir / "audit")
     plot_label_distribution(work_dir / "audit" / "label_distribution.csv", work_dir / "figures" / "labels.png")
 
     df = load_csvs(csv_dir, sample_per_file=sample_per_file, random_state=seed)
-    prepared_name = "sample.parquet" if sample_per_file else "full.parquet"
-    prepared_path = work_dir / "processed" / prepared_name
-    save_prepared(df, prepared_path)
+    prepared_path = None
+    if save_prepared_data:
+        prepared_name = "sample.parquet" if sample_per_file else "full.parquet"
+        prepared_path = work_dir / "processed" / prepared_name
+        save_prepared(df, prepared_path)
     data_hash = hash_dataframe(df)
 
     split_objects, skipped_splits = _build_splits(df, split_protocols, seed=seed)
@@ -261,6 +266,7 @@ def run_experiment(
             "data_hash": audit["data_hash"],
         },
         "sample_rows": len(df),
+        "prepared_path": str(prepared_path) if prepared_path else None,
         "results_path": str(results_path),
         "events_path": str(events_path),
         "runs": len(results),

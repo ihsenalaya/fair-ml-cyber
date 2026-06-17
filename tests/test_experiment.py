@@ -46,6 +46,7 @@ def test_run_experiment_writes_results_and_events(tmp_path):
         split_protocols=["random_stratified"],
         result_prefix="unit",
         save_models=False,
+        save_prepared_data=False,
     )
 
     results_path = tmp_path / "work" / "results" / "unit_results.csv"
@@ -55,8 +56,10 @@ def test_run_experiment_writes_results_and_events(tmp_path):
     assert summary["runs"] == 1
     assert summary["completed_runs"] == 1
     assert summary["failed_runs"] == 0
+    assert summary["prepared_path"] is None
     assert summary["results_path"] == str(results_path)
     assert events_path.exists()
+    assert not (tmp_path / "work" / "processed" / "full.parquet").exists()
     assert results.loc[0, "status"] == "completed"
     assert results.loc[0, "n_train"] > 0
     assert "experiment_completed" in events_path.read_text(encoding="utf-8")

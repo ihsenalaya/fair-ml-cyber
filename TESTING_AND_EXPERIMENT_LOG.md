@@ -68,6 +68,7 @@ Python package versions observed on 2026-06-16T21:36:46+02:00:
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 35.55 s wall clock | Failed: 1 of 13 tests | CPU 169%; max RSS 346,532 KB; exit status 1; first test for the configurable experiment engine found a real bug: `_log_event()` received duplicate `events_path` arguments when logging the final experiment summary |
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest tests/test_experiment.py::test_run_experiment_writes_results_and_events -q` | 14.48 s wall clock | Passed: 1 targeted test | CPU 100%; max RSS 338,220 KB; exit status 0; verifies that `run_experiment()` writes results, summary and JSONL events after the `_log_event()` fix |
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 18.00 s wall clock | Passed: 13 tests | CPU 114%; max RSS 347,496 KB; exit status 0; validates the configurable experiment engine, CLI parsing support, MLflow environment isolation, feature tiers, metrics, hashing and split helpers |
+| 2026-06-17 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 30.41 s wall clock | Passed: 13 tests | CPU 92%; max RSS 339,796 KB; exit status 0; validates `--no-save-prepared`/`save_prepared_data=False` before preparing full-data Azure runs with reduced artifact size |
 
 ## Dataset Audit Runs
 
@@ -131,6 +132,8 @@ Only these can be used as scientific results if completed and verified.
 Current status on 2026-06-16: no full experiment has completed yet. The completed local/Azure ML smoke runs validate the pipeline, and `pilot10k-001` provides a larger design signal, but none of these runs is final paper evidence.
 
 Azure ML pilot definition `azureml/pilot_job.yml` has been submitted and completed as `pilot10k-001`. It is summarized in the pilot section and in `PILOT10K_RESULTS.md`. It remains pilot-only evidence and must not be reported as a final full experiment.
+
+Prepared next Azure ML full-data core definition: `azureml/full_core_job.yml` runs `run-experiment` on the full registered data asset with seed 42, models `logistic_regression` and `hist_gradient_boosting`, feature tiers `no_identity` and `deployment_safe`, and the five validated split protocols. It uses `--no-save-models` and `--no-save-prepared` to keep artifacts smaller. It has not been submitted yet in this log entry.
 
 | Timestamp | Command | Duration | Rows | Models | Splits | Feature tiers | Result file |
 |---|---|---:|---:|---|---|---|---|

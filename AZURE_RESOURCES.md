@@ -318,7 +318,7 @@ Pour cet article, ne pas créer au départ:
 2. Création data asset Azure ML `fair_ml_cyber_csvs:1`: fait.
 3. Job Azure ML smoke `smoke-runtime-002`: fait, 30/30 runs complétés.
 4. Job Azure ML pilote `pilot10k-001`: fait, 30/30 runs complétés.
-5. Full experiment final: à faire.
+5. Job Azure ML full-core `azureml/full_core_job.yml`: préparé; soumission à exécuter depuis un commit propre.
 6. `evaluate_transferability`: Cyber Transferability Score à ajouter.
 7. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
 8. `evaluate_explainability`: SHAP/permutation stability à ajouter.
@@ -368,6 +368,12 @@ Ajouter plus tard:
 |---|---|---:|---:|---|---|
 | `smoke-runtime-002` | Smoke validation | 31,394 lignes | 30 | Completed | Valide pipeline Azure complet |
 | `pilot10k-001` | Pilot experiment | 125,517 lignes | 30 | Completed | Signal scientifique fort mais non final |
+
+Job préparé pour la suite:
+
+| Job YAML | Objectif | Artefacts |
+|---|---|---|
+| `azureml/full_core_job.yml` | Full-data core run avec Logistic Regression et HistGradientBoosting sur 5 splits et 2 tiers | `--no-save-models`, `--no-save-prepared` pour limiter le volume |
 
 Artefacts locaux:
 

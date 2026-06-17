@@ -31,6 +31,7 @@ Travail terminé et vérifié:
 - moteur configurable `run-experiment` ajouté;
 - pilote Azure ML `pilot10k-001` validé: 125,517 lignes, 30/30 runs complétés, 0 échec;
 - artefacts pilote téléchargés et analysés localement;
+- job full-data core `azureml/full_core_job.yml` préparé avec artefacts réduits;
 - bugs/dysfonctionnements documentés dans `TESTING_AND_EXPERIMENT_LOG.md`.
 
 Signal scientifique observé dans le pilote:
@@ -43,6 +44,7 @@ Signal scientifique observé dans le pilote:
 Ce qui n'est pas encore terminé:
 
 - aucun full experiment final n'a encore été validé;
+- le full-data core est prêt à soumettre mais pas encore validé;
 - pas encore de répétitions multi-seed;
 - pas encore de CTS final;
 - pas encore d'analyse multi-classe/rare-class complète;

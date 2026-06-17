@@ -53,6 +53,7 @@ def main() -> None:
     )
     experiment.add_argument("--result-prefix", default="experiment")
     experiment.add_argument("--no-save-models", action="store_true")
+    experiment.add_argument("--no-save-prepared", action="store_true")
 
     args = parser.parse_args()
 
@@ -71,6 +72,7 @@ def main() -> None:
             split_protocols=args.splits,
             result_prefix=args.result_prefix,
             save_models=not args.no_save_models,
+            save_prepared_data=not args.no_save_prepared,
         )
     else:
         raise ValueError(args.command)

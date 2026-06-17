@@ -54,6 +54,7 @@ Le projet n'est plus seulement au stade proposition. Un pipeline reproductible e
 - logging MLflow local SQLite;
 - sorties CSV/JSON/JSONL, figures et modèles;
 - exécution Azure ML via `azureml/smoke_job.yml` et `azureml/pilot_job.yml`.
+- préparation du job full-data léger `azureml/full_core_job.yml`.
 
 Ressources Azure créées et validées:
 
@@ -70,6 +71,8 @@ Runs vérifiés:
 - pilote Azure ML `pilot10k-001`: 125,517 lignes échantillonnées, 30/30 runs complétés, artefacts téléchargés localement.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, pas encore la preuve finale de l'article.
+
+Depuis le 2026-06-17, le prochain job préparé est `azureml/full_core_job.yml`: full data, seed 42, Logistic Regression + HistGradientBoosting, deux feature tiers, cinq splits, sans sauvegarde des modèles ni du parquet préparé pour limiter les artefacts Azure.
 
 ## Positionnement Q1
 
