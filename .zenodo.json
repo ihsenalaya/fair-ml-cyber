@@ -1,0 +1,38 @@
+{
+  "title": "FAIR-ML-CYBER: A Reproducible Stress-Test Framework for Flow-Based Network Intrusion Detection",
+  "upload_type": "software",
+  "description": "FAIR-ML-CYBER provides a reproducible evaluation framework and evidence snapshot for deployment-oriented stress testing of flow-based network intrusion detection models, including temporal, scenario, endpoint, rare-class, open-set, calibration, abstention and explanation-stability analyses.",
+  "creators": [
+    {
+      "name": "Alaya, Ihsen",
+      "affiliation": "FAIR-ML-CYBER project"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "network intrusion detection",
+    "CICIDS2017",
+    "CSE-CIC-IDS2018",
+    "machine learning",
+    "stress testing",
+    "temporal validation",
+    "open-set recognition",
+    "calibration",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/ihsenalaya/fair-ml-cyber",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1",
+      "relation": "isVersionOf",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ]
+}

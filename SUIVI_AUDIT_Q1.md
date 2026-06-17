@@ -1,7 +1,7 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #15)
+**Dernier check** : 2026-06-17 (check #16)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
 **Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
@@ -162,6 +162,7 @@
 - **Vérification check #12** : tag annoté `v1.0.1` poussé et GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 avec le PDF reconstruit après intégration seed 7.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
 - **Vérification manuscrit check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
+- **Vérification check #16** : `.zenodo.json` et `CITATION.cff` préparés pour l'archivage, sans inventer de DOI.
 - **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
@@ -282,6 +283,7 @@
 | Check #13 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. PDF recompilé. Log inchangé. 13/15 résolus | 2 |
 | Check #14 | 2026-06-17 | 0 nouveau — C3 toujours absent evidence/. Log inchangé. 13/15 résolus | 2 |
 | Check #15 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. Aucun fichier récent. 13/15 résolus | 2 |
+| Check #16 | 2026-06-17 | 0 nouveau résolu — C3 relancé en duplicata sur `cpu-cluster` (`fullcore-lr2000-nohour-s7-cpu-001`, `fullcore-lr2000-nohour-s99-cpu-001`) et A5 préparé avec `.zenodo.json`/`CITATION.cff`. DOI toujours absent. 13/15 résolus | 2 |
 
 ---
 
