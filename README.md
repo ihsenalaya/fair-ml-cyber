@@ -45,6 +45,8 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
 - `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
 - `Q1_REVIEW_CRITIQUE.md` / `Q1_REVIEW_CRITIQUE.pdf`: revue critique simulée pour une soumission journal Q1.
+- `REVIEWER_REMARKS_VALIDATION.md`: validation une par une des remarques reviewer et actions nécessaires.
+- `SECOND_DATASET_SELECTION.md`: sélection argumentée d'une deuxième dataset publique, sans données générées cachées.
 - `paper/main.tex` / `paper/main.pdf`: manuscrit LaTeX et PDF de review de l'article.
 - `evidence/fullcore-mem-s42-001/`: snapshot textuel suivi par Git des résultats full-data vérifiés.
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
