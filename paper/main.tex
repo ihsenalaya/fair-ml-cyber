@@ -110,7 +110,7 @@ For open-set analysis, one attack family is excluded from training and evaluated
 
 \subsection{Models}
 
-The verified full-data core experiments use LogisticRegression (LR) and HistGradientBoosting (HGB). RandomForest was validated in pilot and external-sample experiments but was not executed in full-data core due to memory/artifact-risk constraints. We do not claim a new detector architecture and therefore do not optimize deep neural networks in this manuscript; the goal is to test whether common, reproducible tabular baselines remain reliable under deployment-oriented splits. LogisticRegression initially produced convergence warnings at \texttt{max\_iter=500}. A seed-42 rerun with \texttt{max\_iter=2000} completed 10/10 LR runs with zero convergence warnings.
+The verified full-data core experiments use LogisticRegression (LR) and HistGradientBoosting (HGB). RandomForest was validated in pilot and external-sample experiments but was not executed in full-data core due to memory/artifact-risk constraints. We do not claim a new detector architecture and therefore do not optimize deep neural networks in this manuscript; the goal is to test whether common, reproducible tabular baselines remain reliable under deployment-oriented splits. LogisticRegression initially produced convergence warnings at \texttt{max\_iter=500}. A seed-42 rerun with \texttt{max\_iter=2000} completed 10/10 LR runs with zero convergence warnings. Corrected LR2000/nohour reruns for seeds 7 and 99 also completed 10/10 runs per seed with zero warnings and zero convergence warnings.
 
 \subsection{Metrics}
 
@@ -403,10 +403,10 @@ The main evidence still comes from one CICIDS2017-like dataset. The CSE-CIC-IDS2
 The study uses macro-F1, CTS, calibration error, selective prediction and explanation overlap as deployment-reliability proxies. These metrics capture important failure modes but do not fully encode SOC cost, alert fatigue, incident criticality or analyst workflow. The practical guidance should therefore be interpreted as evaluation guidance, not as a deployment certification.
 
 \paragraph{Conclusion validity.}
-The binary core is validated on seeds 42, 7 and 99, and the paired random-vs-stress statistics use the six available seed-by-feature-tier units. The advanced analyses are also available for seeds 42, 7 and 99, but HGB explanation stability still uses lightweight permutation importance and should not be over-claimed as a high-precision XAI estimate. LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}; corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft.
+The binary core is validated on seeds 42, 7 and 99, and the paired random-vs-stress statistics use the six available seed-by-feature-tier units. The advanced analyses are also available for seeds 42, 7 and 99, but HGB explanation stability still uses lightweight permutation importance and should not be over-claimed as a high-precision XAI estimate. LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}; corrected LR2000/nohour reruns without the timestamp-derived \texttt{hour} feature completed for seeds 7 and 99 with zero warnings and zero convergence warnings. The original \texttt{max\_iter=500} LR rows remain historical and should not be used for convergence-clean claims.
 
 \paragraph{Open-set baseline strength.}
-The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, and separate full-data Isolation Forest jobs are completed for seeds 42 and 99. These are still baseline anomaly detectors, and seed 7 remains queued. A final version should compare additional open-set or anomaly approaches if scope permits.
+The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, and separate full-data Isolation Forest jobs are completed for seeds 42, 7 and 99. These are still baseline anomaly detectors. A final version should compare additional open-set or anomaly approaches if scope permits.
 
 \paragraph{Explanation precision.}
 HGB explanation stability uses lightweight permutation importance. A final version should use more repeats and confidence intervals.
@@ -425,6 +425,8 @@ The repository records Azure ML job names, Git commits, dataset hashes, feature 
   \item \texttt{evidence/fullcore-mem-s7-001/}
   \item \texttt{evidence/fullcore-mem-s99-001/}
   \item \texttt{evidence/fullcore-lr2000-s42-001/}
+  \item \texttt{evidence/fullcore-lr2000-nohour-s7-001/}
+  \item \texttt{evidence/fullcore-lr2000-nohour-s99-001/}
   \item \texttt{evidence/q1-stats-fullcore-multiseed-001/}
   \item \texttt{evidence/advanced-core-s42-001/}
   \item \texttt{evidence/advanced-core-s7-001/}
@@ -432,11 +434,12 @@ The repository records Azure ML job names, Git commits, dataset hashes, feature 
   \item \texttt{evidence/cse-cic-ids2018-partial-s42-001/}
   \item \texttt{evidence/cse-cic-ids2018-full-sample-s42-001/}
   \item \texttt{evidence/open-set-if-s42-001/}
+  \item \texttt{evidence/open-set-if-s7-001/}
   \item \texttt{evidence/open-set-if-s99-001/}
 \end{itemize}
 
-The code-and-evidence release for this draft is tagged as \texttt{v1.0.1} on GitHub:
-\url{https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1}.
+The code-and-evidence release for this draft is tagged as \texttt{v1.0.2} on GitHub:
+\url{https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.2}.
 The Zenodo DOI has not yet been minted in this draft; the final DOI must be inserted here once Zenodo archiving is completed.
 
 \bibliographystyle{plain}

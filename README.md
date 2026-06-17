@@ -42,10 +42,10 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `PILOT10K_RESULTS.md`: synthèse vérifiée du pilote Azure ML `pilot10k-001`.
 - `FULLCORE_MEM_S42_RESULTS.md`: synthèse vérifiée du run full-data Azure ML `fullcore-mem-s42-001`.
 - `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
-- `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
+- `LR2000_CONVERGENCE_RESULTS.md`: vérification des reruns LogisticRegression `max_iter=2000`, dont les corrections nohour seeds 7 et 99.
 - `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
-- `ADVANCED_CORE_MULTI_SEED_STATUS.md`: statut avancé seeds 42/99 validés, seed 7 encore Azure.
-- `OPEN_SET_IF_RESULTS.md`: baselines Isolation Forest full-data seeds 42/99.
+- `ADVANCED_CORE_MULTI_SEED_STATUS.md`: statut avancé seeds 42/7/99 validés.
+- `OPEN_SET_IF_RESULTS.md`: baselines Isolation Forest full-data seeds 42/7/99.
 - `CSE_CIC_IDS2018_PARTIAL_RESULTS.md`: validation externe partielle vérifiée sur un sous-ensemble réel CSE-CIC-IDS2018.
 - `CSE_CIC_IDS2018_FULL_SAMPLE_RESULTS.md`: validation externe CSE-CIC-IDS2018 sur les 10 CSV publics audités et un échantillon réel de 363,648 lignes.
 - `UNSW_NB15_ACCESS_ATTEMPT.md`: preuve d'accès officiel UNSW/CIC-UNSW tenté mais bloqué par SharePoint/formulaire.
@@ -58,13 +58,15 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
+- `evidence/fullcore-lr2000-nohour-s7-001/`: snapshot textuel suivi par Git du rerun LR2000/nohour convergence seed 7.
+- `evidence/fullcore-lr2000-nohour-s99-001/`: snapshot textuel suivi par Git du rerun LR2000/nohour convergence seed 99.
 - `evidence/q1-stats-fullcore-multiseed-001/`: snapshot statistique bootstrap 95%, tests appariés random-vs-stress et variance inter-seed.
 - `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
 - `evidence/advanced-core-s7-001/`: snapshot textuel suivi par Git du run avancé seed 7.
 - `evidence/advanced-core-s99-001/`: snapshot textuel suivi par Git du run avancé seed 99.
 - `evidence/cse-cic-ids2018-partial-s42-001/`: snapshot textuel suivi par Git de la validation externe partielle CSE-CIC-IDS2018.
 - `evidence/cse-cic-ids2018-full-sample-s42-001/`: snapshot textuel suivi par Git de la validation externe CSE-CIC-IDS2018 sur les 10 CSV publics audités.
-- `evidence/open-set-if-s42-001/` et `evidence/open-set-if-s99-001/`: snapshots textuels des baselines Isolation Forest full-data.
+- `evidence/open-set-if-s42-001/`, `evidence/open-set-if-s7-001/` et `evidence/open-set-if-s99-001/`: snapshots textuels des baselines Isolation Forest full-data.
 - `evidence/unsw-nb15-access-attempt-2026-06-17/`: trace d'accès officiel UNSW/CIC-UNSW.
 
 ## Etat actuel au 2026-06-17
@@ -100,15 +102,16 @@ Runs vérifiés:
 - répétition full-data Azure ML `fullcore-mem-s7-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement;
 - répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 - rerun LR convergence `fullcore-lr2000-s42-001`: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence.
+- reruns LR2000/nohour `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001`: 2,438,052 lignes chacun, 10/10 runs LogisticRegression complétés par seed, 0 warning, 0 warning de convergence.
 - run avancé `advanced-core-s42-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
 - run avancé `advanced-core-s7-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
 - run avancé `advanced-core-s99-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
-- baselines open-set Isolation Forest full-data: seeds 42 et 99 téléchargés; seed 7 encore en queue Azure.
+- baselines open-set Isolation Forest full-data: seeds 42, 7 et 99 téléchargés, 4/4 familles complétées par seed.
 - validation externe CSE-CIC-IDS2018: 10 CSV publics téléchargés depuis la source UNB/AWS, 16,232,943 lignes auditées, hash `96cd4ce8a085248a`, échantillon stratifié réel de 363,648 lignes, 12/12 runs binaires full-sample; calibration et open-set externes disponibles sur le sous-échantillon 200,928/50k.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, utile pour le design expérimental.
 
-Depuis le 2026-06-17, `azureml/full_core_job.yml` a été soumis comme `fullcore-s42-001` sur `Standard_DS3_v2`, mais il a échoué par `SIGKILL`, probablement out-of-memory, avant la fin du premier modèle full-data. Le rerun `fullcore-mem-s42-001` sur `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0, max 1) a terminé le protocole core: 2 feature tiers, 5 splits, 2 modèles, 20/20 runs complétés. Les répétitions `fullcore-mem-s7-001` et `fullcore-mem-s99-001` ont aussi terminé 20/20 runs. Le rerun `fullcore-lr2000-s42-001` a ensuite vérifié que `max_iter=2000` supprime les warnings de convergence LogisticRegression pour seed 42. Après correction de l'exclusion de `hour`, les jobs LR2000 corrigés `fullcore-lr2000-nohour-s42-001`, `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` sont soumis et en attente sur Azure ML.
+Depuis le 2026-06-17, `azureml/full_core_job.yml` a été soumis comme `fullcore-s42-001` sur `Standard_DS3_v2`, mais il a échoué par `SIGKILL`, probablement out-of-memory, avant la fin du premier modèle full-data. Le rerun `fullcore-mem-s42-001` sur `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0, max 1) a terminé le protocole core: 2 feature tiers, 5 splits, 2 modèles, 20/20 runs complétés. Les répétitions `fullcore-mem-s7-001` et `fullcore-mem-s99-001` ont aussi terminé 20/20 runs. Le rerun `fullcore-lr2000-s42-001` a ensuite vérifié que `max_iter=2000` supprime les warnings de convergence LogisticRegression pour seed 42. Après correction de l'exclusion de `hour`, les reruns LR2000/nohour `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` ont terminé 10/10 runs chacun avec 0 warning et 0 warning de convergence; les anciennes lignes LR `max_iter=500` restent donc historiques.
 
 Signal full-data vérifié:
 
@@ -136,7 +139,7 @@ Important: un papier basé uniquement sur un modèle ML classique et CICIDS2017 
 
 La prochaine étape scientifique est de compléter le protocole final:
 
-- attendre et intégrer les artefacts `fullcore-lr2000-nohour-*` pour produire des tables LR multi-seed convergence-clean sans feature `hour`;
+- utiliser les artefacts `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` pour produire les tables LR multi-seed convergence-clean sans feature `hour`;
 - éviter de sauvegarder tous les modèles si les artefacts deviennent trop lourds;
 - ajouter les métriques de portabilité CTS;
 - répéter le run avancé sur seeds 7 et 99 si le budget Azure le permet;

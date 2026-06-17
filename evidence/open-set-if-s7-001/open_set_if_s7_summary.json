@@ -1,0 +1,27 @@
+{
+  "audit": {
+    "num_files": 18,
+    "total_rows": 2438052,
+    "data_hash": "f51899df9bd60758"
+  },
+  "sample_rows": 2438052,
+  "seed": 7,
+  "models": [
+    "isolation_forest"
+  ],
+  "feature_tiers": [
+    "deployment_safe"
+  ],
+  "unknown_families": [
+    "Web",
+    "Botnet",
+    "PortScan",
+    "DDoS"
+  ],
+  "results_path": "/mnt/azureml/cr/j/303fe811e967469593dbffef7d50c3c0/cap/data-capability/wd/work_dir/open_set_results/open_set_if_s7_results.csv",
+  "events_path": "/mnt/azureml/cr/j/303fe811e967469593dbffef7d50c3c0/cap/data-capability/wd/work_dir/open_set_results/open_set_if_s7_events.jsonl",
+  "runs": 4,
+  "completed_runs": 4,
+  "failed_runs": 0,
+  "created_at_utc": "2026-06-17T13:03:53Z"
+}

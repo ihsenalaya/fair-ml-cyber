@@ -1,0 +1,404 @@
+{
+  "csv_dir": "/mnt/azureml/cr/j/60332c1306864044a4956286f3e17841/cap/data-capability/wd/INPUT_csv_dir",
+  "data_hash": "f51899df9bd60758",
+  "num_files": 18,
+  "total_rows": 2438052,
+  "unique_schemas": 1,
+  "columns": [
+    "flow_id",
+    "timestamp",
+    "src_ip",
+    "src_port",
+    "dst_ip",
+    "dst_port",
+    "protocol",
+    "duration",
+    "packets_count",
+    "fwd_packets_count",
+    "bwd_packets_count",
+    "total_payload_bytes",
+    "fwd_total_payload_bytes",
+    "bwd_total_payload_bytes",
+    "payload_bytes_max",
+    "payload_bytes_min",
+    "payload_bytes_mean",
+    "payload_bytes_std",
+    "payload_bytes_variance",
+    "fwd_payload_bytes_max",
+    "fwd_payload_bytes_min",
+    "fwd_payload_bytes_mean",
+    "fwd_payload_bytes_std",
+    "fwd_payload_bytes_variance",
+    "bwd_payload_bytes_max",
+    "bwd_payload_bytes_min",
+    "bwd_payload_bytes_mean",
+    "bwd_payload_bytes_std",
+    "bwd_payload_bytes_variance",
+    "total_header_bytes",
+    "max_header_bytes",
+    "min_header_bytes",
+    "mean_header_bytes",
+    "std_header_bytes",
+    "fwd_total_header_bytes",
+    "fwd_max_header_bytes",
+    "fwd_min_header_bytes",
+    "fwd_mean_header_bytes",
+    "fwd_std_header_bytes",
+    "bwd_total_header_bytes",
+    "bwd_max_header_bytes",
+    "bwd_min_header_bytes",
+    "bwd_mean_header_bytes",
+    "bwd_std_header_bytes",
+    "fwd_avg_segment_size",
+    "bwd_avg_segment_size",
+    "avg_segment_size",
+    "fwd_init_win_bytes",
+    "bwd_init_win_bytes",
+    "active_min",
+    "active_max",
+    "active_mean",
+    "active_std",
+    "idle_min",
+    "idle_max",
+    "idle_mean",
+    "idle_std",
+    "bytes_rate",
+    "fwd_bytes_rate",
+    "bwd_bytes_rate",
+    "packets_rate",
+    "bwd_packets_rate",
+    "fwd_packets_rate",
+    "down_up_rate",
+    "avg_fwd_bytes_per_bulk",
+    "avg_fwd_packets_per_bulk",
+    "avg_fwd_bulk_rate",
+    "avg_bwd_bytes_per_bulk",
+    "avg_bwd_packets_bulk_rate",
+    "avg_bwd_bulk_rate",
+    "fwd_bulk_state_count",
+    "fwd_bulk_total_size",
+    "fwd_bulk_per_packet",
+    "fwd_bulk_duration",
+    "bwd_bulk_state_count",
+    "bwd_bulk_total_size",
+    "bwd_bulk_per_packet",
+    "bwd_bulk_duration",
+    "fin_flag_counts",
+    "psh_flag_counts",
+    "urg_flag_counts",
+    "ece_flag_counts",
+    "syn_flag_counts",
+    "ack_flag_counts",
+    "cwr_flag_counts",
+    "rst_flag_counts",
+    "fwd_fin_flag_counts",
+    "fwd_psh_flag_counts",
+    "fwd_urg_flag_counts",
+    "fwd_ece_flag_counts",
+    "fwd_syn_flag_counts",
+    "fwd_ack_flag_counts",
+    "fwd_cwr_flag_counts",
+    "fwd_rst_flag_counts",
+    "bwd_fin_flag_counts",
+    "bwd_psh_flag_counts",
+    "bwd_urg_flag_counts",
+    "bwd_ece_flag_counts",
+    "bwd_syn_flag_counts",
+    "bwd_ack_flag_counts",
+    "bwd_cwr_flag_counts",
+    "bwd_rst_flag_counts",
+    "packets_iat_mean",
+    "packet_iat_std",
+    "packet_iat_max",
+    "packet_iat_min",
+    "packet_iat_total",
+    "fwd_packets_iat_mean",
+    "fwd_packets_iat_std",
+    "fwd_packets_iat_max",
+    "fwd_packets_iat_min",
+    "fwd_packets_iat_total",
+    "bwd_packets_iat_mean",
+    "bwd_packets_iat_std",
+    "bwd_packets_iat_max",
+    "bwd_packets_iat_min",
+    "bwd_packets_iat_total",
+    "subflow_fwd_packets",
+    "subflow_bwd_packets",
+    "subflow_fwd_bytes",
+    "subflow_bwd_bytes",
+    "label"
+  ],
+  "missing_required_columns": [],
+  "files": [
+    {
+      "file": "botnet_ares.csv",
+      "bytes": 3970009,
+      "rows": 5508,
+      "columns": 122,
+      "labels": {
+        "Botnet_ARES": 5508
+      },
+      "timestamp_min": "2017-07-07 09:04:13.990571",
+      "timestamp_max": "2017-07-07 16:01:12.727507"
+    },
+    {
+      "file": "ddos_loit.csv",
+      "bytes": 91106783,
+      "rows": 95733,
+      "columns": 122,
+      "labels": {
+        "DDoS_LOIT": 95733
+      },
+      "timestamp_min": "2017-07-07 14:56:31.796937",
+      "timestamp_max": "2017-07-07 15:16:12.217066"
+    },
+    {
+      "file": "dos_golden_eye.csv",
+      "bytes": 8033918,
+      "rows": 8364,
+      "columns": 122,
+      "labels": {
+        "DoS_GoldenEye": 8364
+      },
+      "timestamp_min": "2017-07-05 10:10:03.231753",
+      "timestamp_max": "2017-07-05 10:29:16.370166"
+    },
+    {
+      "file": "dos_hulk.csv",
+      "bytes": 274531955,
+      "rows": 349240,
+      "columns": 122,
+      "labels": {
+        "DoS_Hulk": 349240
+      },
+      "timestamp_min": "2017-07-05 09:43:01.551240",
+      "timestamp_max": "2017-07-05 10:07:21.326171"
+    },
+    {
+      "file": "dos_slowhttptest.csv",
+      "bytes": 5259702,
+      "rows": 6860,
+      "columns": 122,
+      "labels": {
+        "DoS_Slowhttptest": 6860
+      },
+      "timestamp_min": "2017-07-05 09:14:02.572122",
+      "timestamp_max": "2017-07-05 09:42:57.755150"
+    },
+    {
+      "file": "dos_slowloris.csv",
+      "bytes": 4250619,
+      "rows": 5177,
+      "columns": 122,
+      "labels": {
+        "DoS_Slowloris": 5177
+      },
+      "timestamp_min": "2017-07-05 08:48:46.211817",
+      "timestamp_max": "2017-07-05 09:13:57.683251"
+    },
+    {
+      "file": "friday_benign.csv",
+      "bytes": 292152442,
+      "rows": 364102,
+      "columns": 122,
+      "labels": {
+        "Benign": 364102
+      },
+      "timestamp_min": "2017-07-07 07:59:50.315195",
+      "timestamp_max": "2017-07-07 16:02:41.005391"
+    },
+    {
+      "file": "ftp_patator.csv",
+      "bytes": 7464334,
+      "rows": 9531,
+      "columns": 122,
+      "labels": {
+        "FTP-Patator": 9531
+      },
+      "timestamp_min": "2017-07-04 08:17:52.838272",
+      "timestamp_max": "2017-07-04 09:20:17.175201"
+    },
+    {
+      "file": "heartbleed.csv",
+      "bytes": 12202,
+      "rows": 12,
+      "columns": 122,
+      "labels": {
+        "Heartbleed": 12
+      },
+      "timestamp_min": "2017-07-05 13:52:55.240247",
+      "timestamp_max": "2017-07-05 14:12:15.650811"
+    },
+    {
+      "file": "monday_benign.csv",
+      "bytes": 395476465,
+      "rows": 495338,
+      "columns": 122,
+      "labels": {
+        "Benign": 495338
+      },
+      "timestamp_min": "2017-07-03 07:55:58.598308",
+      "timestamp_max": "2017-07-03 16:01:34.352593"
+    },
+    {
+      "file": "portscan.csv",
+      "bytes": 118227835,
+      "rows": 161323,
+      "columns": 122,
+      "labels": {
+        "Port_Scan": 161323
+      },
+      "timestamp_min": "2017-07-07 12:55:32.117090",
+      "timestamp_max": "2017-07-07 14:24:01.699238"
+    },
+    {
+      "file": "ssh_patator-new.csv",
+      "bytes": 4917060,
+      "rows": 5949,
+      "columns": 122,
+      "labels": {
+        "SSH-Patator": 5949
+      },
+      "timestamp_min": "2017-07-04 13:09:01.049616",
+      "timestamp_max": "2017-07-04 15:04:15.353690"
+    },
+    {
+      "file": "thursday_benign.csv",
+      "bytes": 107877588,
+      "rows": 133770,
+      "columns": 122,
+      "labels": {
+        "Benign": 133770
+      },
+      "timestamp_min": "2017-07-06 07:59:00.490140",
+      "timestamp_max": "2017-07-06 10:59:59.805246"
+    },
+    {
+      "file": "tuesday_benign.csv",
+      "bytes": 317906473,
+      "rows": 395976,
+      "columns": 122,
+      "labels": {
+        "Benign": 395976
+      },
+      "timestamp_min": "2017-07-04 07:53:44.398274",
+      "timestamp_max": "2017-07-04 16:00:30.505445"
+    },
+    {
+      "file": "web_brute_force.csv",
+      "bytes": 1918388,
+      "rows": 2734,
+      "columns": 122,
+      "labels": {
+        "Web_Brute_Force": 2734
+      },
+      "timestamp_min": "2017-07-06 08:15:54.880049",
+      "timestamp_max": "2017-07-06 09:00:11.622209"
+    },
+    {
+      "file": "web_sql_injection.csv",
+      "bytes": 20710,
+      "rows": 24,
+      "columns": 122,
+      "labels": {
+        "Web_SQL_Injection": 24
+      },
+      "timestamp_min": "2017-07-06 09:40:07.419016",
+      "timestamp_max": "2017-07-06 09:42:55.320284"
+    },
+    {
+      "file": "web_xss.csv",
+      "bytes": 934644,
+      "rows": 1358,
+      "columns": 122,
+      "labels": {
+        "Web_XSS": 1358
+      },
+      "timestamp_min": "2017-07-06 09:15:35.283859",
+      "timestamp_max": "2017-07-06 09:35:52.286892"
+    },
+    {
+      "file": "wednesday_benign.csv",
+      "bytes": 318328885,
+      "rows": 397053,
+      "columns": 122,
+      "labels": {
+        "Benign": 397053
+      },
+      "timestamp_min": "2017-07-05 07:42:42.084372",
+      "timestamp_max": "2017-07-05 16:10:14.557249"
+    }
+  ],
+  "labels": [
+    {
+      "label": "Benign",
+      "rows": 1786239,
+      "pct": 73.26500829350645
+    },
+    {
+      "label": "DoS_Hulk",
+      "rows": 349240,
+      "pct": 14.324550911957578
+    },
+    {
+      "label": "Port_Scan",
+      "rows": 161323,
+      "pct": 6.616881018124306
+    },
+    {
+      "label": "DDoS_LOIT",
+      "rows": 95733,
+      "pct": 3.926618464249327
+    },
+    {
+      "label": "FTP-Patator",
+      "rows": 9531,
+      "pct": 0.39092685471843913
+    },
+    {
+      "label": "DoS_GoldenEye",
+      "rows": 8364,
+      "pct": 0.34306077146836905
+    },
+    {
+      "label": "DoS_Slowhttptest",
+      "rows": 6860,
+      "pct": 0.28137217745970966
+    },
+    {
+      "label": "SSH-Patator",
+      "rows": 5949,
+      "pct": 0.2440062804238794
+    },
+    {
+      "label": "Botnet_ARES",
+      "rows": 5508,
+      "pct": 0.22591806901575523
+    },
+    {
+      "label": "DoS_Slowloris",
+      "rows": 5177,
+      "pct": 0.21234165637156222
+    },
+    {
+      "label": "Web_Brute_Force",
+      "rows": 2734,
+      "pct": 0.1121387074598901
+    },
+    {
+      "label": "Web_XSS",
+      "rows": 1358,
+      "pct": 0.05570020655835069
+    },
+    {
+      "label": "Web_SQL_Injection",
+      "rows": 24,
+      "pct": 0.0009843924575849898
+    },
+    {
+      "label": "Heartbleed",
+      "rows": 12,
+      "pct": 0.0004921962287924949
+    }
+  ]
+}

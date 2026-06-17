@@ -130,7 +130,8 @@ The second conclusion is that repeated seeds matter. HistGradientBoosting varies
 
 | Issue | Seed 42 | Seed 7 | Seed 99 | Article impact |
 |---|---:|---:|---:|---|
-| LogisticRegression `ConvergenceWarning` count | 2 | 3 | 2 | LR needs either a tuned convergence protocol or an explicit limitation statement |
+| Historical LogisticRegression `ConvergenceWarning` count in the original `max_iter=500` core runs | 2 | 3 | 2 | These rows are historical evidence only for LR convergence claims |
+| Corrected LR2000/nohour convergence-clean rerun | `fullcore-lr2000-s42-001` | `fullcore-lr2000-nohour-s7-001` | `fullcore-lr2000-nohour-s99-001` | Reviewer-facing LR convergence risk is resolved by the reruns documented in `LR2000_CONVERGENCE_RESULTS.md` |
 | `az ml job show` timeout after completion | Yes | Not rerun after completion | Not rerun after completion | Use stream + artifacts as evidence |
 | Runtime pip root-user warnings | Yes | Yes | Yes | Operational warning from image-only runtime workaround |
 
@@ -138,7 +139,7 @@ The second conclusion is that repeated seeds matter. HistGradientBoosting varies
 
 For a stronger Q1-level evidence base, the next empirical steps are:
 
-- decide whether LogisticRegression should be rerun with higher `max_iter` or alternative solver settings;
-- add rare-class and multi-class analyses;
-- implement open-set family holdout;
-- add calibration/abstention figures and explanation-stability metrics.
+- use the LR2000/nohour rerun artifacts for any final convergence-clean LR tables;
+- keep the original `max_iter=500` LR rows labelled as historical if they are retained for comparison;
+- extend external validation beyond the current CSE-CIC-IDS2018 sample if an independent official dataset becomes accessible;
+- increase explanation-stability repeats and add uncertainty estimates if scope permits.

@@ -1,10 +1,10 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #17)
+**Dernier check** : 2026-06-17 (check #22)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
-**Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
+**Statut global** : 🟡 Prêt avec réserve mineure — 14/15 résolus. Aucun bloquant critique restant. A5 DOI Zenodo final absent.
 
 ---
 
@@ -55,14 +55,20 @@
 
 ---
 
-### C3 — Convergence LR non résolue sur seeds 7 & 99
-- **Priorité** : 🔴 CRITIQUE
-- **Statut** : ⏳ Jobs en queue Azure ML — aucun artefact encore
+### C3 — Convergence LR seeds 7 & 99
+- **Priorité** : 🔴 → ✅ RÉSOLU
+- **Statut** : ✅ Artefacts LR2000/nohour seeds 7 et 99 présents, vérifiés et suivis dans `evidence/`
 - **Vérification check #1** : fullcore-lr2000-s42-001 terminé.
 - **Vérification check #7** : `ADVANCED_CORE_MULTI_SEED_STATUS.md` Azure Queue Status confirme : `fullcore-lr2000-nohour-s42-001`, `fullcore-lr2000-nohour-s7-001`, `fullcore-lr2000-nohour-s99-001` tous en statut **Queued**. Aucun artefact dans `evidence/`.
-- **Problème restant** : Tables LR multi-seed utilisent encore max_iter=500 pour s7/s99.
-- **Action restante** : Attendre fin des jobs Queued. Télécharger artefacts. Mettre à jour FULLCORE_MEM_MULTI_SEED_RESULTS.md.
-- **Effort estimé** : ~80 min compute (jobs en queue)
+- **Vérification check #21** :
+  - `evidence/fullcore-lr2000-nohour-s7-001/` présent avec results, summary, events et audit summary.
+  - `evidence/fullcore-lr2000-nohour-s99-001/` présent avec results, summary, events et audit summary.
+  - Seed 7 : 10/10 runs LR complétés, `warning_count` total 0, `convergence_warning_count` total 0.
+  - Seed 99 : 10/10 runs LR complétés, `warning_count` total 0, `convergence_warning_count` total 0.
+  - Documentation alignée dans `LR2000_CONVERGENCE_RESULTS.md`, `FULLCORE_MEM_MULTI_SEED_RESULTS.md`, `README.md` et `paper/main.tex`.
+- **Problème restant** : Aucun bloquant critique. Les anciennes lignes LR `max_iter=500` doivent rester historiques si elles sont citées.
+- **Action restante** : Utiliser les artefacts LR2000/nohour pour les tables LR convergence-clean finales.
+- **Impact** : Le risque reviewer sur les `ConvergenceWarning` LR seeds 7/99 est fermé.
 
 ---
 
@@ -90,6 +96,7 @@
 - **Priorité** : 🟠 → ✅ RÉSOLU
 - **Statut** : ✅ Complet
 - **Vérification check #1** : `src/fair_ml_cyber/open_set.py` ligne 25 : `DEFAULT_OPEN_SET_MODELS = ["isolation_forest", "local_outlier_factor"]`. Fonction `run_open_set_baselines()` (ligne 48) gère les deux. Résultats CSE-CIC : LOF AUROC 0.8990/0.9574/0.9087 pour Web/Botnet/BruteForce unknown.
+- **Vérification check #22** : Isolation Forest full-data disponible sur les 3 seeds 42/7/99. `evidence/open-set-if-s7-001/` ajouté avec 4/4 familles complétées, 0 warning.
 
 ---
 
@@ -156,14 +163,14 @@
 
 ### A5 — Artifacts publics + DOI Zenodo
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⏳ Partiel — GitHub Release courante `v1.0.1` créée avec seed 7, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
+- **Statut** : ⏳ Partiel — GitHub Release `v1.0.1` créée avec seed 7; une release `v1.0.2` doit remplacer l'état courant après intégration C3. DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending.
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
 - **Vérification check #12** : tag annoté `v1.0.1` poussé et GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 avec le PDF reconstruit après intégration seed 7.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
 - **Vérification manuscrit check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
 - **Vérification check #16** : `.zenodo.json` et `CITATION.cff` préparés pour l'archivage, sans inventer de DOI.
-- **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
+- **Action restante** : publier la release `v1.0.2`, connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
 
@@ -198,7 +205,7 @@
 |---|---|---|---|
 | C1 — Second dataset | 🔴 | ✅ Résolu minimal Q1 | **OUI** (check #7) |
 | C2 — Advanced seeds 7&99 | 🔴 | ✅ Résolu | **OUI** (check #10) |
-| C3 — LR convergence s7/s99 | 🔴 | ⏳ Jobs en queue | Non |
+| C3 — LR convergence s7/s99 | 🔴 | ✅ Résolu | **OUI** (check #21) |
 | C4 — Discussion/Conclusion | 🔴 | ✅ Résolu | **OUI** |
 | I1 — Calibration post-hoc | 🟠 | ✅ Résolu | **OUI** |
 | I2 — Open-set baselines | 🟠 | ✅ Résolu | **OUI** |
@@ -209,20 +216,20 @@
 | A2 — Heatmap | 🟡 | ✅ Résolu | **OUI** |
 | A3 — Tableau SOC | 🟡 | ✅ Résolu | **OUI** |
 | A4 — Choix modèles | 🟡 | ✅ Résolu | **OUI** |
-| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, release courante v1.0.1, DOI pending mentionné, DOI final manquant | Non |
+| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, release v1.0.2 à publier après C3, DOI pending mentionné, DOI final manquant | Non |
 | A6 — Effect sizes | 🟡 | ⏳ Délibéré | **OUI** |
 
-**Résolus** : C1, C2, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **13 points fermés**
-**Bloquant restant** : C3 (1 critique — dépend Azure ML)
-**Partiels mineurs** : A5 (release GitHub faite, DOI Zenodo absent, mention pending dans le manuscrit)
+**Résolus** : C1, C2, C3, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **14 points fermés**
+**Bloquant restant** : Aucun critique
+**Partiels mineurs** : A5 (release GitHub faite, release C3 à publier, DOI Zenodo absent, mention pending dans le manuscrit)
 
 ---
 
 ## ROADMAP MISE À JOUR
 
-### Urgences immédiates (dès que jobs Azure terminés)
+### Urgences immédiates
 - [x] **C2** : Télécharger artefacts advanced-core-s7 → compléter tables avancées 3 seeds
-- [ ] **C3** : Télécharger artefacts fullcore-lr2000-nohour-s7 & s99 → mettre à jour tables LR multi-seed
+- [x] **C3** : Télécharger artefacts fullcore-lr2000-nohour-s7 & s99 → mettre à jour tables LR multi-seed
 
 ### Court terme (1–2 semaines)
 - [x] **C1** : Validation externe CSE-CIC-IDS2018 full-sample exécutée et intégrée
@@ -235,19 +242,19 @@
 - [x] **A2** : Créer heatmap F1 per-class × split protocol
 - [x] **A3** : Ajouter tableau Practical Guidance (SOC)
 - [x] **A4** : 1–2 phrases justifiant absence DNN
-- [~] **A5** : Release GitHub faite (`v1.0.1` pour l'état courant), DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
+- [~] **A5** : Release GitHub faite (`v1.0.1`), release C3 `v1.0.2` à publier, DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
 - [ ] Révision interne complète + soumission
 
 ---
 
 ## ÉVALUATION DE VIABILITÉ Q1
 
-| Journal | Probabilité actuelle | Après C3 résolu |
+| Journal | Probabilité actuelle après C3 | Avec DOI Zenodo final |
 |---|---|---|
-| Computers & Security (Q1, Elsevier) | ~60–65% | ~70% |
-| Expert Systems with Applications (Q1) | ~40% | ~50% |
-| IEEE TIFS (Q1) | ~25% | ~40% |
-| IEEE TDSC (Q1) | ~10–15% | ~20% (sauf ajout algo) |
+| Computers & Security (Q1, Elsevier) | ~70% | ~70–72% |
+| Expert Systems with Applications (Q1) | ~50% | ~50–52% |
+| IEEE TIFS (Q1) | ~40% | ~40–42% |
+| IEEE TDSC (Q1) | ~20% (sauf ajout algo) | ~20–22% |
 
 ---
 
@@ -285,7 +292,12 @@
 | Check #15 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. Aucun fichier récent. 13/15 résolus | 2 |
 | Check #16 | 2026-06-17 | 0 nouveau résolu — C3 relancé en duplicata sur `cpu-cluster` (`fullcore-lr2000-nohour-s7-cpu-001`, `fullcore-lr2000-nohour-s99-cpu-001`) et A5 préparé avec `.zenodo.json`/`CITATION.cff`. DOI toujours absent. 13/15 résolus | 2 |
 | Check #17 | 2026-06-17 | 0 nouveau résolu — duplicata `s99-cpu` échoué SIGKILL/OOM sur `Standard_DS3_v2`; duplicata `s7-cpu` annulé. C3 reste ouvert sur `cpu-memory-cluster` (`Standard_E8ds_v5`). 13/15 résolus | 2 |
+| Check #18 | 2026-06-17 | 0 nouveau résolu — `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` toujours `Queued` sur `cpu-memory-cluster`. Aucun artefact C3 dans `evidence/`. 13/15 résolus | 2 |
+| Check #19 | 2026-06-17 | 🟡 PROGRÈS — `fullcore-lr2000-nohour-s7-001` passé `Running` ; `fullcore-lr2000-nohour-s99-001` toujours `Queued`. Pas encore d'artefact dans `evidence/`. 13/15 résolus | 2 |
+| Check #20 | 2026-06-17 | `s7` toujours `Running`, `s99` `Queued`. Surveillance active — téléchargement automatique dès complétion `s7`. 13/15 résolus | 2 |
+| Check #21 | 2026-06-17 | **C3 ✅** — `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` téléchargés, vérifiés et copiés dans `evidence/`; 10/10 runs par seed, 0 warning, 0 convergence warning. 14/15 résolus | 1 |
+| Check #22 | 2026-06-17 | Baseline open-set renforcée — `open-set-if-s7-001` téléchargé et copié dans `evidence/`; Isolation Forest full-data maintenant disponible sur seeds 42/7/99. 14/15 résolus | 1 |
 
 ---
 
-*Mis à jour automatiquement à chaque check — prochain check dans ~20 min.*
+*Mis à jour automatiquement à chaque check — prochain check centré sur A5 DOI Zenodo/release archival.*

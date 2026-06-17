@@ -1,8 +1,8 @@
-# LogisticRegression Convergence Rerun - `fullcore-lr2000-s42-001`
+# LogisticRegression Convergence Reruns
 
-This note documents the full-data LogisticRegression rerun used to address the convergence warnings observed in the earlier `max_iter=500` core runs.
+This note documents the full-data LogisticRegression reruns used to address the convergence warnings observed in the earlier `max_iter=500` core runs.
 
-## Run Definition
+## Seed 42 Run Definition
 
 | Item | Value |
 |---|---|
@@ -62,4 +62,45 @@ Aggregate checks from the downloaded CSV:
 
 For seed 42, the LogisticRegression convergence issue is resolved by increasing `max_iter` to 2000. The rerun should replace the earlier seed 42 LR rows in final LR-specific tables if the manuscript reports convergence-clean LR results.
 
-The older `fullcore-mem-s7-001` and `fullcore-mem-s99-001` runs still contain their original `max_iter=500` convergence warnings. If the final manuscript needs convergence-clean multi-seed LR statistics, the same LR2000 rerun should also be executed for seeds 7 and 99.
+## Corrected LR2000/nohour Runs For Seeds 7 And 99
+
+After `hour` was added to the identity exclusions, the corrected LR2000/nohour reruns were completed for the two seeds that still had reviewer-facing convergence risk:
+
+| Seed | Azure ML job | Evidence | Rows | Completed / failed | Warning sum | Convergence warning sum |
+|---:|---|---|---:|---:|---:|---:|
+| 7 | `fullcore-lr2000-nohour-s7-001` | `evidence/fullcore-lr2000-nohour-s7-001/` | 2,438,052 | 10 / 0 | 0 | 0 |
+| 99 | `fullcore-lr2000-nohour-s99-001` | `evidence/fullcore-lr2000-nohour-s99-001/` | 2,438,052 | 10 / 0 | 0 | 0 |
+
+### Seed 7 LR2000/nohour Results
+
+| Feature tier | Split | Macro-F1 | AUROC | Train seconds | Conv. warnings |
+|---|---|---:|---:|---:|---:|
+| `deployment_safe` | `day_holdout_2017-07-07` | 0.813182 | 0.958035 | 156.123 | 0 |
+| `deployment_safe` | `endpoint_pair_holdout` | 0.828844 | 0.984557 | 182.117 | 0 |
+| `deployment_safe` | `random_stratified` | 0.915510 | 0.987753 | 191.791 | 0 |
+| `deployment_safe` | `scenario_holdout_Web` | 0.475150 | 0.823033 | 168.322 | 0 |
+| `deployment_safe` | `temporal` | 0.748587 | 0.969769 | 240.723 | 0 |
+| `no_identity` | `day_holdout_2017-07-07` | 0.813471 | 0.962282 | 147.980 | 0 |
+| `no_identity` | `endpoint_pair_holdout` | 0.832365 | 0.982006 | 282.486 | 0 |
+| `no_identity` | `random_stratified` | 0.918740 | 0.990004 | 192.590 | 0 |
+| `no_identity` | `scenario_holdout_Web` | 0.476399 | 0.821951 | 181.795 | 0 |
+| `no_identity` | `temporal` | 0.742885 | 0.963097 | 178.972 | 0 |
+
+### Seed 99 LR2000/nohour Results
+
+| Feature tier | Split | Macro-F1 | AUROC | Train seconds | Conv. warnings |
+|---|---|---:|---:|---:|---:|
+| `deployment_safe` | `day_holdout_2017-07-07` | 0.813513 | 0.969996 | 187.920 | 0 |
+| `deployment_safe` | `endpoint_pair_holdout` | 0.860406 | 0.987635 | 238.644 | 0 |
+| `deployment_safe` | `random_stratified` | 0.915995 | 0.987785 | 225.695 | 0 |
+| `deployment_safe` | `scenario_holdout_Web` | 0.475117 | 0.839701 | 164.562 | 0 |
+| `deployment_safe` | `temporal` | 0.748587 | 0.969769 | 242.955 | 0 |
+| `no_identity` | `day_holdout_2017-07-07` | 0.811928 | 0.963704 | 193.014 | 0 |
+| `no_identity` | `endpoint_pair_holdout` | 0.865086 | 0.986512 | 189.967 | 0 |
+| `no_identity` | `random_stratified` | 0.917152 | 0.990021 | 141.146 | 0 |
+| `no_identity` | `scenario_holdout_Web` | 0.476256 | 0.842064 | 151.303 | 0 |
+| `no_identity` | `temporal` | 0.742885 | 0.963097 | 176.405 | 0 |
+
+## Final Convergence Status
+
+C3 is closed for the reviewer-facing seeds 7 and 99: both corrected LR2000/nohour reruns completed with zero warnings and zero convergence warnings. The historical `fullcore-mem-s7-001` and `fullcore-mem-s99-001` rows remain useful as original core evidence, but final LR-specific convergence-clean claims should cite the LR2000/nohour evidence above.

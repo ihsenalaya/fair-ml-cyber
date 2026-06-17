@@ -29,7 +29,7 @@
       "resource_type": "software"
     },
     {
-      "identifier": "https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1",
+      "identifier": "https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.2",
       "relation": "isVersionOf",
       "scheme": "url",
       "resource_type": "software"
