@@ -1,0 +1,11 @@
+file,bytes,rows,columns,labels,timestamp_min,timestamp_max
+Friday-02-03-2018_TrafficForML_CICFlowMeter.csv,352368373,1048575,80,"{'Benign': 762384, 'Bot': 286191}",02/03/2018 01:00:00,02/03/2018 12:59:59
+Friday-16-02-2018_TrafficForML_CICFlowMeter.csv,333723605,1048574,80,"{'Benign': 446772, 'DoS attacks-SlowHTTPTest': 139890, 'DoS attacks-Hulk': 461912}",16/02/2018 01:00:32,16/02/2018 12:58:24
+Friday-23-02-2018_TrafficForML_CICFlowMeter.csv,382840456,1048575,80,"{'Benign': 1048009, 'Brute Force -Web': 362, 'Brute Force -XSS': 151, 'SQL Injection': 53}",23/02/2018 01:00:00,23/02/2018 12:59:59
+Thuesday-20-02-2018_TrafficForML_CICFlowMeter.csv,4054925350,7948748,84,"{'Benign': 7372557, 'DDoS attacks-LOIC-HTTP': 576191}",20/02/2018 01:00:00,20/02/2018 12:59:59
+Thursday-01-03-2018_TrafficForML_CICFlowMeter.csv,107842858,331100,80,"{'Benign': 238037, 'Infilteration': 93063}",01/03/2018 01:00:00,01/03/2018 12:59:59
+Thursday-15-02-2018_TrafficForML_CICFlowMeter.csv,375945899,1048575,80,"{'Benign': 996077, 'DoS attacks-GoldenEye': 41508, 'DoS attacks-Slowloris': 10990}",15/02/2018 01:00:00,15/02/2018 12:59:59
+Thursday-22-02-2018_TrafficForML_CICFlowMeter.csv,382636202,1048575,80,"{'Benign': 1048213, 'Brute Force -Web': 249, 'Brute Force -XSS': 79, 'SQL Injection': 34}",10/01/1970 03:04:26,22/02/2018 12:59:59
+Wednesday-14-02-2018_TrafficForML_CICFlowMeter.csv,358223333,1048575,80,"{'Benign': 667626, 'FTP-BruteForce': 193360, 'SSH-Bruteforce': 187589}",05/01/1970 03:01:17,14/02/2018 12:59:59
+Wednesday-21-02-2018_TrafficForML_CICFlowMeter.csv,328893673,1048575,80,"{'Benign': 360833, 'DDOS attack-LOIC-UDP': 1730, 'DDOS attack-HOIC': 686012}",21/02/2018 01:55:46,21/02/2018 10:43:21
+Wednesday-28-02-2018_TrafficForML_CICFlowMeter.csv,209249758,613071,80,"{'Benign': 544200, 'Infilteration': 68871}",28/02/2018 01:00:00,28/02/2018 12:59:59

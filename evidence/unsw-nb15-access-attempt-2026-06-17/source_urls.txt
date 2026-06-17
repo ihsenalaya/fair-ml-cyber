@@ -1,0 +1,3 @@
+UNSW official page: https://research.unsw.edu.au/projects/unsw-nb15-dataset
+CIC-UNSW official page: https://www.unb.ca/cic/datasets/cic-unsw-nb15.html
+CIC-UNSW download form: https://cicresearch.ca//CICDataset/CIC-UNSW/

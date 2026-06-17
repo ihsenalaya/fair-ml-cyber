@@ -1,0 +1,2 @@
+file,bytes,rows,columns,labels,timestamp_min,timestamp_max
+cse_cic_ids2018_q1_full_sample.csv,145416349,363648,85,"{'DDoS attacks-LOIC-HTTP': 30000, 'DoS attacks-Hulk': 30000, 'Benign': 80000, 'DoS attacks-GoldenEye': 30000, 'SSH-Bruteforce': 30000, 'DoS attacks-Slowloris': 10990, 'DDOS attack-HOIC': 30000, 'FTP-BruteForce': 30000, 'Infilteration': 30000, 'DoS attacks-SlowHTTPTest': 30000, 'Bot': 30000, 'Brute Force -Web': 611, 'DDOS attack-LOIC-UDP': 1730, 'Brute Force -XSS': 230, 'SQL Injection': 87}",01/03/2018 01:00:52,28/02/2018 12:59:48

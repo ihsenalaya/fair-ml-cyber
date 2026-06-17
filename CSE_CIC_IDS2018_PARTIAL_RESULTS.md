@@ -2,6 +2,12 @@
 
 Date: 2026-06-17
 
+## Status Update
+
+This was the first CSE-CIC-IDS2018 external validation pass. A larger follow-up using all 10 public processed CSV files and a 363,648-row real stratified sample is now documented in `CSE_CIC_IDS2018_FULL_SAMPLE_RESULTS.md` and `evidence/cse-cic-ids2018-full-sample-s42-001/`.
+
+The calibration and open-set results below remain useful auxiliary evidence because those tasks have not yet been rerun on the larger 363,648-row sample.
+
 ## Source and Scope
 
 External dataset source:

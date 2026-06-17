@@ -11,7 +11,7 @@ from fair_ml_cyber.advanced import run_advanced_analysis
 from fair_ml_cyber.calibration import run_calibration_baselines
 from fair_ml_cyber.experiment import run_experiment, run_smoke
 from fair_ml_cyber.open_set import run_open_set_baselines
-from fair_ml_cyber.plots import plot_split_gap
+from fair_ml_cyber.plots import plot_per_class_heatmap, plot_split_gap
 from fair_ml_cyber.sampling import build_stratified_sample
 from fair_ml_cyber.stats import generate_q1_statistics
 
@@ -173,6 +173,16 @@ def main() -> None:
     split_plot.add_argument("--output-path", required=True, type=Path)
     split_plot.add_argument("--metric", default="macro_f1")
 
+    heatmap_plot = sub.add_parser(
+        "plot-per-class-heatmap",
+        help="Plot per-class metric heatmap across split protocols",
+    )
+    heatmap_plot.add_argument("--per-class-csv", required=True, type=Path)
+    heatmap_plot.add_argument("--output-path", required=True, type=Path)
+    heatmap_plot.add_argument("--model", default="hist_gradient_boosting")
+    heatmap_plot.add_argument("--metric", default="f1")
+    heatmap_plot.add_argument("--min-support", type=int, default=1)
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -251,6 +261,14 @@ def main() -> None:
             args.results_csv,
             args.output_path,
             metric=args.metric,
+        )
+    elif args.command == "plot-per-class-heatmap":
+        result = plot_per_class_heatmap(
+            args.per_class_csv,
+            args.output_path,
+            model=args.model,
+            metric=args.metric,
+            min_support=args.min_support,
         )
     else:
         raise ValueError(args.command)

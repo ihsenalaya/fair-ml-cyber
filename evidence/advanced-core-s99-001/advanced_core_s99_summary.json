@@ -1,0 +1,45 @@
+{
+  "audit": {
+    "num_files": 18,
+    "total_rows": 2438052,
+    "data_hash": "f51899df9bd60758"
+  },
+  "sample_rows": 2438052,
+  "seed": 99,
+  "models": [
+    "logistic_regression",
+    "hist_gradient_boosting"
+  ],
+  "feature_tiers": [
+    "deployment_safe"
+  ],
+  "split_protocols": [
+    "random_stratified",
+    "temporal",
+    "latest_day_holdout",
+    "scenario_holdout_Web",
+    "endpoint_pair_holdout"
+  ],
+  "unknown_families": [
+    "Web",
+    "Botnet",
+    "PortScan",
+    "DDoS"
+  ],
+  "skipped_splits": [],
+  "outputs": {
+    "binary_results": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_binary_results.csv",
+    "calibration_bins": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_calibration_bins.csv",
+    "abstention_curves": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_abstention_curves.csv",
+    "multiclass_results": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_multiclass_results.csv",
+    "per_class_results": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_per_class_results.csv",
+    "rare_class_results": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_rare_class_results.csv",
+    "open_set_results": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_open_set_results.csv",
+    "feature_importance": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_feature_importance.csv",
+    "explanation_stability": "/mnt/azureml/cr/j/e60ec00f38fd4270b47c633a22d562e1/cap/data-capability/wd/work_dir/advanced_results/advanced_core_s99_explanation_stability.csv"
+  },
+  "binary_runs": 10,
+  "multiclass_runs": 10,
+  "open_set_runs": 8,
+  "created_at_utc": "2026-06-17T11:06:29Z"
+}

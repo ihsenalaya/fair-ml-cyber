@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -111,6 +112,71 @@ def plot_split_gap(
     ax.legend(title="Model", loc="upper right", frameon=False)
     ax.tick_params(axis="x", rotation=25)
     ax.grid(axis="y", alpha=0.25, linewidth=0.7)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=220)
+    plt.close(fig)
+    return {"figure_path": str(output_path)}
+
+
+def plot_per_class_heatmap(
+    per_class_csv: str | Path,
+    output_path: str | Path,
+    *,
+    model: str = "hist_gradient_boosting",
+    metric: str = "f1",
+    min_support: int = 1,
+) -> dict[str, str]:
+    df = pd.read_csv(per_class_csv)
+    required = {"model", "split", "label", metric, "support"}
+    missing = required.difference(df.columns)
+    if missing:
+        raise ValueError(f"Missing columns: {sorted(missing)}")
+
+    df = df[df["model"].astype(str) == model].copy()
+    if df.empty:
+        raise ValueError(f"No rows found for model: {model}")
+    df[metric] = pd.to_numeric(df[metric], errors="coerce")
+    df["support"] = pd.to_numeric(df["support"], errors="coerce").fillna(0).astype(int)
+
+    support_by_label = df.groupby("label")["support"].max()
+    kept_labels = support_by_label[support_by_label >= min_support].sort_values(ascending=False).index
+    df = df[df["label"].isin(kept_labels)].copy()
+
+    split_order = [
+        "random_stratified",
+        "temporal",
+        "day_holdout_2017-07-07",
+        "scenario_holdout_Web",
+        "endpoint_pair_holdout",
+    ]
+    split_labels = {
+        "random_stratified": "Random",
+        "temporal": "Temporal",
+        "day_holdout_2017-07-07": "Latest day",
+        "scenario_holdout_Web": "Web holdout",
+        "endpoint_pair_holdout": "Endpoint-pair",
+    }
+    pivot = df.pivot_table(index="label", columns="split", values=metric, aggfunc="mean")
+    pivot = pivot.reindex(index=kept_labels, columns=split_order)
+    display_columns = [split_labels.get(str(col), str(col)) for col in pivot.columns]
+
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    height = max(4.8, 0.34 * len(pivot.index))
+    fig, ax = plt.subplots(figsize=(8.8, height))
+    cmap = plt.cm.viridis.copy()
+    cmap.set_bad("#d9d9d9")
+    values = np.ma.masked_invalid(pivot.to_numpy(dtype=float))
+    image = ax.imshow(values, aspect="auto", vmin=0.0, vmax=1.0, cmap=cmap)
+    ax.set_xticks(range(len(display_columns)))
+    ax.set_xticklabels(display_columns, rotation=25, ha="right")
+    ax.set_yticks(range(len(pivot.index)))
+    ax.set_yticklabels([str(label).replace("_", " ") for label in pivot.index], fontsize=8)
+    ax.set_title(f"Per-class {metric.upper()} under split protocols ({model.replace('_', ' ')})")
+    cbar = fig.colorbar(image, ax=ax)
+    cbar.set_label(metric.upper())
+    ax.set_xlabel("Split protocol")
+    ax.set_ylabel("Class label")
     fig.tight_layout()
     fig.savefig(output_path, dpi=220)
     plt.close(fig)

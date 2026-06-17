@@ -16,19 +16,22 @@ This is the best immediate candidate because it is an external underlying datase
 
 ## Execution Update - 2026-06-17
 
-The CIC-UNSW-NB15 official download currently opens a CIC registration form. Because the form requires personal information, no automated download was performed with invented identity data.
+The CIC-UNSW-NB15 official download currently opens a CIC registration form. Because the form requires personal information and currently returns a server-error page, no automated download was performed with invented identity data.
 
-To keep the Q1 repair moving with a fully public source, a partial external validation was executed with **CSE-CIC-IDS2018** from the official UNB/AWS public dataset:
+The original UNSW-NB15 page states that academic use is free and lists the official CSV/train/test files, but its download link redirects to SharePoint. Direct command-line access returned a `403 Forbidden` response requiring forms-based authentication, so no official UNSW-NB15 files were downloaded automatically.
+
+To keep the Q1 repair moving with a fully public source, an external validation was executed with **CSE-CIC-IDS2018** from the official UNB/AWS public dataset:
 
 - source page: https://www.unb.ca/cic/datasets/ids-2018.html
 - public prefix: `s3://cse-cic-ids2018/Processed Traffic Data for ML Algorithms/`
-- downloaded files: 5 CICFlowMeter CSV files
-- audited raw rows: 4,525,400
-- raw data hash: `414f7195ee1e137a`
-- validation sample rows: 200,928
-- tracked evidence: `evidence/cse-cic-ids2018-partial-s42-001/`
+- downloaded files: 10 CICFlowMeter CSV files
+- audited raw rows: 16,232,943
+- raw data hash: `96cd4ce8a085248a`
+- validation sample rows: 363,648
+- sample hash: `d3092e8e71a9680c`
+- tracked evidence: `evidence/cse-cic-ids2018-full-sample-s42-001/`
 
-This does not replace the stronger future option of adding CIC-UNSW-NB15 after legitimate form-based download, but it provides a real, free, citable external validation result now.
+This does not replace the stronger future option of adding CIC-UNSW-NB15 or original UNSW-NB15 after legitimate access, but it provides a real, free, citable external validation result now.
 
 ## Non-Negotiable Rule
 

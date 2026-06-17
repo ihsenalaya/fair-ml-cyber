@@ -40,6 +40,8 @@ Travail terminé et vérifié:
 - répétition full-data `fullcore-mem-s99-001` validée: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
 - rerun LR convergence `fullcore-lr2000-s42-001` validé: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence;
 - job avancé `advanced-core-s42-001` validé: 2,438,052 lignes, 10 runs binaires, 10 runs multi-class, 8 runs open-set, calibration/abstention/rare-class/stabilité d'explications produits;
+- job avancé `advanced-core-s99-001` validé et téléchargé: 2,438,052 lignes, 10 runs binaires, 10 runs multi-class, 8 runs open-set, calibration/abstention/rare-class/stabilité d'explications produits;
+- baselines open-set Isolation Forest full-data seeds 42 et 99 validées et téléchargées; seed 7 encore en queue Azure;
 - synthèse full-data ajoutée dans `FULLCORE_MEM_S42_RESULTS.md`;
 - comparaison multi-seed ajoutée dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`;
 - synthèse LR convergence ajoutée dans `LR2000_CONVERGENCE_RESULTS.md`;
@@ -62,10 +64,10 @@ Ce qui n'est pas encore terminé:
 - convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; reruns LR2000 corrigés sans feature `hour` soumis pour seeds 42, 7 et 99, artefacts à attendre avant tables finales;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
 - statistiques robustes initiales produites pour le core full-data multi-seed: bootstrap 95%, tests appariés random-vs-stress, tailles d'effet et variance inter-seed dans `evidence/q1-stats-fullcore-multiseed-001/`;
-- analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seed 42; jobs avancés/calibration/open-set additionnels soumis ou en file, artefacts à intégrer quand Azure termine;
+- analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications validées pour seeds 42 et 99; seed 7 avancé encore en cours Azure, calibration additionnelle encore en file;
 - remarques reviewer Q1 validées dans `REVIEWER_REMARKS_VALIDATION.md`;
-- deuxième dataset publique recommandée dans `SECOND_DATASET_SELECTION.md`: priorité à CIC-UNSW-NB15 Augmented Dataset; aucune donnée générée/RAG ne doit être présentée comme trafic réel;
-- validation externe partielle CSE-CIC-IDS2018 exécutée sur 5 CSV publics UNB/AWS: 4,525,400 lignes auditées, échantillon réel stratifié de 200,928 lignes, baseline binaire LR/HGB/RF, calibration raw/Platt/isotonic et open-set IsolationForest/LOF; résultats dans `CSE_CIC_IDS2018_PARTIAL_RESULTS.md` et `evidence/cse-cic-ids2018-partial-s42-001/`;
+- deuxième dataset publique documentée dans `SECOND_DATASET_SELECTION.md`: CIC-UNSW-NB15/UNSW-NB15 officiel gratuit pour recherche mais accès automatisé bloqué par SharePoint/formulaire; aucune donnée générée/RAG ne doit être présentée comme trafic réel;
+- validation externe CSE-CIC-IDS2018 exécutée: 10 CSV publics UNB/AWS, 16,232,943 lignes auditées, échantillon réel stratifié de 363,648 lignes, baseline binaire LR/HGB/RF; calibration raw/Platt/isotonic et open-set IsolationForest/LOF restent disponibles sur le sous-échantillon partiel. Résultats dans `CSE_CIC_IDS2018_FULL_SAMPLE_RESULTS.md`, `CSE_CIC_IDS2018_PARTIAL_RESULTS.md` et `evidence/cse-cic-ids2018-full-sample-s42-001/`;
 - draft LaTeX/PDF de review généré dans `paper/main.tex` et `paper/main.pdf`; il reste à renforcer avant une soumission finale.
 
 ---

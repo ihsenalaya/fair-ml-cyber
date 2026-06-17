@@ -44,7 +44,11 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
 - `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
 - `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
+- `ADVANCED_CORE_MULTI_SEED_STATUS.md`: statut avancé seeds 42/99 validés, seed 7 encore Azure.
+- `OPEN_SET_IF_RESULTS.md`: baselines Isolation Forest full-data seeds 42/99.
 - `CSE_CIC_IDS2018_PARTIAL_RESULTS.md`: validation externe partielle vérifiée sur un sous-ensemble réel CSE-CIC-IDS2018.
+- `CSE_CIC_IDS2018_FULL_SAMPLE_RESULTS.md`: validation externe CSE-CIC-IDS2018 sur les 10 CSV publics audités et un échantillon réel de 363,648 lignes.
+- `UNSW_NB15_ACCESS_ATTEMPT.md`: preuve d'accès officiel UNSW/CIC-UNSW tenté mais bloqué par SharePoint/formulaire.
 - `Q1_REVIEW_CRITIQUE.md` / `Q1_REVIEW_CRITIQUE.pdf`: revue critique simulée pour une soumission journal Q1.
 - `REVIEWER_REMARKS_VALIDATION.md`: validation une par une des remarques reviewer et actions nécessaires.
 - `SECOND_DATASET_SELECTION.md`: sélection argumentée d'une deuxième dataset publique, sans données générées cachées.
@@ -56,7 +60,11 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
 - `evidence/q1-stats-fullcore-multiseed-001/`: snapshot statistique bootstrap 95%, tests appariés random-vs-stress et variance inter-seed.
 - `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
+- `evidence/advanced-core-s99-001/`: snapshot textuel suivi par Git du run avancé seed 99.
 - `evidence/cse-cic-ids2018-partial-s42-001/`: snapshot textuel suivi par Git de la validation externe partielle CSE-CIC-IDS2018.
+- `evidence/cse-cic-ids2018-full-sample-s42-001/`: snapshot textuel suivi par Git de la validation externe CSE-CIC-IDS2018 sur les 10 CSV publics audités.
+- `evidence/open-set-if-s42-001/` et `evidence/open-set-if-s99-001/`: snapshots textuels des baselines Isolation Forest full-data.
+- `evidence/unsw-nb15-access-attempt-2026-06-17/`: trace d'accès officiel UNSW/CIC-UNSW.
 
 ## Etat actuel au 2026-06-17
 
@@ -92,7 +100,9 @@ Runs vérifiés:
 - répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 - rerun LR convergence `fullcore-lr2000-s42-001`: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence.
 - run avancé `advanced-core-s42-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
-- validation externe partielle CSE-CIC-IDS2018: 5 CSV publics téléchargés depuis la source UNB/AWS, 4,525,400 lignes auditées, hash `414f7195ee1e137a`, échantillon stratifié réel de 200,928 lignes, 12/12 runs binaires, 24 lignes de calibration et 8/8 runs open-set IsolationForest/LOF.
+- run avancé `advanced-core-s99-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
+- baselines open-set Isolation Forest full-data: seeds 42 et 99 téléchargés; seed 7 encore en queue Azure.
+- validation externe CSE-CIC-IDS2018: 10 CSV publics téléchargés depuis la source UNB/AWS, 16,232,943 lignes auditées, hash `96cd4ce8a085248a`, échantillon stratifié réel de 363,648 lignes, 12/12 runs binaires full-sample; calibration et open-set externes disponibles sur le sous-échantillon 200,928/50k.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, utile pour le design expérimental.
 
@@ -106,7 +116,7 @@ Signal full-data vérifié:
 - macro-F1 scenario Web moyen: HistGradientBoosting 0.5653, LogisticRegression 0.4836;
 - macro-F1 endpoint-pair holdout moyen: HistGradientBoosting 0.9955, LogisticRegression 0.8859.
 
-Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Le run avancé seed 42 ajoute le signal rare-class/multi-class/open-set/calibration/abstention/stabilité: la performance binaire random est élevée, mais la macro-F1 multi-class tombe jusqu'à 0.0415 en temporal, les rare classes Web ont F1 0.0 en Web holdout, et la calibration se dégrade fortement sur temporal/day-holdout.
+Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Les runs avancés seeds 42 et 99 ajoutent le signal rare-class/multi-class/open-set/calibration/abstention/stabilité: la performance binaire random est élevée, mais la macro-F1 multi-class tombe autour de 0.041 en temporal, les rare classes Web ont F1 0.0 en Web holdout, et la calibration se dégrade fortement sur temporal/day-holdout.
 
 ## Positionnement Q1
 

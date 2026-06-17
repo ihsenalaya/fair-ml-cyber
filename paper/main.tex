@@ -30,7 +30,7 @@ Ihsen Alaya\\
 \maketitle
 
 \begin{abstract}
-Machine-learning-based network intrusion detection systems often report near-perfect performance on benchmark datasets such as CICIDS2017. Such results are frequently obtained under random train/test splits and insufficient controls for temporal, scenario, endpoint, rare-class, open-set and calibration effects. This paper presents FAIR-ML-CYBER, a reproducible stress-test framework for flow-based network intrusion detection. Using 2,438,052 CICIDS2017-like flows from 18 CSV files, we compare random stratified evaluation with temporal, latest-day, scenario and endpoint-pair holdouts. We further evaluate multiclass labels, rare attacks, unknown-family holdouts, calibration, abstention and explanation stability. Full-data binary experiments over three seeds show that random stratified evaluation is substantially more optimistic than deployment-oriented stress tests. HistGradientBoosting reaches a mean macro-F1 of 0.9977 under random stratification but drops to 0.2315 under temporal holdout, while LogisticRegression drops from 0.9357 to 0.5401. Advanced seed-42 analyses show severe multiclass degradation, rare-class failure under Web holdout, unstable open-set behavior and large calibration errors under temporal and latest-day shifts. A partial external validation on real CSE-CIC-IDS2018 CICFlowMeter CSVs shows the same random-vs-stress concern: on a 200,928-row stratified sample, HistGradientBoosting drops from 0.9224 random macro-F1 to 0.7408 under Web holdout, and LogisticRegression drops from 0.8618 to 0.6459. The results support a benchmark-validity contribution: high random-split scores do not imply deployment reliability. The study provides a tracked protocol, evidence artifacts and operational lessons for more rigorous NIDS evaluation.
+Machine-learning-based network intrusion detection systems often report near-perfect performance on benchmark datasets such as CICIDS2017. Such results are frequently obtained under random train/test splits and insufficient controls for temporal, scenario, endpoint, rare-class, open-set and calibration effects. This paper presents FAIR-ML-CYBER, a reproducible stress-test framework for flow-based network intrusion detection. Using 2,438,052 CICIDS2017-like flows from 18 CSV files, we compare random stratified evaluation with temporal, latest-day, scenario and endpoint-pair holdouts. We further evaluate multiclass labels, rare attacks, unknown-family holdouts, calibration, abstention and explanation stability. Full-data binary experiments over three seeds show that random stratified evaluation is substantially more optimistic than deployment-oriented stress tests. HistGradientBoosting reaches a mean macro-F1 of 0.9977 under random stratification but drops to 0.2315 under temporal holdout, while LogisticRegression drops from 0.9357 to 0.5401. Advanced seed-42 and seed-99 analyses show severe multiclass degradation, rare-class failure under Web holdout, unstable open-set behavior and large calibration errors under temporal and latest-day shifts. External validation on real CSE-CIC-IDS2018 CICFlowMeter CSVs shows the same random-vs-stress concern: on a 363,648-row stratified sample from all 10 processed CSV files, HistGradientBoosting drops from 0.9362 random macro-F1 to 0.1037 under temporal holdout, and RandomForest drops from 0.9195 to 0.1050. The results support a benchmark-validity contribution: high random-split scores do not imply deployment reliability. The study provides a tracked protocol, evidence artifacts and operational lessons for more rigorous NIDS evaluation.
 \end{abstract}
 
 \textbf{Keywords:} network intrusion detection; CICIDS2017; dataset bias; temporal validation; open-set recognition; calibration; explainability; reproducibility.
@@ -41,15 +41,15 @@ Network Intrusion Detection Systems (NIDS) are a common target for machine learn
 
 This problem is particularly visible for CICIDS2017-like datasets. CICIDS2017 remains widely used because it offers labelled benign and malicious flows, multiple attack scenarios and feature-rich CSV outputs \cite{sharafaldin2018cicids,unbCICIDS2017}. At the same time, several studies have documented dataset-quality, flow-construction and labelling limitations \cite{engelen2021troubleshooting,rosay2022cicidsanalysis}. More broadly, NIDS dataset surveys and pragmatic assessments of machine learning for NIDS warn that dataset choice, evaluation protocol and reproducibility strongly affect conclusions \cite{ring2019survey,goldschmidt2025nidsdatasets,sommer2010outside,apruzzese2023pragmatic}.
 
-This manuscript evaluates whether CICIDS2017-like evidence can support a strong scientific contribution if the paper is framed as a benchmark-validity and deployment-reliability study rather than as a new detector paper. The main experiments use the locally available CSV files and apply stress tests designed to approximate deployment shifts: temporal holdout, latest-day holdout, Web scenario holdout, endpoint-pair holdout and unknown-family open-set holdout. We also record calibration, abstention and explanation-stability behavior. To reduce the single-dataset risk, we add a partial external validation on real CSE-CIC-IDS2018 CICFlowMeter CSV files \cite{unbCSECICIDS2018}.
+This manuscript evaluates whether CICIDS2017-like evidence can support a strong scientific contribution if the paper is framed as a benchmark-validity and deployment-reliability study rather than as a new detector paper. The main experiments use the locally available CSV files and apply stress tests designed to approximate deployment shifts: temporal holdout, latest-day holdout, Web scenario holdout, endpoint-pair holdout and unknown-family open-set holdout. We also record calibration, abstention and explanation-stability behavior. To reduce the single-dataset risk, we add an external validation on real CSE-CIC-IDS2018 CICFlowMeter CSV files \cite{unbCSECICIDS2018}.
 
 \paragraph{Contributions.}
 The manuscript makes four practical contributions:
 \begin{enumerate}[leftmargin=*]
   \item A reproducible evaluation framework for full-data flow-based NIDS experiments with dataset hashes, feature hashes, split hashes, Azure ML job provenance and tracked evidence artifacts.
   \item A multi-seed binary stress-test analysis showing that random stratified performance can severely overstate deployment reliability.
-  \item A seed-42 advanced analysis covering multiclass labels, rare classes, unknown attack families, calibration, abstention and explanation stability.
-  \item A partial external validation on CSE-CIC-IDS2018, including binary stress tests, post-hoc calibration and anomaly-based open-set baselines.
+  \item Seed-42 and seed-99 advanced analyses covering multiclass labels, rare classes, unknown attack families, calibration, abstention and explanation stability.
+  \item An external validation on CSE-CIC-IDS2018, including binary stress tests, post-hoc calibration and anomaly-based open-set baselines.
   \item A critical discussion of why these results should be interpreted as benchmark-validity evidence, not as a claim of universal intrusion-detection superiority.
 \end{enumerate}
 
@@ -65,7 +65,7 @@ Engelen et al. analyze CICIDS2017 and report issues in traffic generation, flow 
 
 \subsection{Evaluation methodology and generalization}
 
-Sommer and Paxson argued early that applying machine learning to intrusion detection differs from closed-world classification because attacks are rare, environments drift and operational costs matter \cite{sommer2010outside}. Apruzzese et al. similarly call for pragmatic NIDS evaluation that goes beyond benchmark outperformance \cite{apruzzese2023pragmatic}. Cantone et al. show that cross-dataset generalization can degrade sharply even when within-dataset scores are high \cite{cantone2024crossdataset}. Our main evidence remains an intra-dataset stress-test study, complemented by a partial external check on CSE-CIC-IDS2018 rather than a full cross-dataset benchmark.
+Sommer and Paxson argued early that applying machine learning to intrusion detection differs from closed-world classification because attacks are rare, environments drift and operational costs matter \cite{sommer2010outside}. Apruzzese et al. similarly call for pragmatic NIDS evaluation that goes beyond benchmark outperformance \cite{apruzzese2023pragmatic}. Cantone et al. show that cross-dataset generalization can degrade sharply even when within-dataset scores are high \cite{cantone2024crossdataset}. Our main evidence remains an intra-dataset stress-test study, complemented by an external CSE-CIC-IDS2018 sample check rather than a full cross-dataset benchmark.
 
 \subsection{Feature standardization, uncertainty and explainability}
 
@@ -79,7 +79,7 @@ The dataset is highly imbalanced. Rare labels such as Heartbleed and Web SQL Inj
 
 \subsection{External validation dataset}
 
-We also downloaded five public CSE-CIC-IDS2018 CICFlowMeter CSV files from the official UNB/AWS source \cite{unbCSECICIDS2018}. The audited subset contains 4,525,400 rows after removing repeated embedded header rows and has hash \texttt{414f7195ee1e137a}. The downloaded subset contains Benign, Bot, FTP-BruteForce, SSH-Bruteforce, Infilteration, Brute Force-Web, Brute Force-XSS and SQL Injection labels. Because benign traffic dominates, we generated a real-data stratified validation sample with 80,000 benign rows, up to 30,000 rows per attack label and all rare Web/XSS/SQL rows. The resulting sample contains 200,928 rows and has hash \texttt{d90aca82728746b3}. This sample is not synthetic. It is a capped subset of real CSE-CIC-IDS2018 rows. Endpoint-pair holdout is unavailable for this subset because the public processed CSV files do not include source and destination IP columns.
+We also downloaded all 10 public CSE-CIC-IDS2018 CICFlowMeter CSV files from the official UNB/AWS source \cite{unbCSECICIDS2018}. The audited external dataset contains 16,232,943 rows after removing repeated embedded header rows and has hash \texttt{96cd4ce8a085248a}. It contains Benign, Bot, FTP/SSH brute-force, multiple DoS/DDoS variants, Infilteration, Web/XSS/SQL labels and rare attack classes. Because benign traffic dominates, we generated a real-data stratified validation sample with 80,000 benign rows and up to 30,000 rows per attack label. The resulting sample contains 363,648 rows and has hash \texttt{d3092e8e71a9680c}. This sample is not synthetic. It is a capped subset of real CSE-CIC-IDS2018 rows. Endpoint-pair holdout is not used for this external validation because endpoint identity fields are absent or incomplete in the public processed CSV files.
 
 \section{Methods}
 
@@ -110,7 +110,7 @@ For open-set analysis, one attack family is excluded from training and evaluated
 
 \subsection{Models}
 
-The verified full-data core experiments use LogisticRegression (LR) and HistGradientBoosting (HGB). RandomForest was validated in pilot experiments but was not executed in full-data core due to memory/artifact-risk constraints. LogisticRegression initially produced convergence warnings at \texttt{max\_iter=500}. A seed-42 rerun with \texttt{max\_iter=2000} completed 10/10 LR runs with zero convergence warnings.
+The verified full-data core experiments use LogisticRegression (LR) and HistGradientBoosting (HGB). RandomForest was validated in pilot and external-sample experiments but was not executed in full-data core due to memory/artifact-risk constraints. We do not claim a new detector architecture and therefore do not optimize deep neural networks in this manuscript; the goal is to test whether common, reproducible tabular baselines remain reliable under deployment-oriented splits. LogisticRegression initially produced convergence warnings at \texttt{max\_iter=500}. A seed-42 rerun with \texttt{max\_iter=2000} completed 10/10 LR runs with zero convergence warnings.
 
 \subsection{Metrics}
 
@@ -163,6 +163,8 @@ We define a simple Cyber Transferability Score (CTS):
 \mathrm{CTS}(m,s)=\frac{\mathrm{macroF1}(m,s)}{\mathrm{macroF1}(m,\mathrm{random})},
 \]
 where \(m\) is the model and \(s\) is a stress-test split. Table~\ref{tab:cts} reports mean CTS across seeds.
+
+CTS is a relative robustness measure. A raw stress-split macro-F1 reports absolute task performance, whereas CTS reports how much of the random-split performance survives under a deployment-oriented shift. This is useful because models can have different random-split ceilings: LR may look weaker than HGB under IID evaluation while retaining a larger fraction of its score under time or scenario shift. CTS is not a replacement for macro-F1; it is reported alongside absolute metrics to prevent a model with low random performance from appearing robust merely because its denominator is small.
 
 \begin{table}[ht]
 \centering
@@ -239,26 +241,26 @@ LR & Endpoint-pair holdout & 0.8837 & 0.0584 \\
 
 Temporal ECE reaches 0.7013 for HGB and 0.3955 for LR, suggesting severe overconfidence or miscalibration under shift.
 
-\subsection{Partial external validation on CSE-CIC-IDS2018}
+\subsection{External validation on CSE-CIC-IDS2018}
 
-Table~\ref{tab:external-cse} reports the binary partial external validation on the 200,928-row CSE-CIC-IDS2018 stratified sample. The same qualitative concern appears outside the local CICIDS2017-like CSV files: random-split scores are higher than Web scenario holdout scores for all three tested models.
+Table~\ref{tab:external-cse} reports the binary external validation on the 363,648-row CSE-CIC-IDS2018 stratified sample. The same qualitative concern appears outside the local CICIDS2017-like CSV files: random-split scores are much higher than temporal-holdout scores for all three tested models.
 
 \begin{table}[ht]
 \centering
-\caption{Partial external validation on real CSE-CIC-IDS2018 CSVs. Macro-F1 on the 200,928-row stratified validation sample.}
+\caption{External validation on real CSE-CIC-IDS2018 CSVs. Macro-F1 on the 363,648-row stratified validation sample from all 10 processed CSV files.}
 \label{tab:external-cse}
 \begin{tabular}{lcccc}
 \toprule
 Model & Random & Temporal & Latest-day & Web holdout \\
 \midrule
-LR & 0.8618 & 0.6727 & 0.6604 & 0.6459 \\
-HGB & 0.9224 & 0.8312 & 0.8204 & 0.7408 \\
-RF & 0.9158 & 0.9284 & 0.9195 & 0.7193 \\
+LR & 0.8425 & 0.3913 & 0.4787 & 0.5522 \\
+HGB & 0.9362 & 0.1037 & 0.8070 & 0.7161 \\
+RF & 0.9195 & 0.1050 & 0.8739 & 0.5779 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Post-hoc calibration on this external sample is split-dependent. For LR, isotonic calibration reduces random-split ECE from 0.0395 to 0.0040 and temporal ECE from 0.3619 to 0.1533, but Web-holdout ECE worsens from 0.1693 to 0.2309. For HGB, isotonic calibration reduces random ECE from 0.0151 to 0.0029, but temporal ECE worsens from 0.0864 to 0.1310. Open-set scoring on a 50,000-row external subsample shows that Local Outlier Factor is much stronger than Isolation Forest for Web, Botnet and BruteForce unknown-family scoring, with AUROC values of 0.8990, 0.9574 and 0.9087 respectively. These results strengthen the conclusion that calibration and open-set behavior must be evaluated under each shift rather than assumed from random-split performance.
+The external latest-day result is deliberately not over-interpreted: RF remains strong on that split even though it collapses under temporal holdout. This reinforces the paper's central claim that deployment reliability is split-specific and cannot be inferred from one favorable protocol. Post-hoc calibration was additionally evaluated on an earlier 200,928-row CSE-CIC sample and is split-dependent. For LR, isotonic calibration reduces random-split ECE from 0.0395 to 0.0040 and temporal ECE from 0.3619 to 0.1533, but Web-holdout ECE worsens from 0.1693 to 0.2309. For HGB, isotonic calibration reduces random ECE from 0.0151 to 0.0029, but temporal ECE worsens from 0.0864 to 0.1310. Open-set scoring on a 50,000-row external subsample shows that Local Outlier Factor is much stronger than Isolation Forest for Web, Botnet and BruteForce unknown-family scoring, with AUROC values of 0.8990, 0.9574 and 0.9087 respectively. These results strengthen the conclusion that calibration and open-set behavior must be evaluated under each shift rather than assumed from random-split performance.
 
 \subsection{Multiclass collapse under shifted splits}
 
@@ -287,6 +289,13 @@ LR & Endpoint-pair holdout & 0.3044 & 0.9051 \\
 \end{table}
 
 The Azure log emitted 16 sklearn warnings stating that predicted labels contained classes absent from the true labels during shifted multiclass/per-class evaluation. This is not a cosmetic warning; it indicates label-support shift and should be discussed as part of the failure mode.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/per_class_f1_heatmap_hgb.png}
+\caption{HGB per-class F1 across split protocols for the seed-42 advanced run. Gray cells indicate classes absent from the corresponding test split.}
+\label{fig:per-class-heatmap}
+\end{figure}
 
 \subsection{Rare-class behavior}
 
@@ -343,39 +352,66 @@ At approximately 90\% coverage, selective macro-F1 remains poor on hard shifts. 
 
 Top-15 explanation-overlap Jaccard against the random-stratified baseline is much lower for HGB than LR under the hardest shifts. HGB temporal Jaccard is 0.0714, corresponding to only two overlapping top-15 features, whereas LR temporal Jaccard is 0.5789. This suggests that HGB feature importance is more sensitive to split protocol. However, the current HGB permutation importance uses a sample size of 2000 and one repeat; a final journal version should increase repeats and add uncertainty estimates.
 
+\subsection{Practical SOC guidance}
+
+Table~\ref{tab:soc-guidance} summarizes the operational guidance implied by the experiments. The table is intentionally conservative: it does not recommend deploying a model solely because its random-split score is high.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Practical guidance for SOC-oriented use of the evaluated protocol.}
+\label{tab:soc-guidance}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{0.24\linewidth}
+>{\raggedright\arraybackslash}p{0.28\linewidth}
+>{\raggedright\arraybackslash}p{0.38\linewidth}}
+\toprule
+Decision point & Recommendation & Rationale \\
+\midrule
+Model selection & Do not rank models using random split only. & HGB dominates random macro-F1 but collapses under temporal holdout; LR is less impressive under random split but more stable for some shifts. \\
+Validation protocol & Require temporal and scenario holdouts before deployment claims. & These splits expose failures hidden by random stratification and weighted metrics. \\
+Alert triage & Use calibration and abstention only after split-specific validation. & Calibration helps in some random/external cases but can worsen ECE under stress splits. \\
+Rare attacks & Inspect per-class and rare-class F1, not only binary metrics. & Web rare classes reach F1=0 under Web holdout despite acceptable aggregate scores. \\
+Operational reporting & Report CTS, absolute macro-F1, calibration and review burden together. & A single metric cannot capture accuracy, transferability, confidence quality and analyst workload. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Discussion}
 
 The results support three conclusions.
 
 First, random-split benchmark accuracy is not a reliable proxy for deployment reliability. HGB appears nearly perfect under random stratification, but its temporal macro-F1 and calibration collapse. LR is less impressive under random stratification but can be more stable under some shifts.
 
-Second, binary evaluation is insufficient. Multiclass macro-F1, rare-class results and Web holdout results reveal failures that are hidden by weighted or binary metrics. This is particularly important for SOC deployment, where missing a rare but critical attack can be operationally unacceptable.
+The likely explanation is that HGB exploits sharper split-specific feature interactions. That behavior is useful under IID evaluation but brittle under chronological shift: HGB temporal macro-F1 drops to 0.2315 and its top-15 explanation overlap with the random baseline is only 0.0714. LR has lower random-split macro-F1 but higher temporal macro-F1 and a higher explanation-overlap Jaccard of 0.5789. This does not make LR universally better; it shows that model ranking depends on the deployment stressor.
+
+Second, binary evaluation is insufficient. Multiclass macro-F1, rare-class results and Web holdout results reveal failures that are hidden by weighted or binary metrics. This is particularly important for SOC deployment, where missing a rare but critical attack can be operationally unacceptable. The heatmap in Figure~\ref{fig:per-class-heatmap} makes the same point visually: several attack families that look strong under random stratification become near-zero under temporal, latest-day or Web holdout evaluation.
 
 Third, uncertainty and explanations are not automatically robust. Open-set results vary strongly by model and unknown family, while explanation stability changes across split protocols. These behaviors should be evaluated as first-class outcomes, not as optional post-hoc figures.
 
 \section{Threats to Validity}
 
-\paragraph{External-validation scope.}
-The main evidence still comes from one CICIDS2017-like dataset. The CSE-CIC-IDS2018 result is a partial validation using five public CSV files and a stratified real-data sample, not a full cross-dataset benchmark. The paper should therefore claim external consistency evidence, not universal generalization.
+\paragraph{Internal validity.}
+The pipeline records dataset hashes, feature hashes, split hashes and Azure ML provenance, but implementation bugs remain possible. We mitigate this risk through unit tests, tracked artifacts and explicit logging of failures such as the initial OOM run and LR convergence warnings. The endpoint-pair split is also a possible internal-validity concern because it is much less discriminating than temporal and scenario holdouts; this may reflect genuine robustness for endpoint-pair grouping, or a grouping definition that is too granular to simulate deployment shift.
 
-\paragraph{Known CICIDS2017 limitations.}
-Prior studies report CICIDS2017 flow-construction and labelling issues. These issues motivate the study but also limit claims about real-world attack detection.
+\paragraph{External validity.}
+The main evidence still comes from one CICIDS2017-like dataset. The CSE-CIC-IDS2018 result uses all 10 public processed CSV files for the raw audit and a 363,648-row stratified real-data sample for experiments, but it is still not a full cross-dataset benchmark over original class priors. The paper should therefore claim external consistency evidence, not universal generalization. Prior studies also report CICIDS2017 flow-construction and labelling issues. These issues motivate the study but limit claims about real-world attack detection.
 
-\paragraph{Advanced analyses are seed 42 only.}
-The binary core is validated on seeds 42, 7 and 99. The advanced analyses are currently seed 42 only. Final claims about rare-class, open-set, calibration and explanation stability should be repeated on additional seeds if compute budget allows.
+\paragraph{Construct validity.}
+The study uses macro-F1, CTS, calibration error, selective prediction and explanation overlap as deployment-reliability proxies. These metrics capture important failure modes but do not fully encode SOC cost, alert fatigue, incident criticality or analyst workflow. The practical guidance should therefore be interpreted as evaluation guidance, not as a deployment certification.
 
-\paragraph{LogisticRegression convergence.}
-LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}. Older seed 7 and seed 99 LR rows still contain warnings from \texttt{max\_iter=500}. Corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft. Final LR multi-seed tables should use those convergence-clean reruns or explicitly report this limitation.
+\paragraph{Conclusion validity.}
+The binary core is validated on seeds 42, 7 and 99, and the paired random-vs-stress statistics use the six available seed-by-feature-tier units. The advanced analyses are currently available for seeds 42 and 99, with seed 7 still running at the time of this draft. Final claims about rare-class, open-set, calibration and explanation stability should be repeated on all three seeds if compute budget allows. LR convergence is fixed for seed 42 with \texttt{max\_iter=2000}; corrected LR2000 reruns without the timestamp-derived \texttt{hour} feature have been submitted for seeds 42, 7 and 99, but their artifacts were not yet available at the time of this draft.
 
 \paragraph{Open-set baseline strength.}
-The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, but these are still baseline anomaly detectors. A final version should compare additional open-set or anomaly approaches if scope permits.
+The main advanced open-set analysis uses classifier uncertainty. The external validation adds Isolation Forest and Local Outlier Factor, and separate full-data Isolation Forest jobs are completed for seeds 42 and 99. These are still baseline anomaly detectors, and seed 7 remains queued. A final version should compare additional open-set or anomaly approaches if scope permits.
 
 \paragraph{Explanation precision.}
 HGB explanation stability uses lightweight permutation importance. A final version should use more repeats and confidence intervals.
 
 \section{Conclusion}
 
-FAIR-ML-CYBER shows that CICIDS2017-like evidence can support a meaningful Q1-oriented contribution if the paper is framed as a rigorous evaluation and benchmark-validity study, and if its limits are tested against external data. The verified results show that random-split scores are overly optimistic, temporal and scenario shifts expose major transferability failures, calibration degrades under shift, rare classes are poorly detected, open-set behavior is inconsistent and explanation stability depends on the split protocol. The partial CSE-CIC-IDS2018 validation supports the same caution: random-split performance remains insufficient evidence of deployment reliability.
+FAIR-ML-CYBER shows that CICIDS2017-like evidence can support a meaningful Q1-oriented contribution if the paper is framed as a rigorous evaluation and benchmark-validity study, and if its limits are tested against external data. The verified results show that random-split scores are overly optimistic, temporal and scenario shifts expose major transferability failures, calibration degrades under shift, rare classes are poorly detected, open-set behavior is inconsistent and explanation stability depends on the split protocol. The CSE-CIC-IDS2018 validation supports the same caution: random-split performance remains insufficient evidence of deployment reliability.
 
 The manuscript should not claim a new state-of-the-art detector. Its strongest claim is methodological: NIDS evaluation must include leakage-aware stress tests, transferability metrics, rare-class analysis, calibration, abstention, open-set diagnostics and explanation stability before benchmark scores can be interpreted as deployment evidence.
 
@@ -389,7 +425,11 @@ The repository records Azure ML job names, Git commits, dataset hashes, feature 
   \item \texttt{evidence/fullcore-lr2000-s42-001/}
   \item \texttt{evidence/q1-stats-fullcore-multiseed-001/}
   \item \texttt{evidence/advanced-core-s42-001/}
+  \item \texttt{evidence/advanced-core-s99-001/}
   \item \texttt{evidence/cse-cic-ids2018-partial-s42-001/}
+  \item \texttt{evidence/cse-cic-ids2018-full-sample-s42-001/}
+  \item \texttt{evidence/open-set-if-s42-001/}
+  \item \texttt{evidence/open-set-if-s99-001/}
 \end{itemize}
 
 \bibliographystyle{plain}
