@@ -2,6 +2,8 @@
 
 This file summarizes verified outputs from the Azure ML full-data core run. These results are valid empirical evidence for the current binary-classification core protocol, but they are not yet a complete Q1 paper package: repeated seeds, rare-class/multi-class analysis, open-set tests, calibration/abstention analysis and explanation stability are still required.
 
+For the current multi-seed comparison, see `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
+
 ## Run Scope
 
 | Item | Value |

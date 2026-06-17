@@ -277,15 +277,15 @@ Analyse pilote déjà disponible:
 
 Analyse full-data core disponible:
 
-- `fullcore-mem-s42-001` confirme le même signal sur les 2,438,052 lignes du dataset, seed 42, avec LogisticRegression et HistGradientBoosting.
-- Macro-F1 moyenne par split, moyenne sur les deux feature tiers:
-  - `random_stratified`: HistGradientBoosting 0.9978, LogisticRegression 0.9364;
-  - `endpoint_pair_holdout`: 0.9955, 0.8859;
-  - `temporal`: 0.2316, 0.5401;
-  - `day_holdout_2017-07-07`: 0.3698, 0.6388;
-  - `scenario_holdout_Web`: 0.5653, 0.4836.
-- CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`.
-- Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier: répétitions multi-seed, rare-class/multi-class, open-set et calibration/abstention restent à produire.
+- `fullcore-mem-s42-001` et `fullcore-mem-s7-001` confirment le même signal sur les 2,438,052 lignes du dataset, avec LogisticRegression et HistGradientBoosting.
+- Macro-F1 moyenne par split, moyenne sur les deux feature tiers et les deux seeds:
+  - `random_stratified`: HistGradientBoosting 0.9978, LogisticRegression 0.9360;
+  - `endpoint_pair_holdout`: 0.9952, 0.8759;
+  - `temporal`: 0.2322, 0.5401;
+  - `day_holdout_2017-07-07`: 0.3988, 0.6386;
+  - `scenario_holdout_Web`: 0.5315, 0.4831.
+- CTS macro-F1 initial disponible dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
+- Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier: rare-class/multi-class, open-set et calibration/abstention restent à produire.
 
 ## Figures publication-ready
 
@@ -320,11 +320,11 @@ Mesures de mitigation:
 Pour un premier papier solide:
 
 1. audit dataset: fait;
-2. P0/P1/P3/P4: pilote fait; full-data core seed 42 validé pour LogisticRegression et HistGradientBoosting;
+2. P0/P1/P3/P4: pilote fait; full-data core seeds 42 et 7 validés pour LogisticRegression et HistGradientBoosting;
 3. Logistic Regression + Random Forest + HistGradientBoosting: pilote fait; full-data core validé pour LogisticRegression/HistGradientBoosting; Random Forest full-data à décider selon coût mémoire;
 4. XGBoost/LightGBM et Isolation Forest: à décider/implémenter dans le protocole final;
 5. macro-F1, MCC, AUROC, PR-AUC, Brier, ECE: disponibles dans le pilote et le full-data core;
-6. CTS: version macro-F1 initiale disponible; rare-class détaillé, calibration figures, abstention, SHAP/permutation stability à faire;
+6. CTS: version macro-F1 initiale multi-seed disponible; rare-class détaillé, calibration figures, abstention, SHAP/permutation stability à faire;
 7. runtime: loggé par modèle dans le pilote et le full-data core.
 
 Pour viser Q1 plus confortablement:

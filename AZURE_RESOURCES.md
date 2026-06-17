@@ -186,11 +186,12 @@ Observation réelle au 2026-06-17:
 - `fullcore-s42-001` sur `cpu-cluster` / `Standard_DS3_v2` a échoué par `SIGKILL`, probablement out-of-memory, dès le premier entraînement full-data;
 - un cluster mémoire `cpu-memory-cluster` a été créé avec `Standard_E8ds_v5`, min 0, max 1, idle scale-down 120 s;
 - le rerun `fullcore-mem-s42-001` via `azureml/full_core_memory_job.yml` a complété le full-data core: 2,438,052 lignes, 20/20 runs, 0 échec.
+- la répétition `fullcore-mem-s7-001` via `azureml/full_core_memory_seed7_job.yml` a aussi complété 20/20 runs, 0 échec.
 
 Conclusion opérationnelle:
 
 - `Standard_DS3_v2` reste utile pour debug/smoke/pilote;
-- `Standard_E8ds_v5` est la taille minimale validée pour le full-data core actuel;
+- `Standard_E8ds_v5` est la taille minimale validée pour le full-data core actuel sur deux seeds;
 - les expériences finales plus lourdes doivent enregistrer coût, durée, mémoire, artefacts et éventuelles alertes de convergence.
 
 ---
@@ -327,11 +328,12 @@ Pour cet article, ne pas créer au départ:
 4. Job Azure ML pilote `pilot10k-001`: fait, 30/30 runs complétés.
 5. Job Azure ML full-core `fullcore-s42-001` sur `Standard_DS3_v2`: échoué par SIGKILL/OOM, documenté.
 6. Job Azure ML full-core mémoire `fullcore-mem-s42-001`: fait, 20/20 runs complétés sur `Standard_E8ds_v5`.
-7. `evaluate_transferability`: CTS macro-F1 initial calculé dans `FULLCORE_MEM_S42_RESULTS.md`; version finale multi-seed à ajouter.
-8. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
-9. `evaluate_explainability`: SHAP/permutation stability à ajouter.
-10. `generate_figures`: partiel; figures article à produire après résultats finaux.
-11. MLflow/logs: fonctionnel via SQLite local dans le work dir Azure, artefacts téléchargés.
+7. Job Azure ML full-core mémoire `fullcore-mem-s7-001`: fait, 20/20 runs complétés sur `Standard_E8ds_v5`.
+8. `evaluate_transferability`: CTS macro-F1 initial multi-seed calculé dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`; version finale article à étendre.
+9. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
+10. `evaluate_explainability`: SHAP/permutation stability à ajouter.
+11. `generate_figures`: partiel; figures article à produire après résultats finaux.
+12. MLflow/logs: fonctionnel via SQLite local dans le work dir Azure, artefacts téléchargés.
 
 ---
 

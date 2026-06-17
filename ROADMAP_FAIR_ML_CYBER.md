@@ -36,7 +36,9 @@ Travail terminé et vérifié:
 - cluster mémoire `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0/max 1) créé;
 - rerun mémoire `azureml/full_core_memory_job.yml` soumis comme `fullcore-mem-s42-001`;
 - full-data core `fullcore-mem-s42-001` validé: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
+- répétition full-data `fullcore-mem-s7-001` validée: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
 - synthèse full-data ajoutée dans `FULLCORE_MEM_S42_RESULTS.md`;
+- comparaison multi-seed ajoutée dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`;
 - bugs/dysfonctionnements documentés dans `TESTING_AND_EXPERIMENT_LOG.md`.
 
 Signal scientifique observé dans le pilote et confirmé en full-data core:
@@ -45,13 +47,14 @@ Signal scientifique observé dans le pilote et confirmé en full-data core:
 - `temporal`, `day_holdout_2017-07-07` et `scenario_holdout_Web` révèlent des chutes importantes;
 - Logistic Regression est moins spectaculaire en random split mais plus stable sur certains stress-tests temporels/day-holdout;
 - en full-data core, HistGradientBoosting passe de 0.9978 macro-F1 en random split à 0.2316 en temporal et 0.3698 en day-holdout, tandis que LogisticRegression passe de 0.9364 à 0.5401 et 0.6388;
+- la répétition seed 7 confirme le signal central, mais montre une variabilité HGB sur day-holdout et scénario Web;
 - le sujet "benchmark accuracy vs deployment reliability" est donc renforcé par des résultats réels full-data.
 
 Ce qui n'est pas encore terminé:
 
-- le full-data core binaire seed 42 est validé, mais pas encore répété multi-seed;
+- le full-data core binaire est validé sur seeds 42 et 7;
 - Random Forest n'a pas encore été exécuté en full-data à cause du risque mémoire/artefacts;
-- pas encore de répétitions multi-seed;
+- décision restante: ajouter un troisième seed ou justifier deux seeds pour le core;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
 - pas encore d'analyse multi-classe/rare-class complète;
 - pas encore de calibration/abstention complète;
@@ -324,7 +327,7 @@ Durée estimée: 1 semaine.
 - [ ] Implémenter config YAML par modèle.
 - [x] Fixer seed dans les runs actuels.
 - [x] Entraîner les baselines binaires sur splits principaux dans smoke/pilote.
-- [~] Entraîner full-data/repeated-seed final: full-data core seed 42 validé pour LogisticRegression et HistGradientBoosting; répétitions multi-seed et Random Forest full-data restent à décider.
+- [~] Entraîner full-data/repeated-seed final: full-data core seeds 42 et 7 validés pour LogisticRegression et HistGradientBoosting; troisième seed et Random Forest full-data restent à décider.
 - [ ] Comparer classification binaire et multi-classe.
 - [x] Mesurer temps d'entraînement et inférence dans les runs actuels.
 
@@ -547,8 +550,8 @@ Si on veut avancer vite:
 
 1. Audit dataset: fait.
 2. Feature tiers: partiel mais fonctionnel.
-3. Random split vs temporal split vs scenario holdout: pilote fait et full-data core seed 42 validé pour LogisticRegression/HistGradientBoosting.
-4. Endpoint-pair holdout: pilote fait et full-data core seed 42 validé.
+3. Random split vs temporal split vs scenario holdout: pilote fait et full-data core seeds 42/7 validés pour LogisticRegression/HistGradientBoosting.
+4. Endpoint-pair holdout: pilote fait et full-data core seeds 42/7 validés.
 5. Random Forest + Logistic Regression + HistGradientBoosting: pilote fait; full-data core validé pour LogisticRegression/HistGradientBoosting; Random Forest full-data à décider selon mémoire/coût.
 6. Macro-F1, MCC, PR-AUC: fait dans pilote et full-data core; CTS macro-F1 initial disponible.
 7. Calibration simple: métriques Brier/ECE présentes; figures à ajouter.
