@@ -277,13 +277,13 @@ Analyse pilote déjà disponible:
 
 Analyse full-data core disponible:
 
-- `fullcore-mem-s42-001` et `fullcore-mem-s7-001` confirment le même signal sur les 2,438,052 lignes du dataset, avec LogisticRegression et HistGradientBoosting.
-- Macro-F1 moyenne par split, moyenne sur les deux feature tiers et les deux seeds:
-  - `random_stratified`: HistGradientBoosting 0.9978, LogisticRegression 0.9360;
-  - `endpoint_pair_holdout`: 0.9952, 0.8759;
-  - `temporal`: 0.2322, 0.5401;
-  - `day_holdout_2017-07-07`: 0.3988, 0.6386;
-  - `scenario_holdout_Web`: 0.5315, 0.4831.
+- `fullcore-mem-s42-001`, `fullcore-mem-s7-001` et `fullcore-mem-s99-001` confirment le même signal sur les 2,438,052 lignes du dataset, avec LogisticRegression et HistGradientBoosting.
+- Macro-F1 moyenne par split, moyenne sur les deux feature tiers et les trois seeds:
+  - `random_stratified`: HistGradientBoosting 0.9977, LogisticRegression 0.9357;
+  - `endpoint_pair_holdout`: 0.9924, 0.8820;
+  - `temporal`: 0.2315, 0.5401;
+  - `day_holdout_2017-07-07`: 0.4090, 0.6394;
+  - `scenario_holdout_Web`: 0.5207, 0.4831.
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
 - Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier: rare-class/multi-class, open-set et calibration/abstention restent à produire.
 
@@ -320,7 +320,7 @@ Mesures de mitigation:
 Pour un premier papier solide:
 
 1. audit dataset: fait;
-2. P0/P1/P3/P4: pilote fait; full-data core seeds 42 et 7 validés pour LogisticRegression et HistGradientBoosting;
+2. P0/P1/P3/P4: pilote fait; full-data core seeds 42, 7 et 99 validés pour LogisticRegression et HistGradientBoosting;
 3. Logistic Regression + Random Forest + HistGradientBoosting: pilote fait; full-data core validé pour LogisticRegression/HistGradientBoosting; Random Forest full-data à décider selon coût mémoire;
 4. XGBoost/LightGBM et Isolation Forest: à décider/implémenter dans le protocole final;
 5. macro-F1, MCC, AUROC, PR-AUC, Brier, ECE: disponibles dans le pilote et le full-data core;

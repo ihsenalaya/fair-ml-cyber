@@ -1,0 +1,15 @@
+{
+  "audit": {
+    "num_files": 18,
+    "total_rows": 2438052,
+    "data_hash": "f51899df9bd60758"
+  },
+  "sample_rows": 2438052,
+  "prepared_path": null,
+  "results_path": "/mnt/azureml/cr/j/b913c6369e654f1984c046e68fda5a45/cap/data-capability/wd/work_dir/results/fullcore_mem_s99_results.csv",
+  "events_path": "/mnt/azureml/cr/j/b913c6369e654f1984c046e68fda5a45/cap/data-capability/wd/work_dir/results/fullcore_mem_s99_events.jsonl",
+  "runs": 20,
+  "completed_runs": 20,
+  "failed_runs": 0,
+  "skipped_splits": []
+}

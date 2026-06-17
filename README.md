@@ -41,9 +41,10 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `TESTING_AND_EXPERIMENT_LOG.md`: journal vérifiable des tests, runs, durées, ressources, bugs et dysfonctionnements.
 - `PILOT10K_RESULTS.md`: synthèse vérifiée du pilote Azure ML `pilot10k-001`.
 - `FULLCORE_MEM_S42_RESULTS.md`: synthèse vérifiée du run full-data Azure ML `fullcore-mem-s42-001`.
-- `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seed 42 vs seed 7.
+- `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
 - `evidence/fullcore-mem-s42-001/`: snapshot textuel suivi par Git des résultats full-data vérifiés.
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
+- `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
 
 ## Etat actuel au 2026-06-17
 
@@ -75,11 +76,12 @@ Runs vérifiés:
 - smoke Azure ML `smoke-runtime-002`: 31,394 lignes échantillonnées, 30/30 runs complétés;
 - pilote Azure ML `pilot10k-001`: 125,517 lignes échantillonnées, 30/30 runs complétés, artefacts téléchargés localement;
 - full-data core Azure ML `fullcore-mem-s42-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement;
-- répétition full-data Azure ML `fullcore-mem-s7-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
+- répétition full-data Azure ML `fullcore-mem-s7-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement;
+- répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, utile pour le design expérimental.
 
-Depuis le 2026-06-17, `azureml/full_core_job.yml` a été soumis comme `fullcore-s42-001` sur `Standard_DS3_v2`, mais il a échoué par `SIGKILL`, probablement out-of-memory, avant la fin du premier modèle full-data. Le rerun `fullcore-mem-s42-001` sur `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0, max 1) a terminé le protocole core: 2 feature tiers, 5 splits, 2 modèles, 20/20 runs complétés. La répétition `fullcore-mem-s7-001` a aussi terminé 20/20 runs.
+Depuis le 2026-06-17, `azureml/full_core_job.yml` a été soumis comme `fullcore-s42-001` sur `Standard_DS3_v2`, mais il a échoué par `SIGKILL`, probablement out-of-memory, avant la fin du premier modèle full-data. Le rerun `fullcore-mem-s42-001` sur `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0, max 1) a terminé le protocole core: 2 feature tiers, 5 splits, 2 modèles, 20/20 runs complétés. Les répétitions `fullcore-mem-s7-001` et `fullcore-mem-s99-001` ont aussi terminé 20/20 runs.
 
 Signal full-data vérifié:
 
@@ -89,7 +91,7 @@ Signal full-data vérifié:
 - macro-F1 scenario Web moyen: HistGradientBoosting 0.5653, LogisticRegression 0.4836;
 - macro-F1 endpoint-pair holdout moyen: HistGradientBoosting 0.9955, LogisticRegression 0.8859.
 
-Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison seed 42 vs seed 7 confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Ils ne suffisent pas encore seuls pour un manuscrit Q1 final: il manque rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications.
+Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Ils ne suffisent pas encore seuls pour un manuscrit Q1 final: il manque rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications.
 
 ## Positionnement Q1
 
@@ -107,7 +109,7 @@ Important: un papier basé uniquement sur un modèle ML classique et CICIDS2017 
 
 La prochaine étape scientifique est de compléter le protocole final:
 
-- décider si un troisième seed est nécessaire ou si deux seeds suffisent pour le core;
+- traiter les warnings de convergence LogisticRegression;
 - éviter de sauvegarder tous les modèles si les artefacts deviennent trop lourds;
 - ajouter les métriques de portabilité CTS;
 - ajouter les analyses rare-class, calibration, abstention et éventuellement explainability;
