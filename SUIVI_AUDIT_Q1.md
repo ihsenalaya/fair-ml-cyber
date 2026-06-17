@@ -1,7 +1,7 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #16)
+**Dernier check** : 2026-06-17 (check #17)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
 **Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
@@ -284,6 +284,7 @@
 | Check #14 | 2026-06-17 | 0 nouveau — C3 toujours absent evidence/. Log inchangé. 13/15 résolus | 2 |
 | Check #15 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. Aucun fichier récent. 13/15 résolus | 2 |
 | Check #16 | 2026-06-17 | 0 nouveau résolu — C3 relancé en duplicata sur `cpu-cluster` (`fullcore-lr2000-nohour-s7-cpu-001`, `fullcore-lr2000-nohour-s99-cpu-001`) et A5 préparé avec `.zenodo.json`/`CITATION.cff`. DOI toujours absent. 13/15 résolus | 2 |
+| Check #17 | 2026-06-17 | 0 nouveau résolu — duplicata `s99-cpu` échoué SIGKILL/OOM sur `Standard_DS3_v2`; duplicata `s7-cpu` annulé. C3 reste ouvert sur `cpu-memory-cluster` (`Standard_E8ds_v5`). 13/15 résolus | 2 |
 
 ---
 
