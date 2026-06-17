@@ -218,6 +218,9 @@ def run_experiment(
                         "status": "completed",
                         "train_seconds": fit.train_seconds,
                         "inference_seconds": fit.inference_seconds,
+                        "warning_count": fit.warning_count,
+                        "convergence_warning_count": fit.convergence_warning_count,
+                        "warning_messages": " | ".join(fit.warning_messages) if fit.warning_messages else None,
                         "model_path": str(model_path) if model_path else None,
                         "error_type": None,
                         "error_message": None,
@@ -232,6 +235,8 @@ def run_experiment(
                         inference_seconds=fit.inference_seconds,
                         macro_f1=metrics.get("macro_f1"),
                         auroc=metrics.get("auroc"),
+                        warning_count=fit.warning_count,
+                        convergence_warning_count=fit.convergence_warning_count,
                     )
                 except Exception as exc:
                     row = {
@@ -239,6 +244,9 @@ def run_experiment(
                         "status": "failed",
                         "train_seconds": None,
                         "inference_seconds": None,
+                        "warning_count": None,
+                        "convergence_warning_count": None,
+                        "warning_messages": None,
                         "model_path": None,
                         "error_type": type(exc).__name__,
                         "error_message": str(exc),

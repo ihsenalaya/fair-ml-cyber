@@ -69,6 +69,8 @@ Python package versions observed on 2026-06-16T21:36:46+02:00:
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest tests/test_experiment.py::test_run_experiment_writes_results_and_events -q` | 14.48 s wall clock | Passed: 1 targeted test | CPU 100%; max RSS 338,220 KB; exit status 0; verifies that `run_experiment()` writes results, summary and JSONL events after the `_log_event()` fix |
 | 2026-06-16 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 18.00 s wall clock | Passed: 13 tests | CPU 114%; max RSS 347,496 KB; exit status 0; validates the configurable experiment engine, CLI parsing support, MLflow environment isolation, feature tiers, metrics, hashing and split helpers |
 | 2026-06-17 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 30.41 s wall clock | Passed: 13 tests | CPU 92%; max RSS 339,796 KB; exit status 0; validates `--no-save-prepared`/`save_prepared_data=False` before preparing full-data Azure runs with reduced artifact size |
+| 2026-06-17 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest tests/test_modeling.py tests/test_experiment.py tests/test_advanced.py -q` | 19.91 s wall clock | Passed: 4 targeted tests | CPU 110%; max RSS 342,084 KB; exit status 0; validates LR `max_iter=2000`, warning columns in experiment output and advanced-analysis artifact generation |
+| 2026-06-17 | `/usr/bin/time -v /home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q` | 19.94 s wall clock | Passed: 15 tests | CPU 104%; max RSS 342,944 KB; exit status 0; full regression after adding LR warning capture and `run-advanced` analyses |
 
 ## Dataset Audit Runs
 

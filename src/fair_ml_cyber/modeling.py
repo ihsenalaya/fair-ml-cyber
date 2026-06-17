@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,7 @@ import pandas as pd
 from sklearn.ensemble import HistGradientBoostingClassifier, IsolationForest, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -26,6 +28,9 @@ class FitResult:
     inference_seconds: float
     y_pred: np.ndarray
     y_prob: np.ndarray | None
+    warning_count: int
+    convergence_warning_count: int
+    warning_messages: list[str]
 
 
 def build_model(model_name: str, seed: int = 42) -> Any:
@@ -37,7 +42,7 @@ def build_model(model_name: str, seed: int = 42) -> Any:
                 (
                     "model",
                     LogisticRegression(
-                        max_iter=500,
+                        max_iter=2000,
                         class_weight="balanced",
                         n_jobs=-1,
                         random_state=seed,
@@ -119,12 +124,18 @@ def fit_predict(
 ) -> FitResult:
     model = build_model(model_name, seed)
     train_start = time.perf_counter()
-    if model_name == "isolation_forest":
-        benign_mask = y_train.astype(int) == 0
-        model.fit(X_train.loc[benign_mask])
-    else:
-        model.fit(X_train, y_train)
+    with warnings.catch_warnings(record=True) as caught_warnings:
+        warnings.simplefilter("always")
+        if model_name == "isolation_forest":
+            benign_mask = y_train.astype(int) == 0
+            model.fit(X_train.loc[benign_mask])
+        else:
+            model.fit(X_train, y_train)
     train_seconds = time.perf_counter() - train_start
+    warning_messages = [str(w.message) for w in caught_warnings]
+    convergence_warning_count = sum(
+        1 for w in caught_warnings if issubclass(w.category, ConvergenceWarning)
+    )
 
     infer_start = time.perf_counter()
     if model_name == "isolation_forest":
@@ -140,11 +151,20 @@ def fit_predict(
             if proba.shape[1] == 2:
                 y_prob = proba[:, 1]
     inference_seconds = time.perf_counter() - infer_start
-    return FitResult(model_name, model, train_seconds, inference_seconds, y_pred, y_prob)
+    return FitResult(
+        model_name,
+        model,
+        train_seconds,
+        inference_seconds,
+        y_pred,
+        y_prob,
+        len(caught_warnings),
+        convergence_warning_count,
+        warning_messages,
+    )
 
 
 def save_model(model: Any, path: str | Path) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, path)
-

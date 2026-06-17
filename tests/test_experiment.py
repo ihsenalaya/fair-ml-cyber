@@ -62,4 +62,6 @@ def test_run_experiment_writes_results_and_events(tmp_path):
     assert not (tmp_path / "work" / "processed" / "full.parquet").exists()
     assert results.loc[0, "status"] == "completed"
     assert results.loc[0, "n_train"] > 0
+    assert "warning_count" in results.columns
+    assert "convergence_warning_count" in results.columns
     assert "experiment_completed" in events_path.read_text(encoding="utf-8")

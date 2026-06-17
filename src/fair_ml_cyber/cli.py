@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from fair_ml_cyber.audit import audit_csv_dir
+from fair_ml_cyber.advanced import run_advanced_analysis
 from fair_ml_cyber.experiment import run_experiment, run_smoke
 
 
@@ -55,6 +56,38 @@ def main() -> None:
     experiment.add_argument("--no-save-models", action="store_true")
     experiment.add_argument("--no-save-prepared", action="store_true")
 
+    advanced = sub.add_parser("run-advanced", help="Run article-level advanced analyses")
+    advanced.add_argument("--csv-dir", required=True, type=Path)
+    advanced.add_argument("--work-dir", required=True, type=Path)
+    advanced.add_argument("--sample-per-file", type=int, default=None)
+    advanced.add_argument("--seed", type=int, default=42)
+    advanced.add_argument(
+        "--models",
+        type=_csv_list,
+        default=_csv_list("logistic_regression,hist_gradient_boosting"),
+    )
+    advanced.add_argument(
+        "--feature-tiers",
+        type=_csv_list,
+        default=_csv_list("no_identity,deployment_safe"),
+    )
+    advanced.add_argument(
+        "--splits",
+        type=_csv_list,
+        default=_csv_list(
+            "random_stratified,temporal,latest_day_holdout,"
+            "scenario_holdout_Web,endpoint_pair_holdout"
+        ),
+    )
+    advanced.add_argument(
+        "--unknown-families",
+        type=_csv_list,
+        default=_csv_list("Web,Botnet,PortScan,DDoS"),
+    )
+    advanced.add_argument("--result-prefix", default="advanced")
+    advanced.add_argument("--explain-sample-size", type=int, default=5000)
+    advanced.add_argument("--permutation-repeats", type=int, default=2)
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -73,6 +106,20 @@ def main() -> None:
             result_prefix=args.result_prefix,
             save_models=not args.no_save_models,
             save_prepared_data=not args.no_save_prepared,
+        )
+    elif args.command == "run-advanced":
+        result = run_advanced_analysis(
+            args.csv_dir,
+            args.work_dir,
+            sample_per_file=args.sample_per_file,
+            seed=args.seed,
+            models=args.models,
+            feature_tiers=args.feature_tiers,
+            split_protocols=args.splits,
+            unknown_families=args.unknown_families,
+            result_prefix=args.result_prefix,
+            explain_sample_size=args.explain_sample_size,
+            permutation_repeats=args.permutation_repeats,
         )
     else:
         raise ValueError(args.command)
