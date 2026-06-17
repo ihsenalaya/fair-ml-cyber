@@ -72,7 +72,7 @@ Runs vérifiés:
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, pas encore la preuve finale de l'article.
 
-Depuis le 2026-06-17, le prochain job préparé est `azureml/full_core_job.yml`: full data, seed 42, Logistic Regression + HistGradientBoosting, deux feature tiers, cinq splits, sans sauvegarde des modèles ni du parquet préparé pour limiter les artefacts Azure.
+Depuis le 2026-06-17, `azureml/full_core_job.yml` a été soumis comme `fullcore-s42-001` sur `Standard_DS3_v2`, mais il a échoué par `SIGKILL`, probablement out-of-memory, avant la fin du premier modèle full-data. Un cluster mémoire `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0, max 1) a été créé, et le rerun versionné est `azureml/full_core_memory_job.yml`.
 
 ## Positionnement Q1
 

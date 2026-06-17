@@ -186,6 +186,12 @@ Pour les full experiments, il faudra décider entre:
 - garder `Standard_DS3_v2` et lancer des jobs plus longs;
 - monter temporairement en `D4ds_v5`, `D8ds_v5` ou équivalent si Random Forest/full-data devient trop lent ou trop mémoire.
 
+Observation réelle au 2026-06-17:
+
+- `fullcore-s42-001` sur `cpu-cluster` / `Standard_DS3_v2` a échoué par `SIGKILL`, probablement out-of-memory, dès le premier entraînement full-data;
+- un cluster mémoire `cpu-memory-cluster` a été créé avec `Standard_E8ds_v5`, min 0, max 1, idle scale-down 120 s;
+- le rerun `azureml/full_core_memory_job.yml` doit utiliser ce cluster pour vérifier si le full-data core passe.
+
 ---
 
 ### 6. Azure ML Compute Instance
@@ -368,12 +374,14 @@ Ajouter plus tard:
 |---|---|---:|---:|---|---|
 | `smoke-runtime-002` | Smoke validation | 31,394 lignes | 30 | Completed | Valide pipeline Azure complet |
 | `pilot10k-001` | Pilot experiment | 125,517 lignes | 30 | Completed | Signal scientifique fort mais non final |
+| `fullcore-s42-001` | Full-data core attempt | 2,438,052 lignes chargées; first train split 1,706,636 lignes | 0 completed | Failed | `Standard_DS3_v2` OOM/SIGKILL before first model completed |
 
 Job préparé pour la suite:
 
 | Job YAML | Objectif | Artefacts |
 |---|---|---|
 | `azureml/full_core_job.yml` | Full-data core run avec Logistic Regression et HistGradientBoosting sur 5 splits et 2 tiers | `--no-save-models`, `--no-save-prepared` pour limiter le volume |
+| `azureml/full_core_memory_job.yml` | Même protocole, mais sur `cpu-memory-cluster` / `Standard_E8ds_v5` après OOM DS3_v2 | `--no-save-models`, `--no-save-prepared` |
 
 Artefacts locaux:
 

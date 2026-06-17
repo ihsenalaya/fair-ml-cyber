@@ -31,7 +31,10 @@ Travail terminé et vérifié:
 - moteur configurable `run-experiment` ajouté;
 - pilote Azure ML `pilot10k-001` validé: 125,517 lignes, 30/30 runs complétés, 0 échec;
 - artefacts pilote téléchargés et analysés localement;
-- job full-data core `azureml/full_core_job.yml` préparé avec artefacts réduits;
+- job full-data core `azureml/full_core_job.yml` préparé avec artefacts réduits puis soumis comme `fullcore-s42-001`;
+- `fullcore-s42-001` a échoué par SIGKILL/OOM sur `Standard_DS3_v2` avant le premier modèle complet;
+- cluster mémoire `cpu-memory-cluster` (`Standard_E8ds_v5`, min 0/max 1) créé;
+- rerun mémoire `azureml/full_core_memory_job.yml` préparé;
 - bugs/dysfonctionnements documentés dans `TESTING_AND_EXPERIMENT_LOG.md`.
 
 Signal scientifique observé dans le pilote:
@@ -44,7 +47,7 @@ Signal scientifique observé dans le pilote:
 Ce qui n'est pas encore terminé:
 
 - aucun full experiment final n'a encore été validé;
-- le full-data core est prêt à soumettre mais pas encore validé;
+- le full-data core n'est pas encore validé; la première tentative a prouvé que `Standard_DS3_v2` est insuffisant;
 - pas encore de répétitions multi-seed;
 - pas encore de CTS final;
 - pas encore d'analyse multi-classe/rare-class complète;
