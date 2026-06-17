@@ -1,7 +1,7 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #22)
+**Dernier check** : 2026-06-17 (check #23)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
 **Statut global** : 🟡 Prêt avec réserve mineure — 14/15 résolus. Aucun bloquant critique restant. A5 DOI Zenodo final absent.
@@ -163,14 +163,15 @@
 
 ### A5 — Artifacts publics + DOI Zenodo
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⏳ Partiel — GitHub Release `v1.0.1` créée avec seed 7; une release `v1.0.2` doit remplacer l'état courant après intégration C3. DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending.
+- **Statut** : ⏳ Partiel — GitHub Release courante `v1.0.2` publiée avec C3, IF seed 7, PDF reconstruit et métadonnées Zenodo/CFF. DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending.
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
 - **Vérification check #12** : tag annoté `v1.0.1` poussé et GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 avec le PDF reconstruit après intégration seed 7.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
 - **Vérification manuscrit check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
 - **Vérification check #16** : `.zenodo.json` et `CITATION.cff` préparés pour l'archivage, sans inventer de DOI.
-- **Action restante** : publier la release `v1.0.2`, connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
+- **Vérification check #23** : tag annoté `v1.0.2` poussé; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.2 avec `FAIR-ML-CYBER-main.pdf` (284,130 bytes). Recherche Zenodo exacte sur `FAIR-ML-CYBER`, `fair-ml-cyber` et `github.com/ihsenalaya/fair-ml-cyber` : 0 record correspondant. Aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local.
+- **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
 
@@ -216,12 +217,12 @@
 | A2 — Heatmap | 🟡 | ✅ Résolu | **OUI** |
 | A3 — Tableau SOC | 🟡 | ✅ Résolu | **OUI** |
 | A4 — Choix modèles | 🟡 | ✅ Résolu | **OUI** |
-| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub faite, release v1.0.2 à publier après C3, DOI pending mentionné, DOI final manquant | Non |
+| A5 — DOI Zenodo | 🟡 | ⏳ Release GitHub v1.0.2 faite, DOI pending mentionné, DOI final manquant | Non |
 | A6 — Effect sizes | 🟡 | ⏳ Délibéré | **OUI** |
 
 **Résolus** : C1, C2, C3, C4, I1, I2, I3, I4, I5, A1, A2, A3, A4, A6 = **14 points fermés**
 **Bloquant restant** : Aucun critique
-**Partiels mineurs** : A5 (release GitHub faite, release C3 à publier, DOI Zenodo absent, mention pending dans le manuscrit)
+**Partiels mineurs** : A5 (release GitHub v1.0.2 faite, DOI Zenodo absent, mention pending dans le manuscrit)
 
 ---
 
@@ -242,7 +243,7 @@
 - [x] **A2** : Créer heatmap F1 per-class × split protocol
 - [x] **A3** : Ajouter tableau Practical Guidance (SOC)
 - [x] **A4** : 1–2 phrases justifiant absence DNN
-- [~] **A5** : Release GitHub faite (`v1.0.1`), release C3 `v1.0.2` à publier, DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
+- [~] **A5** : Release GitHub courante `v1.0.2` faite, DOI pending mentionné dans le manuscrit, DOI Zenodo final à générer
 - [ ] Révision interne complète + soumission
 
 ---
@@ -297,6 +298,7 @@
 | Check #20 | 2026-06-17 | `s7` toujours `Running`, `s99` `Queued`. Surveillance active — téléchargement automatique dès complétion `s7`. 13/15 résolus | 2 |
 | Check #21 | 2026-06-17 | **C3 ✅** — `fullcore-lr2000-nohour-s7-001` et `fullcore-lr2000-nohour-s99-001` téléchargés, vérifiés et copiés dans `evidence/`; 10/10 runs par seed, 0 warning, 0 convergence warning. 14/15 résolus | 1 |
 | Check #22 | 2026-06-17 | Baseline open-set renforcée — `open-set-if-s7-001` téléchargé et copié dans `evidence/`; Isolation Forest full-data maintenant disponible sur seeds 42/7/99. 14/15 résolus | 1 |
+| Check #23 | 2026-06-17 | A5 progresse — tag/release GitHub `v1.0.2` publié avec PDF 284,130 bytes; `.zenodo.json` et `CITATION.cff` inclus. Zenodo DOI toujours absent faute de record exact/token local. 14/15 résolus | 1 |
 
 ---
 
