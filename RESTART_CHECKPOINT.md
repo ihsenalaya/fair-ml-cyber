@@ -111,3 +111,40 @@ After download, copy the result CSVs into new `evidence/` folders following the 
 4. Download artifacts into `data/azure_jobs/`.
 5. Promote verified outputs to `evidence/`.
 6. Update the article only with completed results.
+
+## Resume Update - 2026-06-17 12:04 Europe/Paris
+
+Completed after restart:
+
+- Confirmed `main` is clean and aligned with `origin/main`.
+- Confirmed calibration runner files are tracked and pushed in commit `be8cc11 Add calibration baseline checkpoint`.
+- Submitted calibration jobs from clean git state (`azureml.git.dirty=False`, commit `be8cc111901d1ddc738f1c325282853ca5e8c50b`):
+  - `calibration-s42-001`
+  - `calibration-s7-001`
+  - `calibration-s99-001`
+- Completed local full pytest:
+
+```text
+/home/ihsen/.venvs/fair-ml-cyber/bin/python -m pytest -q
+17 passed, 1 deprecation warning, exit status 0
+```
+
+Current Azure status via ARM after submissions:
+
+| Job | Last checked state |
+| --- | --- |
+| `advanced-core-s99-001` | `Running` |
+| `advanced-core-s7-001` | `Queued` |
+| `open-set-if-s42-001` | `Queued` |
+| `open-set-if-s7-001` | `Queued` |
+| `open-set-if-s99-001` | `Queued` |
+| `calibration-s42-001` | `Queued` |
+| `calibration-s7-001` | `Queued` |
+| `calibration-s99-001` | `Queued` |
+
+Still pending:
+
+1. Wait for Azure jobs to complete.
+2. Download completed artifacts into `data/azure_jobs/`.
+3. Promote verified text artifacts to `evidence/`.
+4. Update `paper/main.tex` only with completed and locally verified results.
