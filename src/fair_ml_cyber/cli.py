@@ -9,6 +9,7 @@ from pathlib import Path
 from fair_ml_cyber.audit import audit_csv_dir
 from fair_ml_cyber.advanced import run_advanced_analysis
 from fair_ml_cyber.experiment import run_experiment, run_smoke
+from fair_ml_cyber.open_set import run_open_set_baselines
 
 
 def _csv_list(value: str) -> list[str]:
@@ -88,6 +89,28 @@ def main() -> None:
     advanced.add_argument("--explain-sample-size", type=int, default=5000)
     advanced.add_argument("--permutation-repeats", type=int, default=2)
 
+    open_set = sub.add_parser("run-open-set-baselines", help="Run open-set baseline analyses")
+    open_set.add_argument("--csv-dir", required=True, type=Path)
+    open_set.add_argument("--work-dir", required=True, type=Path)
+    open_set.add_argument("--sample-per-file", type=int, default=None)
+    open_set.add_argument("--seed", type=int, default=42)
+    open_set.add_argument(
+        "--models",
+        type=_csv_list,
+        default=_csv_list("isolation_forest"),
+    )
+    open_set.add_argument(
+        "--feature-tiers",
+        type=_csv_list,
+        default=_csv_list("deployment_safe"),
+    )
+    open_set.add_argument(
+        "--unknown-families",
+        type=_csv_list,
+        default=_csv_list("Web,Botnet,PortScan,DDoS"),
+    )
+    open_set.add_argument("--result-prefix", default="open_set_baselines")
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -120,6 +143,17 @@ def main() -> None:
             result_prefix=args.result_prefix,
             explain_sample_size=args.explain_sample_size,
             permutation_repeats=args.permutation_repeats,
+        )
+    elif args.command == "run-open-set-baselines":
+        result = run_open_set_baselines(
+            args.csv_dir,
+            args.work_dir,
+            sample_per_file=args.sample_per_file,
+            seed=args.seed,
+            models=args.models,
+            feature_tiers=args.feature_tiers,
+            unknown_families=args.unknown_families,
+            result_prefix=args.result_prefix,
         )
     else:
         raise ValueError(args.command)

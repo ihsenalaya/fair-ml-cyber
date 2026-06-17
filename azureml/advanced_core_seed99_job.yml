@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: fair-ml-cyber-advanced-core-seed99
+experiment_name: fair-ml-cyber
+description: Full-data advanced analyses for seed 99.
+code: ..
+command: >-
+  python -m pip install --upgrade pip &&
+  python -m pip install -r requirements.txt &&
+  python -m pip install -e . --no-deps &&
+  python -m fair_ml_cyber.cli run-advanced
+  --csv-dir ${{inputs.csv_dir}}
+  --work-dir ${{outputs.work_dir}}
+  --seed 99
+  --models logistic_regression,hist_gradient_boosting
+  --feature-tiers deployment_safe
+  --splits random_stratified,temporal,latest_day_holdout,scenario_holdout_Web,endpoint_pair_holdout
+  --unknown-families Web,Botnet,PortScan,DDoS
+  --result-prefix advanced_core_s99
+  --explain-sample-size 2000
+  --permutation-repeats 1
+inputs:
+  csv_dir:
+    type: uri_folder
+    path: azureml:fair_ml_cyber_csvs:1
+outputs:
+  work_dir:
+    type: uri_folder
+compute: azureml:cpu-memory-cluster
+environment: azureml:fair-ml-cyber-runtime-env:1
+resources:
+  instance_count: 1
