@@ -43,10 +43,12 @@ L'idée n'est pas de publier un énième modèle qui annonce 99% d'accuracy sur 
 - `FULLCORE_MEM_S42_RESULTS.md`: synthèse vérifiée du run full-data Azure ML `fullcore-mem-s42-001`.
 - `FULLCORE_MEM_MULTI_SEED_RESULTS.md`: comparaison full-data seeds 42, 7 et 99.
 - `LR2000_CONVERGENCE_RESULTS.md`: vérification du rerun LogisticRegression seed 42 avec `max_iter=2000`.
+- `ADVANCED_CORE_S42_RESULTS.md`: synthèse vérifiée des analyses rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications.
 - `evidence/fullcore-mem-s42-001/`: snapshot textuel suivi par Git des résultats full-data vérifiés.
 - `evidence/fullcore-mem-s7-001/`: snapshot textuel suivi par Git de la répétition full-data seed 7.
 - `evidence/fullcore-mem-s99-001/`: snapshot textuel suivi par Git de la répétition full-data seed 99.
 - `evidence/fullcore-lr2000-s42-001/`: snapshot textuel suivi par Git du rerun LR convergence seed 42.
+- `evidence/advanced-core-s42-001/`: snapshot textuel suivi par Git du run avancé seed 42.
 
 ## Etat actuel au 2026-06-17
 
@@ -81,6 +83,7 @@ Runs vérifiés:
 - répétition full-data Azure ML `fullcore-mem-s7-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement;
 - répétition full-data Azure ML `fullcore-mem-s99-001`: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés localement.
 - rerun LR convergence `fullcore-lr2000-s42-001`: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence.
+- run avancé `advanced-core-s42-001`: 2,438,052 lignes, 10 runs binaires, 10 multi-class, 8 open-set, calibration/abstention/rare-class/stabilité d'explications produits et téléchargés.
 
 Le pilote `pilot10k-001` montre déjà le signal scientifique central: les splits aléatoires donnent des scores quasi parfaits, alors que les splits temporels, day-holdout et scénario Web révèlent des chutes fortes de macro-F1. Ce résultat reste un **pilote**, utile pour le design expérimental.
 
@@ -94,7 +97,7 @@ Signal full-data vérifié:
 - macro-F1 scenario Web moyen: HistGradientBoosting 0.5653, LogisticRegression 0.4836;
 - macro-F1 endpoint-pair holdout moyen: HistGradientBoosting 0.9955, LogisticRegression 0.8859.
 
-Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Ils ne suffisent pas encore seuls pour un manuscrit Q1 final: il manque rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications.
+Ces résultats full-data renforcent le sujet "benchmark accuracy vs deployment reliability". La comparaison des trois seeds confirme le signal central, mais montre aussi que HistGradientBoosting varie sur day-holdout et scénario Web. Le run avancé seed 42 ajoute le signal rare-class/multi-class/open-set/calibration/abstention/stabilité: la performance binaire random est élevée, mais la macro-F1 multi-class tombe jusqu'à 0.0415 en temporal, les rare classes Web ont F1 0.0 en Web holdout, et la calibration se dégrade fortement sur temporal/day-holdout.
 
 ## Positionnement Q1
 
@@ -115,5 +118,5 @@ La prochaine étape scientifique est de compléter le protocole final:
 - répéter le rerun LR2000 pour seeds 7 et 99 si les tables LR multi-seed finales doivent être convergence-clean;
 - éviter de sauvegarder tous les modèles si les artefacts deviennent trop lourds;
 - ajouter les métriques de portabilité CTS;
-- télécharger et analyser le job avancé rare-class/multi-class/open-set/calibration/abstention/stabilité d'explications;
+- répéter le run avancé sur seeds 7 et 99 si le budget Azure le permet;
 - produire ensuite l'article LaTeX/PDF uniquement à partir des résultats vérifiés.

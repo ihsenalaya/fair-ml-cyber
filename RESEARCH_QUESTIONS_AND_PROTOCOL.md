@@ -623,7 +623,7 @@ Le papier est solide si on obtient:
 
 ## Etat empirique actuel
 
-Au 2026-06-17, six runs Azure ML utiles sont validés, et un run avancé est soumis mais pas encore validé:
+Au 2026-06-17, sept runs Azure ML utiles sont validés:
 
 | Run | Type | Lignes | Combinaisons | Statut |
 |---|---|---:|---:|---|
@@ -633,7 +633,7 @@ Au 2026-06-17, six runs Azure ML utiles sont validés, et un run avancé est sou
 | `fullcore-mem-s7-001` | Full-data core repeated seed | 2,438,052 | 20 | 20 completed, 0 failed |
 | `fullcore-mem-s99-001` | Full-data core repeated seed | 2,438,052 | 20 | 20 completed, 0 failed |
 | `fullcore-lr2000-s42-001` | Full-data LR convergence rerun | 2,438,052 | 10 | 10 completed, 0 failed, 0 convergence warnings |
-| `advanced-core-s42-001` | Advanced analyses | Pending | Pending | Submitted, not yet validated |
+| `advanced-core-s42-001` | Advanced analyses | 2,438,052 | 28 main runs | 10 binary, 10 multiclass, 8 open-set completed |
 
 Le run `pilot10k-001` donne un premier support empirique pour RQ1 et RQ2:
 
@@ -649,12 +649,21 @@ Les runs `fullcore-mem-s42-001`, `fullcore-mem-s7-001` et `fullcore-mem-s99-001`
 - endpoint-pair holdout reste élevé pour les deux modèles, ce qui doit être interprété avec prudence et comparé à d'autres stress-tests;
 - CTS macro-F1 initial est calculé dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
 
+Le run avancé `advanced-core-s42-001` ajoute les observations suivantes pour seed 42:
+
+- HGB temporal binaire: macro-F1 0.2296, ECE 0.7013;
+- LR temporal binaire: macro-F1 0.5395, ECE 0.3955;
+- multi-class temporal: macro-F1 0.0415 pour HGB et 0.0453 pour LR;
+- Web holdout rare classes: F1 0.0 pour `Web_Brute_Force`, `Web_SQL_Injection` et `Web_XSS` malgré supports non nuls;
+- open-set uncertainty HGB est fort pour `PortScan` AUROC 0.9954, mais LR échoue pour `DDoS` uncertainty AUROC 0.2019;
+- explanation stability top-15 est faible pour HGB temporal Jaccard 0.0714, plus stable pour LR temporal Jaccard 0.5789.
+
 Ces résultats restent incomplets pour un article Q1 final:
 
-- classification binaire uniquement;
+- analyses avancées disponibles seulement pour seed 42;
 - Random Forest non exécuté en full-data core;
 - pas encore de CTS final multi-seed/multi-tâche;
-- rare-class/open-set/calibration figures/explainability soumis sous `advanced-core-s42-001`, mais résultats non encore validés.
+- rare-class/open-set/calibration/explainability disponibles pour seed 42 seulement; répétitions seeds 7 et 99 recommandées si le budget Azure le permet.
 
 Ils justifient de continuer vers un protocole final plus lourd. Ils peuvent être utilisés comme résultats full-data core, mais pas comme manuscrit final complet.
 

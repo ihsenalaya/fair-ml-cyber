@@ -286,8 +286,9 @@ Analyse full-data core disponible:
   - `scenario_holdout_Web`: 0.5207, 0.4831.
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
 - `fullcore-lr2000-s42-001` vérifie que LogisticRegression avec `max_iter=2000` supprime les warnings de convergence pour seed 42: 10/10 runs, 0 warning, 0 warning de convergence.
-- `advanced-core-s42-001` est soumis pour rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications; ses résultats ne sont pas encore téléchargés ni validés.
-- Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier.
+- `advanced-core-s42-001` valide rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications pour seed 42: 10 runs binaires, 10 multi-class, 8 open-set.
+- Résultats avancés clés: HGB temporal binaire macro-F1 0.2296/ECE 0.7013; LR temporal binaire macro-F1 0.5395/ECE 0.3955; multi-class temporal macro-F1 0.0415 HGB et 0.0453 LR; Web rare-class holdout F1 0.0 pour les classes Web rares non nulles; HGB explanation stability Jaccard temporal 0.0714.
+- Ces valeurs sont des résultats full-data réels, mais pas encore la matrice finale multi-seed complète du papier.
 
 ## Figures publication-ready
 

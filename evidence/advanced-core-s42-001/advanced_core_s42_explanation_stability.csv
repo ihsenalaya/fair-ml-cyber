@@ -1,0 +1,9 @@
+task,model,feature_tier,seed,baseline_split,target_split,top_k,jaccard,overlap_count
+binary,hist_gradient_boosting,deployment_safe,42,random_stratified,day_holdout_2017-07-07,15,0.15384615384615385,4
+binary,hist_gradient_boosting,deployment_safe,42,random_stratified,endpoint_pair_holdout,15,0.5,10
+binary,hist_gradient_boosting,deployment_safe,42,random_stratified,scenario_holdout_Web,15,0.15384615384615385,4
+binary,hist_gradient_boosting,deployment_safe,42,random_stratified,temporal,15,0.07142857142857142,2
+binary,logistic_regression,deployment_safe,42,random_stratified,day_holdout_2017-07-07,15,0.6666666666666666,12
+binary,logistic_regression,deployment_safe,42,random_stratified,endpoint_pair_holdout,15,0.7647058823529411,13
+binary,logistic_regression,deployment_safe,42,random_stratified,scenario_holdout_Web,15,0.5789473684210527,11
+binary,logistic_regression,deployment_safe,42,random_stratified,temporal,15,0.5789473684210527,11
