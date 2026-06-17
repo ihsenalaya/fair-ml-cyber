@@ -1,7 +1,7 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #13)
+**Dernier check** : 2026-06-17 (check #15)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
 **Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
@@ -280,6 +280,8 @@
 | Check #11 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure, A5 DOI toujours absent. 13/15 résolus | 2 |
 | Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié avec release courante `v1.0.1` créée et DOI Zenodo pending dans `paper/main.tex`. C3 toujours en queue. 13/15 résolus | 2 |
 | Check #13 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. PDF recompilé. Log inchangé. 13/15 résolus | 2 |
+| Check #14 | 2026-06-17 | 0 nouveau — C3 toujours absent evidence/. Log inchangé. 13/15 résolus | 2 |
+| Check #15 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. Aucun fichier récent. 13/15 résolus | 2 |
 
 ---
 
