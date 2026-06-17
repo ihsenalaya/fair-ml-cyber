@@ -141,19 +141,19 @@ Ressource nécessaire pour lancer les expériences proprement dans Azure.
 
 Pour ce dataset, un cluster CPU suffit. Pas besoin de GPU pour commencer.
 
-Configuration recommandée:
+Configuration recommandée après tests réels:
 
 - `min_nodes = 0`
-- `max_nodes = 2` ou `4`
-- VM CPU avec 16 a 32 Go RAM;
+- `max_nodes = 1` ou `2` selon budget;
+- VM CPU avec au moins 64 Go RAM pour le full-data core actuel;
 - low-priority / spot si disponible pour réduire le coût;
 - arrêt automatique grâce au `min_nodes = 0`.
 
 Exemples de tailles à tester selon disponibilité régionale:
 
-- `Standard_D4ds_v5`: petit CPU, 16 Go RAM;
-- `Standard_D8ds_v5`: plus confortable, 32 Go RAM;
-- `Standard_E4ds_v5`: utile si mémoire plus importante.
+- `Standard_DS3_v2`: suffisant pour smoke/pilote, insuffisant pour le full-data core observé;
+- `Standard_E8ds_v5`: validé pour le full-data core LogisticRegression/HistGradientBoosting;
+- tailles supérieures de série E: à considérer pour Random Forest full-data, multi-seed, SHAP ou modèles plus lourds.
 
 Utilisation:
 
@@ -181,16 +181,17 @@ Cette taille a suffi pour:
 - smoke Azure ML `smoke-runtime-002`: 31,394 lignes, 30 runs;
 - pilote Azure ML `pilot10k-001`: 125,517 lignes, 30 runs.
 
-Pour les full experiments, il faudra décider entre:
-
-- garder `Standard_DS3_v2` et lancer des jobs plus longs;
-- monter temporairement en `D4ds_v5`, `D8ds_v5` ou équivalent si Random Forest/full-data devient trop lent ou trop mémoire.
-
 Observation réelle au 2026-06-17:
 
 - `fullcore-s42-001` sur `cpu-cluster` / `Standard_DS3_v2` a échoué par `SIGKILL`, probablement out-of-memory, dès le premier entraînement full-data;
 - un cluster mémoire `cpu-memory-cluster` a été créé avec `Standard_E8ds_v5`, min 0, max 1, idle scale-down 120 s;
-- le rerun `azureml/full_core_memory_job.yml` doit utiliser ce cluster pour vérifier si le full-data core passe.
+- le rerun `fullcore-mem-s42-001` via `azureml/full_core_memory_job.yml` a complété le full-data core: 2,438,052 lignes, 20/20 runs, 0 échec.
+
+Conclusion opérationnelle:
+
+- `Standard_DS3_v2` reste utile pour debug/smoke/pilote;
+- `Standard_E8ds_v5` est la taille minimale validée pour le full-data core actuel;
+- les expériences finales plus lourdes doivent enregistrer coût, durée, mémoire, artefacts et éventuelles alertes de convergence.
 
 ---
 
@@ -324,12 +325,13 @@ Pour cet article, ne pas créer au départ:
 2. Création data asset Azure ML `fair_ml_cyber_csvs:1`: fait.
 3. Job Azure ML smoke `smoke-runtime-002`: fait, 30/30 runs complétés.
 4. Job Azure ML pilote `pilot10k-001`: fait, 30/30 runs complétés.
-5. Job Azure ML full-core `azureml/full_core_job.yml`: préparé; soumission à exécuter depuis un commit propre.
-6. `evaluate_transferability`: Cyber Transferability Score à ajouter.
-7. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
-8. `evaluate_explainability`: SHAP/permutation stability à ajouter.
-9. `generate_figures`: partiel; figures article à produire après résultats finaux.
-10. MLflow/logs: fonctionnel via SQLite local dans le work dir Azure, artefacts téléchargés.
+5. Job Azure ML full-core `fullcore-s42-001` sur `Standard_DS3_v2`: échoué par SIGKILL/OOM, documenté.
+6. Job Azure ML full-core mémoire `fullcore-mem-s42-001`: fait, 20/20 runs complétés sur `Standard_E8ds_v5`.
+7. `evaluate_transferability`: CTS macro-F1 initial calculé dans `FULLCORE_MEM_S42_RESULTS.md`; version finale multi-seed à ajouter.
+8. `evaluate_calibration`: métriques Brier/ECE déjà sorties; reliability curves à ajouter.
+9. `evaluate_explainability`: SHAP/permutation stability à ajouter.
+10. `generate_figures`: partiel; figures article à produire après résultats finaux.
+11. MLflow/logs: fonctionnel via SQLite local dans le work dir Azure, artefacts téléchargés.
 
 ---
 

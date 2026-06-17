@@ -18,6 +18,13 @@ Une soumission Q1 devient plausible seulement si l'article apporte une contribut
 - explicabilite stable;
 - idealement validation externe sur un deuxieme dataset.
 
+Mise a jour empirique au 2026-06-17:
+
+- le run full-data core `fullcore-mem-s42-001` est termine sur les 2,438,052 lignes, avec 20/20 runs completes et 0 echec;
+- les resultats confirment une forte rupture entre `random_stratified` et les stress-tests temporel/day/scenario;
+- ce signal renforce la these "benchmark accuracy vs deployment reliability";
+- cela ne suffit toujours pas a garantir Q1: il manque les repetitions multi-seed, rare-class/multi-class, open-set, calibration/abstention et stabilite d'explications.
+
 ## Pourquoi le risque est eleve
 
 ### 1. CICIDS2017 est tres utilise et ancien

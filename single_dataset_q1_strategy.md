@@ -45,6 +45,14 @@ La contribution principale devient:
 
 > un protocole de stress-test reproductible pour NIDS flow-based construit a partir d'un seul dataset labellise, montrant comment les performances changent lorsque l'on passe d'une evaluation random classique a des conditions plus proches du deploiement.
 
+Etat empirique au 2026-06-17:
+
+- le protocole core est execute en full-data dans `fullcore-mem-s42-001`;
+- 2,438,052 lignes, 2 feature tiers, 5 splits, 2 modeles, 20/20 runs completes;
+- HistGradientBoosting atteint une macro-F1 moyenne de 0.9978 en random split, mais seulement 0.2316 en temporal et 0.3698 en day-holdout;
+- LogisticRegression atteint 0.9364 en random split, puis 0.5401 en temporal et 0.6388 en day-holdout;
+- ce resultat concret soutient la contribution, mais le papier doit encore ajouter open-set, rare-class, calibration/abstention et repetitions pour viser Q1.
+
 ## Contributions acceptables pour Q1
 
 ### C1 - Reliability stress-test suite

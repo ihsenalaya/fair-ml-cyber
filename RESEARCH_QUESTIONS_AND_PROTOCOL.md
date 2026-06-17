@@ -623,29 +623,37 @@ Le papier est solide si on obtient:
 
 ## Etat empirique actuel
 
-Au 2026-06-16, deux runs Azure ML sont validés:
+Au 2026-06-17, trois runs Azure ML utiles sont validés:
 
 | Run | Type | Lignes | Combinaisons | Statut |
 |---|---|---:|---:|---|
 | `smoke-runtime-002` | Smoke validation | 31,394 | 30 | 30 completed, 0 failed |
 | `pilot10k-001` | Pilot experiment | 125,517 | 30 | 30 completed, 0 failed |
+| `fullcore-mem-s42-001` | Full-data core | 2,438,052 | 20 | 20 completed, 0 failed |
 
 Le run `pilot10k-001` donne un premier support empirique pour RQ1 et RQ2:
 
 - les scores random split sont très élevés;
 - les stress-tests `temporal`, `day_holdout_2017-07-07` et `scenario_holdout_Web` réduisent fortement la macro-F1 pour plusieurs modèles;
 - Logistic Regression semble moins performante que les ensembles en random split, mais plus stable sur certains stress-tests;
-- les différences entre `no_identity` et `deployment_safe` sont modestes dans ce pilote, mais doivent être vérifiées avec les runs finaux.
+- les différences entre `no_identity` et `deployment_safe` sont modestes dans le pilote et restent modestes dans le full-data core pour plusieurs splits, mais le scénario Web montre des variations importantes pour HistGradientBoosting.
 
-Ces résultats restent pilotes:
+Le run `fullcore-mem-s42-001` confirme RQ1/RQ2 sur le dataset complet pour le protocole core binaire:
 
-- sample `sample_per_file=10000`, soit 125,517 lignes;
-- seed unique 42;
+- HistGradientBoosting passe de 0.9978 macro-F1 en random split à 0.2316 en temporal et 0.3698 en day-holdout;
+- LogisticRegression passe de 0.9364 macro-F1 en random split à 0.5401 en temporal et 0.6388 en day-holdout;
+- endpoint-pair holdout reste élevé pour les deux modèles, ce qui doit être interprété avec prudence et comparé à d'autres stress-tests;
+- CTS macro-F1 initial est calculé dans `FULLCORE_MEM_S42_RESULTS.md`.
+
+Ces résultats restent incomplets pour un article Q1 final:
+
+- seed unique 42 pour le full-data core;
 - classification binaire uniquement;
-- pas encore de CTS final;
+- Random Forest non exécuté en full-data core;
+- pas encore de CTS final multi-seed/multi-tâche;
 - pas encore de rare-class/open-set/calibration figures/explainability.
 
-Ils justifient de continuer vers un protocole final plus lourd, mais ne doivent pas être présentés comme résultats définitifs.
+Ils justifient de continuer vers un protocole final plus lourd. Ils peuvent être utilisés comme résultats full-data core, mais pas comme manuscrit final complet.
 
 ---
 
