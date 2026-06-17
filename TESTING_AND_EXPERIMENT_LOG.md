@@ -257,6 +257,8 @@ These runs use real public external data. They include the first partial CSE-CIC
 | 2026-06-17T14:58:00+02:00 | `gh release create v1.0.0 paper/main.pdf#FAIR-ML-CYBER-main.pdf --title "Q1 submission version" ...` | Success | https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 | Release is published, not draft, not prerelease; asset `FAIR-ML-CYBER-main.pdf` uploaded. |
 | 2026-06-17T14:58:00+02:00 | Zenodo availability check | Blocked | No local `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN`; Zenodo search returned no matching FAIR-ML-CYBER record | DOI not generated automatically. Manual Zenodo GitHub integration or a Zenodo token is required before adding a DOI to the manuscript. |
 | 2026-06-17T15:16:00+02:00 | Manuscript DOI status update | Partial | `paper/main.tex` now cites the current GitHub `v1.0.1` release and states that the Zenodo DOI is not yet minted | No DOI was fabricated; final DOI must be inserted after Zenodo archiving succeeds. |
+| 2026-06-17T15:21:00+02:00 | `git tag -a v1.0.1 -m "Q1 submission version with advanced seed 7"` followed by `git push origin main` and `git push origin v1.0.1` | Success | Tag `v1.0.1` pushed; target commit `50af617d7e5a46bb1faba6c2a8b8fd02ba684ee2` | `v1.0.1` supersedes `v1.0.0` for the current draft because it includes advanced seed 7 evidence and the DOI-pending manuscript text. |
+| 2026-06-17T15:21:00+02:00 | `gh release create v1.0.1 paper/main.pdf#FAIR-ML-CYBER-main.pdf --title "Q1 submission version with advanced seed 7" ...` | Success | https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 | Release is published with the rebuilt `paper/main.pdf`; Zenodo DOI still not minted. |
 
 ## Bugs, Failures, and Operational Issues
 

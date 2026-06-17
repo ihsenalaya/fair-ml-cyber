@@ -1,7 +1,7 @@
 # Suivi Audit Q1 — FAIR-ML-CYBER
 
 **Date audit initial** : 2026-06-17
-**Dernier check** : 2026-06-17 (check #12)
+**Dernier check** : 2026-06-17 (check #13)
 **Auditeur** : Claude (Opus 4.8)
 **Cible** : Publication Q1 (Computers & Security / IEEE TIFS / TDSC)
 **Statut global** : 🟠 Quasi-prêt — 13/15 résolus. C3 seul critique restant (LR2000 s7/s99 en queue Azure). A5 mineur partiel.
@@ -156,11 +156,12 @@
 
 ### A5 — Artifacts publics + DOI Zenodo
 - **Priorité** : 🟡 MINEUR
-- **Statut** : ⏳ Partiel — GitHub Release créée; release courante `v1.0.1` prévue pour inclure seed 7, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
+- **Statut** : ⏳ Partiel — GitHub Release courante `v1.0.1` créée avec seed 7, DOI Zenodo absent; manuscrit mentionne explicitement le DOI pending
 - **Vérification check #1** : `.git/refs/tags/` vide.
 - **Vérification check #9** : tag annoté `v1.0.0` poussé et pointant vers `5ccb965925089bca44e3073cd7b5168121106cb4`; GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.0 avec `FAIR-ML-CYBER-main.pdf` comme asset.
+- **Vérification check #12** : tag annoté `v1.0.1` poussé et GitHub Release publiée : https://github.com/ihsenalaya/fair-ml-cyber/releases/tag/v1.0.1 avec le PDF reconstruit après intégration seed 7.
 - **Blocage Zenodo** : aucun token `ZENODO_ACCESS_TOKEN`/`ZENODO_TOKEN` local; recherche Zenodo sans dépôt correspondant. DOI non généré automatiquement.
-- **Vérification check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
+- **Vérification manuscrit check #12** : `paper/main.tex` cite la GitHub Release courante `v1.0.1` et indique que le DOI Zenodo n'est pas encore émis.
 - **Action restante** : connecter le repo GitHub à Zenodo ou fournir un token Zenodo; publier le DOI puis remplacer la mention pending dans `paper/main.tex` par le DOI final.
 
 ---
@@ -277,7 +278,8 @@
 | Check #9 | 2026-06-17 | A5 avance : tag v1.0.0 créé. C2/C3 toujours en attente Azure ML. 12/15 résolus | 3 |
 | Check #10 | 2026-06-17 | **C2 ✅** — advanced-core-s7-001 arrivé, 3 seeds confirmés cohérents. 13/15 résolus | 2 |
 | Check #11 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure, A5 DOI toujours absent. 13/15 résolus | 2 |
-| Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié dans `paper/main.tex` avec release courante `v1.0.1` et DOI Zenodo pending. C3 toujours en queue. 13/15 résolus | 2 |
+| Check #12 | 2026-06-17 | 0 nouveau résolu — A5 clarifié avec release courante `v1.0.1` créée et DOI Zenodo pending dans `paper/main.tex`. C3 toujours en queue. 13/15 résolus | 2 |
+| Check #13 | 2026-06-17 | 0 nouveau — C3 toujours en queue Azure. PDF recompilé. Log inchangé. 13/15 résolus | 2 |
 
 ---
 
