@@ -38,8 +38,11 @@ Travail terminé et vérifié:
 - full-data core `fullcore-mem-s42-001` validé: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
 - répétition full-data `fullcore-mem-s7-001` validée: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
 - répétition full-data `fullcore-mem-s99-001` validée: 2,438,052 lignes, 20/20 runs complétés, 0 échec, artefacts téléchargés;
+- rerun LR convergence `fullcore-lr2000-s42-001` validé: 2,438,052 lignes, 10/10 runs LogisticRegression complétés, 0 warning, 0 warning de convergence;
+- job avancé `advanced-core-s42-001` soumis pour rare-class, multi-class, open-set, calibration/abstention et stabilité d'explications;
 - synthèse full-data ajoutée dans `FULLCORE_MEM_S42_RESULTS.md`;
 - comparaison multi-seed ajoutée dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`;
+- synthèse LR convergence ajoutée dans `LR2000_CONVERGENCE_RESULTS.md`;
 - bugs/dysfonctionnements documentés dans `TESTING_AND_EXPERIMENT_LOG.md`.
 
 Signal scientifique observé dans le pilote et confirmé en full-data core:
@@ -55,10 +58,9 @@ Ce qui n'est pas encore terminé:
 
 - le full-data core binaire est validé sur seeds 42, 7 et 99;
 - Random Forest n'a pas encore été exécuté en full-data à cause du risque mémoire/artefacts;
-- décision restante: traiter les warnings de convergence LogisticRegression;
+- convergence LogisticRegression traitée pour seed 42 avec `max_iter=2000`; seeds 7 et 99 à rerun si on veut des statistiques LR multi-seed sans warnings;
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_S42_RESULTS.md`, mais CTS final multi-seed/multi-tâche à produire;
-- pas encore d'analyse multi-classe/rare-class complète;
-- pas encore de calibration/abstention complète;
+- analyses multi-classe/rare-class/open-set/calibration/abstention/stabilité d'explications soumises sur Azure sous `advanced-core-s42-001`, résultats pas encore téléchargés ni validés;
 - pas encore de LaTeX/PDF final.
 
 ---

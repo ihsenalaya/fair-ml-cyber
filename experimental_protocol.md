@@ -285,7 +285,9 @@ Analyse full-data core disponible:
   - `day_holdout_2017-07-07`: 0.4090, 0.6394;
   - `scenario_holdout_Web`: 0.5207, 0.4831.
 - CTS macro-F1 initial disponible dans `FULLCORE_MEM_MULTI_SEED_RESULTS.md`.
-- Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier: rare-class/multi-class, open-set et calibration/abstention restent à produire.
+- `fullcore-lr2000-s42-001` vérifie que LogisticRegression avec `max_iter=2000` supprime les warnings de convergence pour seed 42: 10/10 runs, 0 warning, 0 warning de convergence.
+- `advanced-core-s42-001` est soumis pour rare-class/multi-class, open-set, calibration/abstention et stabilité d'explications; ses résultats ne sont pas encore téléchargés ni validés.
+- Ces valeurs sont des résultats full-data réels pour le core binaire, mais pas encore la matrice finale complète du papier.
 
 ## Figures publication-ready
 

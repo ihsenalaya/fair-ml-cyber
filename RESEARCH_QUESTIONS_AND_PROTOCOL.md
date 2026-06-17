@@ -623,7 +623,7 @@ Le papier est solide si on obtient:
 
 ## Etat empirique actuel
 
-Au 2026-06-17, cinq runs Azure ML utiles sont validés:
+Au 2026-06-17, six runs Azure ML utiles sont validés, et un run avancé est soumis mais pas encore validé:
 
 | Run | Type | Lignes | Combinaisons | Statut |
 |---|---|---:|---:|---|
@@ -632,6 +632,8 @@ Au 2026-06-17, cinq runs Azure ML utiles sont validés:
 | `fullcore-mem-s42-001` | Full-data core | 2,438,052 | 20 | 20 completed, 0 failed |
 | `fullcore-mem-s7-001` | Full-data core repeated seed | 2,438,052 | 20 | 20 completed, 0 failed |
 | `fullcore-mem-s99-001` | Full-data core repeated seed | 2,438,052 | 20 | 20 completed, 0 failed |
+| `fullcore-lr2000-s42-001` | Full-data LR convergence rerun | 2,438,052 | 10 | 10 completed, 0 failed, 0 convergence warnings |
+| `advanced-core-s42-001` | Advanced analyses | Pending | Pending | Submitted, not yet validated |
 
 Le run `pilot10k-001` donne un premier support empirique pour RQ1 et RQ2:
 
@@ -652,9 +654,11 @@ Ces résultats restent incomplets pour un article Q1 final:
 - classification binaire uniquement;
 - Random Forest non exécuté en full-data core;
 - pas encore de CTS final multi-seed/multi-tâche;
-- pas encore de rare-class/open-set/calibration figures/explainability.
+- rare-class/open-set/calibration figures/explainability soumis sous `advanced-core-s42-001`, mais résultats non encore validés.
 
 Ils justifient de continuer vers un protocole final plus lourd. Ils peuvent être utilisés comme résultats full-data core, mais pas comme manuscrit final complet.
+
+Le rerun `fullcore-lr2000-s42-001` montre que `max_iter=2000` supprime les warnings de convergence LogisticRegression pour seed 42. Si les tableaux finaux utilisent des statistiques LR multi-seed strictement propres, seeds 7 et 99 doivent être rerun avec la même configuration.
 
 ---
 
